@@ -40,7 +40,7 @@ class Employee extends Model
     {
         if($this->image == null)
         {
-            return 'http://dragene.no/wp-content/uploads/2016/06/default1.jpg';
+            return null;
         } else {
             return '/uploads/' . $this->image;
         }
