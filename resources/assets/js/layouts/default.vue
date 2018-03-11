@@ -1,5 +1,5 @@
 <template>
-  <v-app :dark="theme" v-resize="onResize">
+  <v-app :dark="theme">
     <!-- Шапка -->
     <navbar/>
     <!-- Основной контент -->
@@ -30,12 +30,6 @@ export default {
   },
   components: {
     Navbar
-  },
-  methods: {
-    onResize () {
-      console.log(window.innerWidth)
-      this.windowSize = { x: window.innerWidth, y: window.innerHeight }
-    }
   }
 }
 </script>

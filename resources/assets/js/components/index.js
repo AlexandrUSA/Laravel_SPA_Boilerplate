@@ -1,16 +1,16 @@
 import Vue from 'vue'
-import Card from './Card'
+import Card from './elements/Card'
 import Child from './Child'
-import Button from './Button'
-//import Checkbox from './Checkbox'
+import Button from './elements/Button'
+import FileButton from './elements/FileButton'
 import { HasError, AlertError, AlertSuccess } from 'vform'
 
-// Components that are registered globaly.
+// Глобальные компоненты.
 [
   Card,
   Child,
   Button,
-  //Checkbox,
+  FileButton,
   HasError,
   AlertError,
   AlertSuccess

@@ -40,3 +40,4 @@ Route::group(['middleware' => 'guest:api'], function () {
 });
 
 
+Route::post('/employees/{id}/avatar', 'EmployeeController@addImage');

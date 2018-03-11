@@ -1,7 +1,7 @@
 <template>
   <v-toolbar app>
       <v-toolbar-side-icon v-show="user" @click="switchDrawer()"></v-toolbar-side-icon>
-      <v-btn fab small @click="historyBack()">
+      <v-btn fab small v-show="user" @click="historyBack()">
         <v-icon>chevron_left</v-icon>
       </v-btn>    
       <v-btn flat :to="{ name: user ? 'home' : 'welcome' }">{{ appName }}</v-btn>

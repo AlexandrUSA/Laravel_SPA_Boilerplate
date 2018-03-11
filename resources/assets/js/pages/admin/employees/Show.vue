@@ -1,55 +1,54 @@
 <template>
-  			<div class="employee">
-  				<h2>{{ $t('employee') }}</h2>
-  				<div class="employee__avatar">
-  					<div class="employee__avatar-container">
-  						<div class="avatar__overlay">
-  							<v-btn depressed large>{{avatarMsg}}</v-btn>
-  						</div>
-  						<img :src="avatar" alt="avatar">
-  					</div>			
-  					
+  <div class="employee">
+  	<h2>{{ $t('employee') }}</h2>
+  		<div class="employee__avatar">
+  			<div class="employee__avatar-container">
+  				<div class="avatar__overlay">
+  					<upload-button :title="avatarMsg" :selectedCallback="uploadPhoto"></upload-button>
   				</div>
-	  			<div class="employee__descr">
-	  				<p class="employee__text">
-	  					<b>{{ $t('name') }}:</b> <i>{{item.first_name}}</i>
-	  				</p>
-	  				<v-divider></v-divider>
-	  				<p class="employee__text">
-	  					<b>{{ $t('last_name') }}:</b> <i>{{item.last_name}}</i>
-	  				</p>
-	  				<v-divider></v-divider>
-	  				<p class="employee__text">
-	  					<b>{{ $t('patronymic') }}:</b> <i>{{item.patronymic ? item.patronymic : ''}}</i>
-	  				</p>
-	  				<v-divider></v-divider>
-	  				<p class="employee__text">
-	  					<b>{{ $t('position') }}:</b> <i>{{item.position}}</i>
-	  				</p>
-	  				<v-divider></v-divider>
-	  				<p class="employee__text">
-	  					<b>{{ $t('phone_number') }}:</b> <i>{{item.phone_number}}</i>
-	  				</p>
-	  				<v-divider></v-divider>
-	  				<p class="employee__text">
-	  					<b>{{ $t('salary') }}:</b> <i>{{item.salary}} руб.</i>
-	  				</p>
-	  				<v-divider></v-divider>
-	  				<p class="employee__text">
-	  					<b>{{ $t('address') }}:</b> <i>{{item.address}}</i>
-	  				</p>
-	  				<v-divider></v-divider>
-	  				<p class="employee__text">
-	  					<b>{{ $t('birthday') }}:</b> <i>{{item.birthday}}</i>
-	  				</p>
-	  				<v-btn
-				      block
-				      :to="{name: 'employeeEdit', params: {id: item.id, employee: item}}"
-				    >
-				      {{ $t('change_data') }}
-				    </v-btn>
-	  			</div>
-  			</div>		
+  				<img :src="item.avatar ? item.avatar : 'http://dragene.no/wp-content/uploads/2016/06/default1.jpg'" alt="avatar">
+  			</div>	
+			</div>
+	  	<div class="employee__descr">
+	  		<p class="employee__text">
+	  			<b>{{ $t('name') }}:</b> <i>{{item.first_name}}</i>
+	  		</p>
+	  		<v-divider></v-divider>
+	  		<p class="employee__text">
+	  			<b>{{ $t('last_name') }}:</b> <i>{{item.last_name}}</i>
+	  		</p>
+	  		<v-divider></v-divider>
+	  		<p class="employee__text">
+	  			<b>{{ $t('patronymic') }}:</b> <i>{{item.patronymic ? item.patronymic : ''}}</i>
+	  		</p>
+	  		<v-divider></v-divider>
+	  		<p class="employee__text">
+	  			<b>{{ $t('position') }}:</b> <i>{{item.position}}</i>
+	  		</p>
+	  		<v-divider></v-divider>
+	  		<p class="employee__text">
+	  			<b>{{ $t('phone_number') }}:</b> <i>{{item.phone_number}}</i>
+	  		</p>
+	  		<v-divider></v-divider>
+	  		<p class="employee__text">
+	  			<b>{{ $t('salary') }}:</b> <i>{{item.salary}} руб.</i>
+	  		</p>
+	  		<v-divider></v-divider>
+	  		<p class="employee__text">
+	  			<b>{{ $t('address') }}:</b> <i>{{item.address}}</i>
+	  		</p>
+	  		<v-divider></v-divider>
+	  		<p class="employee__text">
+	  			<b>{{ $t('birthday') }}:</b> <i>{{item.birthday}}</i>
+	  		</p>
+	  		<v-btn
+				    block
+				    :to="{name: 'employeeEdit', params: {id: item.id, employee: item}}"
+				  >
+					{{ $t('change_data') }}
+				</v-btn>
+	  </div>
+  </div>		
 </template>
 
 <script>
@@ -82,10 +81,36 @@
 			async load() {
 				const { data } = await axios.get('/api/employees/' + this.id);
 				this.item = data;
+			},
+			async uploadPhoto(e) {
+		    try {
+		    	let formData = new FormData(),
+		    			imagefile = document.getElementById('avatar-file').files[0];
+		    	if (!imagefile) return;
+					formData.append("image", imagefile);
+					console.log(formData)
+					const { data } = await axios.post('/api/employees/' + this.id + '/avatar', formData, {
+					     headers: {
+					       'Content-Type': 'multipart/form-data'
+					     }
+					 });
+					console.log(data)
+					this.item.avatar = data;
+
+					// const { data } = await axios.post('/api/employees/' + this.id + '/avatar', formData, {
+					//     headers: {
+					//       'Content-Type': 'multipart/form-data'
+					//     }
+					// });
+					 		
+     //  		this.item.avatar = data;
+     //  		console.log(this.item.avatar); 
+    		} catch (e) {
+      		console.error('Не загрузился сотрудник', e)
+    		}	
+			}
 		}
 	}
-}
-
 </script>
 
 <style scoped>
@@ -143,8 +168,7 @@
 
 	.employee__avatar-container {
 		position: relative;
-		width: 316px;
-		height: 316px;
+		width: 100%;
 		margin: 0 auto;
 		box-shadow: 0 0 13px rgba(0, 0, 0, .5);
 		border-radius: 3px;
@@ -170,7 +194,6 @@
 	.employee__avatar img {
 		display: block;
 		width: 100%;
-		max-width: 316px;
 		margin: 0 auto;
 	}
 
