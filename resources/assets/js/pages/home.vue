@@ -1,6 +1,6 @@
 <template>
   <v-content>
-    <p>hgfhfgh</p>
+    <h2 style="text-align: center;">{{ $t('welcome') }}</h2>
   </v-content>
 </template>
 
