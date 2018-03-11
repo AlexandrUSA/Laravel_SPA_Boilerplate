@@ -51,6 +51,7 @@ export default {
       await this.form.patch('/api/settings/password')
 
       this.form.reset()
+      this.$router.go(-1);
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class = "user-settings">
+  <v-content>
     <v-navigation-drawer stateless permanent floating value="true">
       <v-toolbar flat class="transparent">
         <v-list class="pa-0">
@@ -36,7 +36,7 @@
         <router-view/>
       </transition>
     </div>
-  </div>    
+  </v-content>    
 
 </template>
 

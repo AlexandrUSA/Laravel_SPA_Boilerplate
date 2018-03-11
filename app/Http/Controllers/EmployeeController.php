@@ -6,6 +6,7 @@ use App\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Mockery\Exception;
+use Illuminate\Support\Facades\DB;
 
 class EmployeeController extends Controller
 {
@@ -58,11 +59,17 @@ class EmployeeController extends Controller
         if($request->hasFile('image')) {
             $file = $request->file('image');
             $employee = Employee::find($id);
-            $destinationPath =  public_path().'/thumb/items/avatars/';
+            $destinationPath =  public_path() . '/uploads/images/avatars/';
             $filename = str_random(20) .'.' . $file->getClientOriginalExtension();
+
+            if($employee->avatar !== '/uploads/images/avatars/no-avatar.jpg') {
+                Storage::delete($employee->avatar);
+            }
             $file->move($destinationPath, $filename);
-           // return '/thumb/items/avatars/' . $filename;
-            return $employee->avatar;
+            DB::table('employees')
+                ->where('id', $id)
+                ->update(['avatar' => '/uploads/images/avatars/' . $filename]);
+            return '/uploads/images/avatars/' . $filename;
         }
     }
 
@@ -76,14 +83,6 @@ class EmployeeController extends Controller
     public function update(Request $request, Employee $employee)
     {
         $employee->update($request->all());
-
-//        if($request->hasFile('image')) {
-//            $file = $request->file('image');
-//            $destinationPath =  public_path().'/thumb/items/avatars/';
-//            $filename = str_random(20) .'.' . $file->getClientOriginalExtension();
-//            $file->move($destinationPath, $filename);
-//            $employee->avatar($destinationPath . $filename);
-//        }
         return $employee;
     }
 

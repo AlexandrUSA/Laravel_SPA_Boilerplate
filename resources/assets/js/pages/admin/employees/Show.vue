@@ -6,7 +6,7 @@
   				<div class="avatar__overlay">
   					<upload-button :title="avatarMsg" :selectedCallback="uploadPhoto"></upload-button>
   				</div>
-  				<img :src="item.avatar ? item.avatar : 'http://dragene.no/wp-content/uploads/2016/06/default1.jpg'" alt="avatar">
+  				<img :src="item.avatar" alt="avatar">
   			</div>	
 			</div>
 	  	<div class="employee__descr">
@@ -88,7 +88,6 @@
 		    			imagefile = document.getElementById('avatar-file').files[0];
 		    	if (!imagefile) return;
 					formData.append("image", imagefile);
-					console.log(formData)
 					const { data } = await axios.post('/api/employees/' + this.id + '/avatar', formData, {
 					     headers: {
 					       'Content-Type': 'multipart/form-data'

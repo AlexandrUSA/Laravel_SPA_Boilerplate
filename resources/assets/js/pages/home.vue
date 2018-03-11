@@ -1,7 +1,7 @@
 <template>
-  <card :title="$t('home')">
-    {{ $t('you_are_logged_in') }}
-  </card>
+  <v-content>
+    <p>hgfhfgh</p>
+  </v-content>
 </template>
 
 <script>
