@@ -24,9 +24,10 @@
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
+      
     <div id="theme-switcher">
       <v-switch
-        :label="'Темная тема'"
+        :label="$t('dark_theme')"
         v-model="dark"
       ></v-switch>
     </div> 

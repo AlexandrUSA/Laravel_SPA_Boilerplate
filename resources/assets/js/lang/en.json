@@ -60,5 +60,6 @@
   "delete_item_confirm": "Are you sure you want to delete this item?",
   "delete_items_confirm": "Are you sure you want to delete selected items?",
   "delete_done": "The information was successfully deleted!!",
-  "welcome": "Welcome!"
+  "welcome": "Welcome!",
+  "dark_theme": "Dark theme"
 }
