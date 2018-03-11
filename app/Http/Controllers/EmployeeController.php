@@ -55,22 +55,21 @@ class EmployeeController extends Controller
 
     public function addImage(Request $request, $id)
     {
-
         if($request->hasFile('image')) {
-            $file = $request->file('image');
             $employee = Employee::find($id);
-            $destinationPath =  public_path() . '/uploads/images/avatars/';
-            $filename = str_random(20) .'.' . $file->getClientOriginalExtension();
 
             if($employee->avatar !== '/uploads/images/avatars/no-avatar.jpg') {
                 Storage::delete($employee->avatar);
             }
-            $file->move($destinationPath, $filename);
+
+            $path = Storage::putFile('avatars', $request->file('image'));
+
             DB::table('employees')
                 ->where('id', $id)
-                ->update(['avatar' => '/uploads/images/avatars/' . $filename]);
-            return '/uploads/images/avatars/' . $filename;
-        }
+                ->update(['avatar' => $path]);
+
+            return $path;
+         }
     }
 
     /**
