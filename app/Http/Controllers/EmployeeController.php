@@ -62,13 +62,13 @@ class EmployeeController extends Controller
                 Storage::delete($employee->avatar);
             }
 
-            $path = Storage::putFile('avatars', $request->file('image'));
+            $path = Storage::putFile('public/avatars', $request->file('image'));
 
             DB::table('employees')
                 ->where('id', $id)
                 ->update(['avatar' => $path]);
 
-            return $path;
+            return '/storage/' . substr($path, 7);
          }
     }
 

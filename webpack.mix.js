@@ -1,5 +1,6 @@
-const path = require('path')
-const mix = require('laravel-mix')
+const path = require('path');
+const mix = require('laravel-mix');
+const LiveReloadPlugin = require('webpack-livereload-plugin');
 // const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 
 mix
@@ -29,8 +30,11 @@ if (mix.inProduction()) {
   ])
 }
 
+mix.browserSync('web')
+
 mix.webpackConfig({
   plugins: [
+  	//new LiveReloadPlugin()
     // new BundleAnalyzerPlugin()
   ],
   resolve: {

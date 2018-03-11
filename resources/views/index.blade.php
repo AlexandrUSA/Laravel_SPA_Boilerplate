@@ -30,6 +30,9 @@ $polyfills = [
   <title>{{ config('app.name') }}</title>
   <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
   <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+  @if(config('app.env') == 'local')
+      <script src="http://localhost:35729/livereload.js"></script>
+  @endif
 </head>
 <body>
   <div id="root">
