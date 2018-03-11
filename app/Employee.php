@@ -23,11 +23,11 @@ class Employee extends Model
 
 
     public function uploadAvatar($image) {
-       // if($image != null) return json_encode([1]);
+        if($image != null) return json_encode([1]);
         Storage::delete('uploads/' . $this->image);
         $filename = str_random(10) . '.' . $image.extension();
         $image->saveAs('thumb/items/avatars', $filename);
-      //  $image->saveAs('thumb/items/avatars', $filename);
+        $image->saveAs('thumb/items/avatars', $filename);
         $this->image = $filename;
         $this->save();
     }
