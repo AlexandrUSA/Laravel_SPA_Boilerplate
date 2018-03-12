@@ -14,17 +14,7 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return Department::all();
     }
 
     /**
@@ -35,7 +25,11 @@ class DepartmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'title' => 'required|String|min:1|max:70'
+        ]);
+        Department::create($request->all());
+        return Department::all()->last();
     }
 
     /**
@@ -46,18 +40,7 @@ class DepartmentController extends Controller
      */
     public function show(Department $department)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Department  $department
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Department $department)
-    {
-        //
+        return $department;
     }
 
     /**
@@ -69,7 +52,11 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, Department $department)
     {
-        //
+        $this->validate($request, [
+            'title' => 'required|String|min:1|max:70'
+        ]);
+        $department->update(request()->all());
+        return $department;
     }
 
     /**
@@ -80,6 +67,6 @@ class DepartmentController extends Controller
      */
     public function destroy(Department $department)
     {
-        //
+        $department->delete();
     }
 }

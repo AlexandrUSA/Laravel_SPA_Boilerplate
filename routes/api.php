@@ -25,6 +25,8 @@ Route::group(['middleware' => 'auth:api'], function () {
 
 
     Route::resource('/employees', 'EmployeeController', ['except' => ['create', 'edit']]);
+    Route::resource('/positions', 'PositionController', ['except' => ['create', 'edit']]);
+    Route::resource('/departments', 'DepartmentController', ['except' => ['create', 'edit']]);
 
 });
 

@@ -144,8 +144,8 @@
 
 		methods: {
 			...mapActions({
-				changeItem: 'AdminEmployees/edit',
-				addItem: 'AdminEmployees/add'
+				changeItem: 'employees/edit',
+				addItem: 'employees/add'
 			}),
 			save() {
 				if(this.employee) {

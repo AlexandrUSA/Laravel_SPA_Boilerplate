@@ -129,7 +129,7 @@
                     this.$t('delete_items_confirm');
             },
             ...mapGetters({
-                items: 'AdminEmployees/employees'
+                items: 'employees/employees'
             })
         },
         methods: {
@@ -154,8 +154,8 @@
                 this.editedIndex = -1;
             },
             ...mapActions({
-                loadItems: 'AdminEmployees/load',
-                deleteItem: 'AdminEmployees/remove'
+                loadItems: 'employees/load',
+                deleteItem: 'employees/remove'
             })
         }
     }

@@ -143,7 +143,7 @@
 		},
 		computed: {
 			...mapGetters({
-				item: 'AdminEmployees/employee'
+				item: 'employees/employee'
 			}),
 			buttonText() {
 				return !this.disabled ? "Обновить" : "Изменить данные";
@@ -154,11 +154,11 @@
 		},
 		// Загрузка пользователя перед монтированием компонента
 		beforeRouteEnter (to, from, next) {
-    	next(vm => vm.$store.dispatch('AdminEmployees/loadOne', vm.id));
+    	next(vm => vm.$store.dispatch('employees/loadOne', vm.id));
   	},
 		methods: {
 			...mapActions({
-				changeItem: 'AdminEmployees/edit',
+				changeItem: 'employees/edit',
 			}),
 			buttonAction() {
 				if (!this.disabled) {

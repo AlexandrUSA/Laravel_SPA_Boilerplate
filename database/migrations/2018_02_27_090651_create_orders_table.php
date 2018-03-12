@@ -18,7 +18,7 @@ class CreateOrdersTable extends Migration
             $table->integer('tour_id');
             $table->integer('employee_id');
             $table->integer('client_id');
-            $table->date('registration_date');
+            $table->char('stage');
             $table->timestamps();
         });
     }

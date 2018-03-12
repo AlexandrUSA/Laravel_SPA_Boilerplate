@@ -69,14 +69,14 @@
 				return (this.item.avatar) ? this.item.avatar : "http://dragene.no/wp-content/uploads/2016/06/default1.jpg"
 			},
             ...mapGetters({
-                item: 'AdminEmployees/Employee'
+                item: 'employees/Employee'
             })
 		},
 		created() {
 			this.loadOne(this.id);
 		},
 		methods: mapActions({
-			loadOne: 'AdminEmployees/loadOne'
+			loadOne: 'employees/loadOne'
 		})
 	}
 </script>

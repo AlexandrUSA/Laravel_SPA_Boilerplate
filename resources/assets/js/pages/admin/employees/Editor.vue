@@ -125,7 +125,7 @@
 		},
 		computed: {
 			...mapGetters({
-				employee: 'AdminEmployees/employee'
+				employee: 'employees/employee'
 			}),
 			title() {
 				return (this.id) ? this.$t('edit_employee') : this.$t('new_employee');
@@ -140,15 +140,15 @@
 		beforeRouteEnter (to, from, next) {
     	next(vm => {
     		if(vm.id) {
-    			vm.$store.dispatch('AdminEmployees/loadOne', vm.id);
+    			vm.$store.dispatch('employees/loadOne', vm.id);
     			vm.item = vm.employee
     	}})
     },
 		methods: {
 			...mapActions({
-				loadItem: 'AdminEmployees/loadOne',
-				changeItem: 'AdminEmployees/edit',
-				addItem: 'AdminEmployees/add'
+				loadItem: 'employees/loadOne',
+				changeItem: 'employees/edit',
+				addItem: 'employees/add'
 			}),
 			save() {
 				if(this.id) {

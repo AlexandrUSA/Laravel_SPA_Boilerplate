@@ -14,17 +14,7 @@ class PositionController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return Position::all();
     }
 
     /**
@@ -35,7 +25,12 @@ class PositionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'title'         => 'required|String|min:1|max:70',
+            'department_id' => 'required'
+        ]);
+        Position::create($request->all());
+        return Position::all()->last();
     }
 
     /**
@@ -46,18 +41,7 @@ class PositionController extends Controller
      */
     public function show(Position $position)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Position  $position
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Position $position)
-    {
-        //
+        return $position;
     }
 
     /**
@@ -69,7 +53,13 @@ class PositionController extends Controller
      */
     public function update(Request $request, Position $position)
     {
-        //
+        $this->validate($request, [
+            'title'         => 'required|String|min:1|max:70',
+            'department_id' => 'required'
+        ]);
+
+        $position->update($request->all());
+        return $position;
     }
 
     /**
@@ -80,6 +70,6 @@ class PositionController extends Controller
      */
     public function destroy(Position $position)
     {
-        //
+        $position->delete();
     }
 }

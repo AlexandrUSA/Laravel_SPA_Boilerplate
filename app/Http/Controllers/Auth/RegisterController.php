@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Department;
+use App\Employee;
+use App\Position;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -57,10 +60,45 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $user = User::all();
+        /**
+         * Если это первый пользователь CRM то даем ему права суперадмина, должность директора
+         * а также создаем 2 должности по умолчанию (директор, сотрудник)
+         * и подразделение.
+         * В дальнейшем пользователь сможет добавлять новые должности и подразделения
+         * и изме
+         */
+        if (count($user) < 1) {
+            $role = 'superadmin';
+            Department::create([
+                'title' => 'Head office'
+            ]);
+            Position::create([
+                'title' => 'Director',
+                'department_id' => 1
+            ]);
+            Position::create([
+                'title' => 'Member',
+                'department_id' => 1
+            ]);
+            $position_id = 1;
+        } else {
+            $role = 'member';
+            $position_id = 2;
+        }
+
+        Employee::create([
+            'first_name' => $data['name'],
+            'email' => $data['email'],
+            'password' => bcrypt($data['password']),
+            'position_id' => $position_id
+        ]);
+
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'role' => $role
         ]);
     }
 }

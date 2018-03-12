@@ -66,7 +66,7 @@ export default [
     name: 'employees',
     component: AdminEmployees,
     beforeEnter (from, to, next) {
-      store.dispatch('AdminEmployees/load')
+      store.dispatch('employees/load')
       next()
     }
   },
