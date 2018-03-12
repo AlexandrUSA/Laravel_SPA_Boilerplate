@@ -65,19 +65,19 @@ export default {
 
   methods: {
     async login () {
-      // Submit the form.
+      //Отправка формы.
       const { data } = await this.form.post('/api/login')
 
-      // Save the token.
+      // Сохранить токен.
       this.$store.dispatch('auth/saveToken', {
         token: data.token,
         remember: this.remember
       })
 
-      // Fetch the user.
+      // Получить юзера.
       await this.$store.dispatch('auth/fetchUser')
 
-      // Redirect home.
+      // Перенаправление на домашнюю.
       this.$router.push({ name: 'home' })
     }
   }

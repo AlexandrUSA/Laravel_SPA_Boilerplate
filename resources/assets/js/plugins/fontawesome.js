@@ -7,8 +7,9 @@ Vue.component('fa', FontAwesomeIcon)
 // import { } from '@fortawesome/fontawesome-free-regular/shakable.es'
 
 import {
-  faUser, faLock, faSignOutAlt, faCog, faSignInAlt, faUserPlus, faCaretDown,
-  faAddressBook, faBriefcase, faHome
+  faUser, faUsers, faLock, faSignOutAlt, faCog, faSignInAlt, faUserPlus, faCaretDown,
+  faAddressBook, faBriefcase, faHome, faAngleDown, faAngleUp, faAngleLeft, faComments, faQuestionCircle,
+  faBuilding, faSitemap, faPlane, faAddressCard, faCalendar
 } from '@fortawesome/fontawesome-free-solid/shakable.es'
 
 import {
@@ -16,6 +17,7 @@ import {
 } from '@fortawesome/fontawesome-free-brands/shakable.es'
 
 fontawesome.library.add(
-  faUser, faLock, faSignOutAlt, faCog, faGithub, faSignInAlt, faUserPlus, faCaretDown,
-  faAddressBook, faBriefcase, faHome
+  faUser, faUsers, faLock, faSignOutAlt, faCog, faGithub, faSignInAlt, faUserPlus, faCaretDown,
+  faAddressBook, faBriefcase, faHome, faAngleDown, faAngleUp, faAngleLeft, faComments, faQuestionCircle,
+  faBuilding, faSitemap, faPlane, faAddressCard, faCalendar
 )

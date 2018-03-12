@@ -3,7 +3,6 @@
     <v-menu :nudge-width="100">
       <v-btn 
         flat 
-        large
         slot="activator"
       >
         <img :src="user.photo_url" class="profile-avatar">
@@ -14,7 +13,7 @@
         />
         </v-btn>
         <v-list>
-          <v-list-tile :to="{ name: 'settings.profile' }">
+          <v-list-tile :to="{ name: 'settings' }">
             <v-list-tile-avatar>
               <fa icon="cog" fixed-width/>
             </v-list-tile-avatar>
@@ -56,10 +55,6 @@ export default {
   width: 2rem;
   height: 2rem;
   margin: -.375rem 0;
-}
-
-.list {
-  
 }
 
 .profile-avatar {

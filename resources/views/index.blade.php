@@ -31,8 +31,9 @@ $polyfills = [
   <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
   <link rel="stylesheet" href="{{ mix('css/app.css') }}">
   @if(config('app.env') == 'local')
-      <script src="http://localhost:35729/livereload.js"></script>
+      {{--<script src="http://localhost:35729/livereload.js"></script>--}}
   @endif
+  <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js" async></script>
 </head>
 <body>
   <div id="root">

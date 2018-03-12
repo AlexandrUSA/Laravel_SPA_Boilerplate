@@ -8,13 +8,16 @@ const PasswordReset = () => import('~/pages/auth/password/reset').then(m => m.de
 const PasswordRequest = () => import('~/pages/auth/password/email').then(m => m.default || m)
 
 const Settings = () => import('~/pages/settings/index').then(m => m.default || m)
-const SettingsProfile = () => import('~/pages/settings/profile').then(m => m.default || m)
-const SettingsPassword = () => import('~/pages/settings/password').then(m => m.default || m)
 
 const AdminDashboard = () => import('~/pages/admin/Dashboard').then(m => m.default || m)
 const AdminEmployees = () => import('~/pages/admin/employees/List').then(m => m.default || m)
 const AdminEmployee = () => import('~/pages/admin/employees/Show').then(m => m.default || m)
 const AdminEmployeeEdit = () => import('~/pages/admin/employees/Editor').then(m => m.default || m)
+
+const AdminPositions = () => import('~/pages/admin/positions/List').then(m => m.default || m)
+const AdminDepartments = () => import('~/pages/admin/departments/List').then(m => m.default || m)
+const AdminMessages = () => import('~/pages/admin/messages/List').then(m => m.default || m)
+const AdminHelpers = () => import('~/pages/admin/helpers/List').then(m => m.default || m)
 
 const AdminClients = () => import('~/pages/admin/clients/List').then(m => m.default || m)
 const AdminClient = () => import('~/pages/admin/clients/Show').then(m => m.default || m)
@@ -48,26 +51,9 @@ export default [
     component: Home
   },
   {
+    name: 'settings',
     path: '/settings',
-    component: Settings,
-    children: [
-      {
-        path: '',
-        redirect: {
-          name: 'settings.profile'
-        }
-      },
-      {
-        path: 'profile',
-        name: 'settings.profile',
-        component: SettingsProfile
-      },
-      {
-        path: 'password',
-        name: 'settings.password',
-        component: SettingsPassword
-      }
-    ]
+    component: Settings
   },
   {
     name: '/dashboard',
@@ -104,11 +90,7 @@ export default [
   {
     path: '/clients',
     name: 'clients',
-    component: AdminClients,
-    // beforeEnter (from, to, next) {
-    //   store.dispatch('Adminclients/load')
-    //   next()
-    // }
+    component: AdminClients
   },
   {
     path: '/clients/:id',
@@ -126,6 +108,25 @@ export default [
     path: '/clients/create',
     name: 'clientCreate',
     component: AdminClientEdit
+  },
+  {
+    path: '/positions',
+    name: 'positions',
+    component: AdminPositions
+  },
+  {
+    path: '/departments',
+    name: 'departments',
+    component: AdminDepartments
+  },
+  {
+    path: '/messages',
+    name: 'messages',
+    component: AdminMessages
+  },  {
+    path: '/helpers',
+    name: 'helpers',
+    component: AdminHelpers
   },
   {
     path: '*',

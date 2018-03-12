@@ -1,5 +1,26 @@
 <template>
-  <v-content>
+    <v-tabs
+      dark
+      slider-color="yellow"
+    >
+      <v-tab
+        v-for="tab in tabs"
+        :key="tab.id"
+        ripple
+      >
+        <fa :icon="tab.icon" />
+        {{ tab.name }}
+      </v-tab>
+      <v-tab-item
+        v-for="tab in tabs"
+        :key="tab.id"
+      >
+        <v-card flat>
+          <component :is="tab.component"></component> 
+        </v-card>
+      </v-tab-item>
+    </v-tabs>
+  <!-- <v-content>
     <v-navigation-drawer stateless permanent floating value="true">
       <v-toolbar flat class="transparent">
         <v-list class="pa-0">
@@ -37,20 +58,20 @@
         <router-view/>
       </transition>
     </div>
-  </v-content>    
+  </v-content>   -->  
 
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import profile from '../../components/settings/profile';
+import password from '../../components/settings/password';
 
 export default {
   middleware: 'auth',
-  data () {
-    return {
-      dark: null,
-      right: null
-    }
+  components: {
+    'settings-password': password,
+    'settings-profile': profile
   },
   computed: {
     ...mapGetters({
@@ -61,15 +82,15 @@ export default {
       return [
         {
           id: 0,
-          icon: 'person',
+          icon: 'user',
           name: this.$t('profile'),
-          route: 'settings.profile'
+          component: 'settings-profile'
         },
         {
           id: 1,
           icon: 'lock',
           name: this.$t('password'),
-          route: 'settings.password'
+          component: 'settings-password'
         }
       ]
     },
@@ -85,47 +106,23 @@ export default {
       this.switchTheme(this.dark)
     }
   },
-  methods: {
-    ...mapActions({
-      switchTheme: 'theme/switchTheme'
-    })
-  }
+  methods: mapActions({
+    switchTheme: 'theme/switchTheme'
+  })
 }
 </script>
 
 <style scoped>
-.settings-card .card-body {
-  padding: 0;
-}
-
-.settings__content {
-  display: inline-block;
-  width: 70%;
-  max-width: 890px;
-  margin: 20px 0 0 40px;
-}
-
-.navigation-drawer {
-  display: inline-block;
-  vertical-align: top;
-  margin-top: 20px !important;
-  padding-bottom: 0;
-}
-
-.input-group--selection-controls {
-  padding: 0 16px;
-}
 
 .card {
   padding: 30px;
 }
 
-.user-settings {
-  display: -webkit-flex;
-  display: -moz-flex;
-  display: -ms-flex;
-  display: -o-flex;
-  display: flex;
-  justify-content: center;
+.svg-inline--fa {
+  margin-right: 15px;
+}
+
+.tabs {
+  margin: 30px;
 }
 </style>

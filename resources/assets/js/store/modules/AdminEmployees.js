@@ -1,6 +1,10 @@
 import axios from 'axios'
 
-export const state = { employees: [], employee: {} }
+export const state = {
+  employees: [],
+  employee: {},
+  positions: {}
+}
 
 export const getters = {
   employees: state => state.employees,

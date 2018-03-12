@@ -1,8 +1,8 @@
 <template>
   <v-toolbar app fixed clipped-left>
       <v-toolbar-side-icon v-show="user" @click="switchDrawer()"></v-toolbar-side-icon>
-      <v-btn fab small v-show="user" @click="historyBack()">
-        <v-icon>chevron_left</v-icon>
+      <v-btn fab small v-show="user" @click="historyBack()" class="arrow">
+        <fa icon="angle-left"/>
       </v-btn>    
       <v-btn flat :to="{ name: user ? 'home' : 'welcome' }">{{ appName }}</v-btn>
       <locale-dropdown/>
@@ -61,4 +61,14 @@ export default {
 .list {
   background-color: #fff;
 }
+
+ nav.toolbar { 
+    padding-left: 45px !important;
+    padding-right: 45px !important;
+    z-index: 4;
+  }
+
+  .menu__content {
+    min-width: 250px !important;
+  }
 </style>

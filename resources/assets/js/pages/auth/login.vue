@@ -4,7 +4,7 @@
       <div class="auth-switch">
         <div class="auth-switch__text"
              :class="{'fadeIn': !switchText, 'fadeOut': switchText}">
-          <h2> {{ title }} </h2> 
+          <h2 {{ title }} </h2> 
           <v-btn @click.prevent="toggleAuth">{{message}}</v-btn>
         </div>    
       </div>
@@ -31,11 +31,9 @@ export default {
     'login-input': LoginInput,
     'register-input': RegisterInput
   },
-
   metaInfo () {
     return { title: this.$t('login') }
   },
-
   data: () => ({
     register: false,
     signingin: true,

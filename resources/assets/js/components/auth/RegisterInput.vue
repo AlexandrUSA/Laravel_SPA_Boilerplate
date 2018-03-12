@@ -66,6 +66,7 @@ export default {
   data: () => ({
     form: new Form({
       name: '',
+      last_name: 'last',
       email: '',
       password: '',
       password_confirmation: ''
@@ -73,7 +74,7 @@ export default {
     valid: false,
     nameRules: [
       v => !!v || "Введите значение",
-      v => v.length <= 10 || 'Name must be less than 10 characters'
+      v => v.length >= 2 || 'Name must be less than 2 characters'
     ],
     emailRules: [
       v => !!v || "Введите значение",

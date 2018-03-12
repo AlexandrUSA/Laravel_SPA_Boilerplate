@@ -31,6 +31,7 @@ axios.interceptors.request.use(request => {
  * Перехватчик AJAX ответов
  */
 axios.interceptors.response.use(response => response, error => {
+  console.log(error)
   const { status } = error.response
 
   if (status >= 500) {  // Если внутренняя ошибка сервера - оповещаем пользователя

@@ -1,0 +1,148 @@
+<template>
+  <div id="positions">
+    <v-dialog v-model="dialog" max-width="500px">
+      <v-btn color="primary" dark slot="activator" class="mb-2">Добавить должность</v-btn>
+      <v-card>
+        <v-card-title>
+          <span class="headline">{{ formTitle }}</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container grid-list-md>
+            <v-layout wrap>
+              <v-flex xs12 sm6>
+                <v-text-field label="Наименование" v-model="editedItem.title"></v-text-field>
+              </v-flex>
+              <v-flex xs12 sm6>
+                <v-text-field label="Подразделение" v-model="editedItem.department"></v-text-field>
+              </v-flex>
+            </v-layout>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" flat @click.native="close">Cancel</v-btn>
+          <v-btn color="blue darken-1" flat @click.native="save">Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-data-table
+      :headers="headers"
+      :items="items"
+      hide-actions
+      class="elevation-1"
+    >
+      <template slot="items" slot-scope="props">
+        <td class="text-xs-right">{{ props.item.id }}</td>
+        <td class="text-xs-right">{{ props.item.title }}</td>
+        <td class="text-xs-right">{{ props.item.department }}</td>
+        <td class="text-xs-right">{{ props.item.employees }}</td>
+        <td class="text-xs-right">
+          <v-btn icon class="mx-0" @click="editItem(props.item)">
+            <v-icon color="teal">edit</v-icon>
+          </v-btn>
+          <v-btn icon class="mx-0" @click="deleteItem(props.item)">
+            <v-icon color="pink">delete</v-icon>
+          </v-btn>
+        </td>
+      </template>
+      <template slot="no-data">
+        <v-btn color="primary" @click="initialize">Reset</v-btn>
+      </template>
+    </v-data-table>
+  </div>
+</template>
+
+<script>
+  export default {
+    data: () => ({
+      dialog: false,
+      headers: [
+        {
+          text: 'Номер',
+          align: 'right',
+          sortable: false,
+          value: 'id'
+        },
+        { text: 'Наименование', align: 'right', value: 'title' },
+        { text: 'Подразделение', align: 'right', value: 'department' },
+        { text: 'Сотрудников', align: 'right', value: 'employees' },
+        { text: 'Действия', align: 'right', value: 'title', sortable: false }
+      ],
+      items: [],
+      editedIndex: -1,
+      editedItem: {
+        id: '',
+        title: '',
+        department: '',
+      },
+      defaultItem: {
+        id: '',
+        title: '',
+        department: '',
+      }
+    }),
+    computed: {
+      formTitle () {
+        return this.editedIndex === -1 ? 'Новая должность' : 'Изменить должность'
+      }
+    },
+    watch: {
+      dialog (val) {
+        val || this.close()
+      }
+    },
+    created () {
+      this.initialize()
+    },
+    methods: {
+      initialize () {
+        this.items = [
+          {
+            id: 1,
+            title: 'Директор',
+            department: 'Главный оффис',
+            employees: 1
+          }
+        ]
+      },
+      editItem (item) {
+        this.editedIndex = this.items.indexOf(item)
+        this.editedItem = Object.assign({}, item)
+        this.dialog = true
+      },
+      deleteItem (item) {
+        const index = this.items.indexOf(item)
+        confirm('Are you sure you want to delete this item?') && this.items.splice(index, 1)
+      },
+      close () {
+        this.dialog = false
+        setTimeout(() => {
+          this.editedItem = Object.assign({}, this.defaultItem)
+          this.editedIndex = -1
+        }, 300)
+      },
+      save () {
+        if (this.editedIndex > -1) {
+          Object.assign(this.items[this.editedIndex], this.editedItem)
+        } else {
+          this.items.push(this.editedItem)
+        }
+        this.close()
+      }
+    }
+  }
+</script>
+
+<style scoped>
+#positions {
+    position: relative;
+    max-width: 90%;
+    margin: 10px auto;
+}
+
+.mb-2.btn {
+    position: absolute;
+    bottom: -50px;
+}
+
+</style>
