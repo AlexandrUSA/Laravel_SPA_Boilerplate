@@ -1,7 +1,6 @@
 import store from '~/store'
 
 const Home = () => import('~/pages/home').then(m => m.default || m)
-// const Welcome = () => import('~/pages/welcome').then(m => m.default || m)
 
 const Login = () => import('~/pages/auth/login').then(m => m.default || m)
 const PasswordReset = () => import('~/pages/auth/password/reset').then(m => m.default || m)
@@ -65,10 +64,10 @@ export default [
     path: '/employees',
     name: 'employees',
     component: AdminEmployees,
-    beforeEnter (from, to, next) {
-      store.dispatch('employees/load')
-      next()
-    }
+    // beforeEnter (from, to, next) {
+    //   store.dispatch('employees/load')
+    //   next()
+    // }
   },
   {
     path: '/employees/:id',
@@ -90,7 +89,11 @@ export default [
   {
     path: '/clients',
     name: 'clients',
-    component: AdminClients
+    component: AdminClients,
+    // beforeEnter (from, to, next) {
+    //   store.dispatch('clients/load')
+    //   next()
+    // }
   },
   {
     path: '/clients/:id',
@@ -112,12 +115,20 @@ export default [
   {
     path: '/positions',
     name: 'positions',
-    component: AdminPositions
+    component: AdminPositions,
+    // beforeEnter (from, to, next) {
+    //   store.dispatch('positions/load')
+    //   next()
+    // }
   },
   {
     path: '/departments',
     name: 'departments',
-    component: AdminDepartments
+    component: AdminDepartments,
+    // beforeEnter (from, to, next) {
+    //   store.dispatch('departments/load')
+    //   next()
+    // }
   },
   {
     path: '/messages',

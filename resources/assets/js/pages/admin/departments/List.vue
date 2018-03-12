@@ -154,7 +154,7 @@
                 this.editedIndex = -1;
             },
             ...mapActions({
-                loadItems: 'employees/load',
+                loadItems: 'departments/load',
                 deleteItem: 'employees/remove'
             })
         }

@@ -34,7 +34,7 @@
       <template slot="items" slot-scope="props">
         <td class="text-xs-right">{{ props.item.id }}</td>
         <td class="text-xs-right">{{ props.item.title }}</td>
-        <td class="text-xs-right">{{ props.item.department }}</td>
+        <td class="text-xs-right">{{ props.item.department_id }}</td>
         <td class="text-xs-right">{{ props.item.employees }}</td>
         <td class="text-xs-right">
           <v-btn icon class="mx-0" @click="editItem(props.item)">
@@ -53,6 +53,7 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex';
   export default {
     data: () => ({
       dialog: false,
@@ -68,7 +69,6 @@
         { text: 'Сотрудников', align: 'right', value: 'employees' },
         { text: 'Действия', align: 'right', value: 'title', sortable: false }
       ],
-      items: [],
       editedIndex: -1,
       editedItem: {
         id: '',
@@ -82,6 +82,10 @@
       }
     }),
     computed: {
+      ...mapGetters({
+        items: 'positions/positions',
+        departments: 'departments/departments'
+      }),
       formTitle () {
         return this.editedIndex === -1 ? 'Новая должность' : 'Изменить должность'
       }
@@ -92,7 +96,7 @@
       }
     },
     created () {
-      this.initialize()
+      //this.initialize()
     },
     methods: {
       initialize () {

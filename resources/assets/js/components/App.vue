@@ -8,7 +8,8 @@
 </template>
 
 <script>
-import Loading from './Loading'
+import Loading from './Loading';
+
 
 // Динамическая загрузка компонентов разметки.
 const requireContext = require.context('~/layouts', false, /.*\.vue$/)
@@ -33,7 +34,6 @@ export default {
     layout: null,
     defaultLayout: 'default'
   }),
-
   metaInfo () {
     const { appName } = window.config
 
@@ -42,10 +42,12 @@ export default {
       titleTemplate: `%s · ${appName}`
     }
   },
-  mounted () {
-    this.$loading = this.$refs.loading
+  created() {
+    
   },
-
+  mounted () {
+    this.$loading = this.$refs.loading;
+  },
   methods: {
     /**
      * Установка разметки приложения.
