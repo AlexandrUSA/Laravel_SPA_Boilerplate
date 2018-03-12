@@ -7,8 +7,8 @@ use Illuminate\Database\Migrations\Migration;
 class CreatePositionsTable extends Migration
 {
     /**
-     * Run the migrations.
-     *
+     * Таблица должностей
+     *  Содержит наименование и ИД подразделения, к которому принадлежит
      * @return void
      */
     public function up()
@@ -16,6 +16,7 @@ class CreatePositionsTable extends Migration
         Schema::create('positions', function (Blueprint $table) {
             $table->increments('id');
             $table->text('title', 70);
+            $table->char('department_id');
             $table->timestamps();
         });
     }
