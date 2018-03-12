@@ -64,11 +64,12 @@ class EmployeeController extends Controller
 
             $path = Storage::putFile('public/avatars', $request->file('image'));
 
+            $link = '/storage/' . substr($path, 7);
             DB::table('employees')
                 ->where('id', $id)
-                ->update(['avatar' => $path]);
+                ->update(['avatar' => $link]);
 
-            return '/storage/' . substr($path, 7);
+            return $link;
          }
     }
 

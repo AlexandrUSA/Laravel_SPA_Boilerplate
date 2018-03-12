@@ -1,11 +1,9 @@
 <template>
   <div id="admin">
     <!-- Основной контент -->
-    <v-content> 
       <transition  enter-active-class="routerEnter" leave-active-class="routerLeave" mode="out-in">
         <router-view></router-view>
       </transition>
-    </v-content> 
     </div>
 </template>
 
@@ -28,19 +26,10 @@ export default {
 
 
 <style>
-
-#admin .application--wrap {
-  min-height: auto !important;
-}
-
   h2 {
     font-size: 22px;
     font-weight: normal;
     text-align: center;
-  }
-
-  main.content {
-    padding-top: 0 !important;
   }
 
   .application .application--wrap {

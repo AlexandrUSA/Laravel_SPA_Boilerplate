@@ -1,7 +1,5 @@
 <template>
-  <v-content>
-    <h2 style="text-align: center;">{{ $t('welcome') }}</h2>
-  </v-content>
+  <h2 style="text-align: center;">{{ $t('welcome') }}</h2>
 </template>
 
 <script>

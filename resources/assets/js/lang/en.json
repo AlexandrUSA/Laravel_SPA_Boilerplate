@@ -40,6 +40,8 @@
 
   "employees": "Employees",
   "employee": "Employee",
+  "clients": "Сlients",
+  "client": "Сlients",
   "last_name": "Last name",
   "patronymic": "Patronymic",
   "details": "Details",

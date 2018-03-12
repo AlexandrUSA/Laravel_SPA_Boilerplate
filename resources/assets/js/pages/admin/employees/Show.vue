@@ -4,49 +4,103 @@
   		<div class="employee__avatar">
   			<div class="employee__avatar-container">
   				<div class="avatar__overlay">
-  					<upload-button :title="avatarMsg" :selectedCallback="uploadPhoto"></upload-button>
+  					<upload-button :title="$t('change_image')" :selectedCallback="uploadPhoto"></upload-button>
   				</div>
-  				<img :src="item.avatar" alt="avatar">
+  				<img :src="avatar" :alt="item.first_name">
   			</div>	
 			</div>
 	  	<div class="employee__descr">
-	  		<p class="employee__text">
-	  			<b>{{ $t('name') }}:</b> <i>{{item.first_name}}</i>
-	  		</p>
-	  		<v-divider></v-divider>
-	  		<p class="employee__text">
-	  			<b>{{ $t('last_name') }}:</b> <i>{{item.last_name}}</i>
-	  		</p>
-	  		<v-divider></v-divider>
-	  		<p class="employee__text">
-	  			<b>{{ $t('patronymic') }}:</b> <i>{{item.patronymic ? item.patronymic : ''}}</i>
-	  		</p>
-	  		<v-divider></v-divider>
-	  		<p class="employee__text">
-	  			<b>{{ $t('position') }}:</b> <i>{{item.position}}</i>
-	  		</p>
-	  		<v-divider></v-divider>
-	  		<p class="employee__text">
-	  			<b>{{ $t('phone_number') }}:</b> <i>{{item.phone_number}}</i>
-	  		</p>
-	  		<v-divider></v-divider>
-	  		<p class="employee__text">
-	  			<b>{{ $t('salary') }}:</b> <i>{{item.salary}} руб.</i>
-	  		</p>
-	  		<v-divider></v-divider>
-	  		<p class="employee__text">
-	  			<b>{{ $t('address') }}:</b> <i>{{item.address}}</i>
-	  		</p>
-	  		<v-divider></v-divider>
-	  		<p class="employee__text">
-	  			<b>{{ $t('birthday') }}:</b> <i>{{item.birthday}}</i>
-	  		</p>
-	  		<v-btn
-				    block
-				    :to="{name: 'employeeEdit', params: {id: item.id, employee: item}}"
-				  >
-					{{ $t('change_data') }}
-				</v-btn>
+	  		<v-text-field
+					      :label="$t('name')"
+					      v-model="item.first_name"
+					      :counter="70"
+					      required
+					      :disabled="disabled"
+				></v-text-field>
+					    <v-text-field
+					      :label="$t('last_name')"
+					      v-model="item.last_name"
+					      :rules="nameRules"
+					      :counter="70"
+					      required
+					      :disabled="disabled"
+				></v-text-field>
+				<v-text-field
+					      :label="$t('patronymic')"
+					      v-model="item.patronymic"
+					      :rules="nameRules"
+					      :counter="70"
+					      :disabled="disabled"
+				></v-text-field>
+				<v-select
+					      :label="$t('position')"
+					      v-model="item.position"
+					      prepend-icon="card_travel"
+					      :items="positions"
+					      :rules="[v => !!v || 'Выберите должность']"
+					      required
+					      :disabled="disabled"
+				></v-select>
+	  		<v-text-field
+					      :label="$t('phone_number')"
+					      v-model="item.phone_number"
+					      prepend-icon="phone_iphone"
+					      required
+					      :disabled="disabled"
+				></v-text-field>
+				<v-text-field
+					      :label="$t('salary')"
+					      v-model="item.salary"
+					      prepend-icon="attach_money"
+					      required
+					      :disabled="disabled"
+				></v-text-field>
+				<v-text-field
+					      :label="$t('address')"
+					      v-model="item.address"
+					      prepend-icon="home"
+					      required
+					      :disabled="disabled"
+				></v-text-field>
+				<v-layout row wrap>
+					<v-flex xs12>
+						<v-menu
+						  ref="menu"
+						  lazy
+						  :close-on-content-click="false"
+						  v-model="menu"
+						  transition="scale-transition"
+						  offset-y
+						  full-width
+						  :nudge-right="40"
+						  min-width="290px"
+						  :return-value.sync="date"
+						>
+						  <v-text-field
+						    slot="activator"
+						    :label="$t('birthday')"
+						    v-model="item.birthday"
+						    prepend-icon="event"
+						    readonly
+						    :disabled="disabled"
+						  ></v-text-field>
+						  <v-date-picker v-if="!disabled" v-model="item.birthday" no-title scrollable>
+						    <v-spacer></v-spacer>
+						    <v-btn flat color="primary" @click="menu = false">{{ $t('cancel') }}</v-btn>
+						    <v-btn flat color="primary" @click="$refs.menu.save(date)">{{ $t('ok') }}</v-btn>
+						  </v-date-picker>
+						</v-menu>
+					</v-flex>
+				</v-layout>
+				<div class="buttons">
+					<v-btn large @click="buttonAction()">
+					{{ buttonText }}
+					</v-btn>
+					<v-btn large @click="back">
+					Назад
+					</v-btn>
+				</div>
+	  		
 	  </div>
   </div>		
 </template>
@@ -55,6 +109,7 @@
 	import {mapActions, mapGetters} from 'vuex';
 	import axios from 'axios';
 	export default {
+		middleware: 'auth',
 		props: {
 			id: {
 				type: [Number, String],
@@ -63,49 +118,76 @@
 		},
 		data() {
 			return {
-				item: {}
+				disabled: true,
+				date: null,
+	      menu: false,
+	      modal: false,
+	      name: '',
+	      valid: false,
+	      defaultItem: {},
+	      nameRules: [
+	        v => !!v || 'Введите значение',
+	        v => (v && v.length > 1) || 'Имя должно содержать минимум 2 буквы',
+	      ],
+	      emailRules: [
+	        v => !!v || 'Введите E-mail',
+	        v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'Не валидный E-mail'
+	      ],
+	      positions: [
+	        'Старший сотрудник',
+	        'Бухгалтер',
+	        'Директор',
+	        'Сотрудник'
+	      ],
 			}
 		},
 		computed: {
-			avatarMsg() {
-				return (this.item.avatar) ? this.$t('change_image') : this.$t('add_image');
+			...mapGetters({
+				item: 'AdminEmployees/employee'
+			}),
+			buttonText() {
+				return !this.disabled ? "Обновить" : "Изменить данные";
 			},
 			avatar() {
-				return (this.item.avatar) ? this.item.avatar : "http://dragene.no/wp-content/uploads/2016/06/default1.jpg"
+				return (this.item.avatar) ? this.item.avatar : "/storage/avatars/no-avatar.jpg"
 			}
 		},
-		created() {
-			this.load();
-		},
+		// Загрузка пользователя перед монтированием компонента
+		beforeRouteEnter (to, from, next) {
+    	next(vm => vm.$store.dispatch('AdminEmployees/loadOne', vm.id));
+  	},
 		methods: {
-			async load() {
-				const { data } = await axios.get('/api/employees/' + this.id);
-				this.item = data;
+			...mapActions({
+				changeItem: 'AdminEmployees/edit',
+			}),
+			buttonAction() {
+				if (!this.disabled) {
+					this.changeItem(this.item);
+				}
+				this.defaultItem = Object.assign({}, this.item);
+				this.disabled = !this.disabled;		
+			},
+			back() {	
+				if (this.disabled) return this.$router.go(-1);
+				for(let key in this.item) {
+					this.item[key] = this.defaultItem[key]
+				}
+				this.disabled = !this.disabled;						
 			},
 			async uploadPhoto(e) {
+				const imagefile = document.getElementById('avatar-file').files[0];
+				if (!imagefile) return;
 		    try {
-		    	let formData = new FormData(),
-		    			imagefile = document.getElementById('avatar-file').files[0];
-		    	if (!imagefile) return;
+		    	let formData = new FormData();    				    	
 					formData.append("image", imagefile);
 					const { data } = await axios.post('/api/employees/' + this.id + '/avatar', formData, {
 					     headers: {
 					       'Content-Type': 'multipart/form-data'
 					     }
 					 });
-					console.log(data)
 					this.item.avatar = data;
-
-					// const { data } = await axios.post('/api/employees/' + this.id + '/avatar', formData, {
-					//     headers: {
-					//       'Content-Type': 'multipart/form-data'
-					//     }
-					// });
-					 		
-     //  		this.item.avatar = data;
-     //  		console.log(this.item.avatar); 
     		} catch (e) {
-      		console.error('Не загрузился сотрудник', e)
+      		console.error('Не загрузился аватар', e)
     		}	
 			}
 		}
@@ -120,6 +202,7 @@
 
 	h2 {
 		flex-basis: 100%;
+		text-align: center;
 	}
 
 	p,
@@ -142,65 +225,4 @@
 	p:hover {
 		background-color: rgba(255, 255, 255, .1);
 	}
-	.employee {
-		-webkit-flex-wrap: wrap;
-		-moz-flex-wrap: wrap;
-		-ms-flex-wrap: wrap;
-		-o-flex-wrap: wrap;
-		flex-wrap: wrap;
-		width: 90%;
-		margin: 30px auto;
-		padding: 15px;
-		border-radius: 5px;
-		box-shadow: 0 0 13px rgba(0, 0, 0, .5);
-	}
-	.employee::before,
-	.employee::after {
-		content: "";
-		display: block;
-		clear: both;
-	}
-
-	.employee__avatar {	
-		width: 30%;
-	}
-
-	.employee__avatar-container {
-		position: relative;
-		width: 100%;
-		margin: 0 auto;
-		box-shadow: 0 0 13px rgba(0, 0, 0, .5);
-		border-radius: 3px;
-		overflow: hidden;
-	}
-
-	.avatar__overlay {
-		position: absolute;
-		top: 0;
-		left: 0;
-		z-index: 1;
-		justify-content: center;
-		align-items: center;
-		background-color: rgba(0, 0, 0, .3);
-		width: 100%;
-		height: 100%;
-		opacity: 0;
-		transition: opacity .3s;
-	}
-	.employee__avatar:hover .avatar__overlay  {
-		opacity: 1;
-	}
-	.employee__avatar img {
-		display: block;
-		width: 100%;
-		margin: 0 auto;
-	}
-
-	.employee__descr {
-		width: 70%;
-		padding:  10px 45px;
-		font-size: 18px;
-	}
-
-
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <v-toolbar app>
+  <v-toolbar app fixed clipped-left>
       <v-toolbar-side-icon v-show="user" @click="switchDrawer()"></v-toolbar-side-icon>
       <v-btn fab small v-show="user" @click="historyBack()">
         <v-icon>chevron_left</v-icon>
@@ -41,12 +41,12 @@ export default {
       // Перенаправление на сттраницу авторизации
       this.$router.push({ name: 'login' })
     },
+    switchDrawer() {
+      this.$emit('switchDrawer')
+    },
     historyBack() {
       if(this.user) this.$router.go(-1);
-    },
-      ...mapActions({
-      switchDrawer: 'theme/switchDrawer'
-    })
+    }
   }
 }
 </script>

@@ -21,7 +21,6 @@
 
 <script>
 import Form from 'vform'
-import LoginWithGithub from '~/components/auth/LoginWithGithub';
 import LoginInput from '~/components/auth/LoginInput';
 import RegisterInput from '~/components/auth/RegisterInput';
 
@@ -30,8 +29,7 @@ export default {
 
   components: {
     'login-input': LoginInput,
-    'register-input': RegisterInput,
-    LoginWithGithub
+    'register-input': RegisterInput
   },
 
   metaInfo () {
@@ -88,10 +86,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.auth-wrapper {
-  width: 100%;
-  height: calc(100vh - 100px);
-}
 
 .auth {
   position: relative;
@@ -105,6 +99,7 @@ export default {
   border: 0px solid transparent;
   transition: background-color 1s, height .5s;
 }
+
 
 .auth-switch,
 .auth-form {

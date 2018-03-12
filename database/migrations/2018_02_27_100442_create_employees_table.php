@@ -23,7 +23,7 @@ class CreateEmployeesTable extends Migration
             $table->char('position', 150)->default('');
             $table->char('address', 255)->default('');
             $table->char('phone_number', 100)->default('');
-            $table->char('avatar', 255)->default('/uploads/images/avatars/no-avatar.jpg');
+            $table->string('avatar', 255)->default('/storage/avatars/no-avatar.jpg');
             $table->timestamps();
         });
     }

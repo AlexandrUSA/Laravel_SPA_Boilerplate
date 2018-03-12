@@ -40,6 +40,8 @@
 
   "employees": "Сотрудники",
   "employee": "Сотрудник",
+  "clients": "Клиенты",
+  "client": "Клиент",
   "last_name": "Фамилия",
   "patronymic": "Отчество",
   "details": "Подробнее",

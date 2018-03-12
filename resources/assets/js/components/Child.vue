@@ -1,8 +1,6 @@
 <template>
   <transition name="page" mode="out-in">
-    <slot>
-      <router-view/>
-    </slot>
+    <router-view/>
   </transition>
 </template>
 

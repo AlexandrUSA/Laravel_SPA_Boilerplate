@@ -55,15 +55,10 @@
 
 <script>
 import Form from 'vform'
-import LoginWithGithub from '~/components/auth/LoginWithGithub'
 
 export default {
   middleware: 'guest',
-
-  components: {
-    LoginWithGithub
-  },
-
+  
   metaInfo () {
     return { title: this.$t('register') }
   },

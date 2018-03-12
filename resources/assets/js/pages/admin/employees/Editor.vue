@@ -91,9 +91,10 @@
 
 <script>
 	import axios from 'axios';
-	import {mapActions} from 'vuex';
+	import {mapActions, mapGetters} from 'vuex';
 
 	export default {
+		middleware: 'auth',
 		props: {
 			id: {
 				default: null
@@ -105,7 +106,6 @@
 	      menu: false,
 	      modal: false,
 	      name: '',
-	      item: {},
 	      valid: false,
 	      nameRules: [
 	        v => !!v || 'Введите значение',
@@ -124,25 +124,29 @@
 			}
 		},
 		computed: {
+			...mapGetters({
+				employee: 'AdminEmployees/employee'
+			}),
 			title() {
 				return (this.id) ? this.$t('edit_employee') : this.$t('new_employee');
 			},
 			titleIcon() {
 				return (this.id) ? 'person' : 'person_add';
+			},
+			item() {
+				return {}
 			}
 		},
-		async created() {
-		  if (this.id) {
-		    try {
-      		const { data } = await axios.get('/api/employees/' + this.id);
-      		this.item = data;
-    		} catch (e) {
-      		console.error('Не загрузился сотрудник', e)
-    		}	
-		  }
-		},
+		beforeRouteEnter (to, from, next) {
+    	next(vm => {
+    		if(vm.id) {
+    			vm.$store.dispatch('AdminEmployees/loadOne', vm.id);
+    			vm.item = vm.employee
+    	}})
+    },
 		methods: {
 			...mapActions({
+				loadItem: 'AdminEmployees/loadOne',
 				changeItem: 'AdminEmployees/edit',
 				addItem: 'AdminEmployees/add'
 			}),
@@ -162,6 +166,9 @@
 </script>
 
 <style scoped>
+	.card__title {
+		justify-content: center;
+	}
 	.card__text {
 		padding: 0 30px;
 	}
