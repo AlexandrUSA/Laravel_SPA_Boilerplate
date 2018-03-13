@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Employee;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Mockery\Exception;
@@ -82,7 +83,9 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, Employee $employee)
     {
+        $user = User::all()->find($employee);
         $employee->update($request->all());
+        $user->update($request->all());
         return $employee;
     }
 
