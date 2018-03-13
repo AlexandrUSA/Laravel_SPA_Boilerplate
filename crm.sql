@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Мар 08 2018 г., 22:52
+-- Время создания: Мар 13 2018 г., 15:42
 -- Версия сервера: 5.7.20
 -- Версия PHP: 7.2.0
 
@@ -25,19 +25,56 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `clients`
+--
+
+CREATE TABLE `clients` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `first_name` char(70) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_name` char(70) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `patronymic` char(70) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `address` char(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `phone_number` char(100) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `departments`
+--
+
+CREATE TABLE `departments` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `title` char(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `departments`
+--
+
+INSERT INTO `departments` (`id`, `title`, `created_at`, `updated_at`) VALUES
+(1, 'head office', '2018-03-12 16:49:20', '2018-03-12 16:49:20');
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `employees`
 --
 
 CREATE TABLE `employees` (
   `id` int(10) UNSIGNED NOT NULL,
-  `first_name` char(80) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `last_name` char(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `patronymic` char(100) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `birthday` date NOT NULL,
-  `salary` int(11) NOT NULL,
-  `position` char(150) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `address` char(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `phone_number` char(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `first_name` char(70) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_name` char(70) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `patronymic` char(70) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `salary` int(11) NOT NULL DEFAULT '0',
+  `position_id` int(11) NOT NULL DEFAULT '2',
+  `address` char(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `phone_number` char(100) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `avatar` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '/storage/avatars/no-avatar.jpg',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -46,15 +83,8 @@ CREATE TABLE `employees` (
 -- Дамп данных таблицы `employees`
 --
 
-INSERT INTO `employees` (`id`, `first_name`, `last_name`, `patronymic`, `birthday`, `salary`, `position`, `address`, `phone_number`, `created_at`, `updated_at`) VALUES
-(2, 'Александр', 'Лукашенко', 'Григорьевич', '1937-03-14', 1580, 'Старший сотрудник', 'г. Минск, Президентский дворец, корпус Г', '+37511111111', NULL, '2018-03-03 17:07:38'),
-(5, 'Зинаида', 'Лебедева', 'Михайловна', '1959-11-25', 520, 'Сотрудник', 'г. Ельск, ул. Матюшенко, д.34, кв.45', '+375985643434', '2018-03-03 17:25:38', '2018-03-03 19:33:27'),
-(6, 'Сергей', 'Помойкин', 'Алексеевич', '1989-02-05', 320, 'Сотрудник', 'г. Гомель, ул. Советская, д.45, кв. 45', '+37543434445', '2018-03-03 17:26:59', '2018-03-03 17:26:59'),
-(7, 'Михаил', 'Поветкин', 'Алексеевич', '1990-08-23', 580, 'Бухгалтер', 'г. Гомель, ул. Матюшенко, д56, кв.23', '+3758965875', '2018-03-03 17:28:14', '2018-03-03 17:28:14'),
-(8, 'Юлия', 'Воробей', 'Леонидовна', '1993-12-08', 1700, 'Директор', 'г.Гомель, проспект Октября, д.45, кв. 13', '+375232323232', '2018-03-03 17:30:09', '2018-03-03 17:30:09'),
-(10, 'Михаил', 'Горбачев', 'Сергеевич', '1963-02-17', 470, 'Бухгалтер', 'г. Москва, ул. Красная поляна, д.126, кв.12', '+33778787878', '2018-03-03 18:28:02', '2018-03-03 18:28:02'),
-(11, 'Владимир', 'Гриневич', 'Григорьевич', '1961-09-07', 840, 'Старший сотрудник', 'г. Гомель, проспект Речицкий, д. 64, кв. 12', '+37545454534', '2018-03-03 18:29:17', '2018-03-03 18:29:17'),
-(15, 'Мария', 'Белова', 'Александрова', '1999-05-06', 560, 'Сотрудник', 'г. Ельск, ул. Дворников, д.67', '+35875585', '2018-03-08 12:21:56', '2018-03-08 12:21:56');
+INSERT INTO `employees` (`id`, `first_name`, `last_name`, `patronymic`, `salary`, `position_id`, `address`, `phone_number`, `avatar`, `created_at`, `updated_at`) VALUES
+(1, 'Александр', 'Гриневич', 'Владимирович', 3400, 1, 'г. Гомель', '+454545454545', '/storage/avatars/tKKuGYzuTnqRn2YZL0EUu3CM5Q0GvXJTHdnnKYoO.jpeg', '2018-03-12 16:49:20', '2018-03-13 03:17:42');
 
 -- --------------------------------------------------------
 
@@ -73,9 +103,18 @@ CREATE TABLE `migrations` (
 --
 
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
-(1, '2014_10_12_000000_create_users_table', 1),
-(2, '2014_10_12_100000_create_password_resets_table', 1),
-(3, '2017_12_07_122845_create_oauth_providers_table', 1);
+(24, '2018_03_12_173128_create_contracts_table', 1),
+(25, '2014_10_12_000000_create_users_table', 2),
+(26, '2014_10_12_100000_create_password_resets_table', 2),
+(27, '2017_12_07_122845_create_oauth_providers_table', 2),
+(28, '2018_02_27_080800_create_tours_table', 2),
+(29, '2018_02_27_090435_create_services_table', 2),
+(30, '2018_02_27_090651_create_orders_table', 2),
+(31, '2018_02_27_100442_create_employees_table', 2),
+(32, '2018_02_27_103044_create_providers_table', 2),
+(33, '2018_03_11_085441_create_positions_table', 2),
+(34, '2018_03_12_171154_create_departments_table', 2),
+(35, '2018_03_12_172811_create_clients_table', 2);
 
 -- --------------------------------------------------------
 
@@ -97,6 +136,22 @@ CREATE TABLE `oauth_providers` (
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `orders`
+--
+
+CREATE TABLE `orders` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `tour_id` int(11) NOT NULL,
+  `employee_id` int(11) NOT NULL,
+  `client_id` int(11) NOT NULL,
+  `stage` char(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `password_resets`
 --
 
@@ -106,12 +161,79 @@ CREATE TABLE `password_resets` (
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
+
 --
--- Дамп данных таблицы `password_resets`
+-- Структура таблицы `positions`
 --
 
-INSERT INTO `password_resets` (`email`, `token`, `created_at`) VALUES
-('AlexandrUSA@yandex.ru', '$2y$10$HOqYPgz7U3ZRCUuecfjN8OxQIijDNSN7w7u7Revs/VtLQDI.Bmnga', '2018-03-08 03:46:31');
+CREATE TABLE `positions` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `title` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `department_id` char(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `positions`
+--
+
+INSERT INTO `positions` (`id`, `title`, `department_id`, `created_at`, `updated_at`) VALUES
+(1, 'Директор', '1', '2018-03-12 16:49:20', '2018-03-13 10:33:30'),
+(2, 'Сотрудник', '1', '2018-03-12 16:49:20', '2018-03-13 10:33:40');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `providers`
+--
+
+CREATE TABLE `providers` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `name` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `services`
+--
+
+CREATE TABLE `services` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `provider_id` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `execution_date` date NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `tours`
+--
+
+CREATE TABLE `tours` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `service_id` int(11) DEFAULT NULL,
+  `country` varchar(70) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `resort` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `transport` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `visa_service` tinyint(1) NOT NULL DEFAULT '0',
+  `accommodation` tinyint(1) NOT NULL DEFAULT '0',
+  `accommodation_type` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `food` tinyint(1) NOT NULL DEFAULT '0',
+  `food_type` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `excursions` tinyint(1) NOT NULL DEFAULT '0',
+  `departure_date` date NOT NULL,
+  `arrival_date` date NOT NULL,
+  `price` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -122,8 +244,9 @@ INSERT INTO `password_resets` (`email`, `token`, `created_at`) VALUES
 CREATE TABLE `users` (
   `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `role` char(70) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'member',
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -133,12 +256,24 @@ CREATE TABLE `users` (
 -- Дамп данных таблицы `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'AlexandrUSA', 'AlexandrUSA@yandex.ru', '$2y$10$E3Bp/Nqg.V1o/U2ozfa.U.dGHxw8BO10BmoLmEeJWITwv1Sxr3UZm', NULL, '2018-03-06 11:48:12', '2018-03-07 23:15:09');
+INSERT INTO `users` (`id`, `name`, `role`, `email`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'Александр', 'member', 'AlexandrUSA@yandex.ru', '$2y$10$TXfuuVYy34/Zr1RIdoJIyOp.ygEGJtxTJXwO4spa8E33rxeE7aqau', NULL, '2018-03-12 16:49:21', '2018-03-12 16:49:21');
 
 --
 -- Индексы сохранённых таблиц
 --
+
+--
+-- Индексы таблицы `clients`
+--
+ALTER TABLE `clients`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `departments`
+--
+ALTER TABLE `departments`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Индексы таблицы `employees`
@@ -161,10 +296,40 @@ ALTER TABLE `oauth_providers`
   ADD KEY `oauth_providers_provider_user_id_index` (`provider_user_id`);
 
 --
+-- Индексы таблицы `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Индексы таблицы `password_resets`
 --
 ALTER TABLE `password_resets`
   ADD KEY `password_resets_email_index` (`email`);
+
+--
+-- Индексы таблицы `positions`
+--
+ALTER TABLE `positions`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `providers`
+--
+ALTER TABLE `providers`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `services`
+--
+ALTER TABLE `services`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `tours`
+--
+ALTER TABLE `tours`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Индексы таблицы `users`
@@ -178,21 +343,63 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT для таблицы `clients`
+--
+ALTER TABLE `clients`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `departments`
+--
+ALTER TABLE `departments`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT для таблицы `employees`
 --
 ALTER TABLE `employees`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT для таблицы `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT для таблицы `oauth_providers`
 --
 ALTER TABLE `oauth_providers`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `positions`
+--
+ALTER TABLE `positions`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT для таблицы `providers`
+--
+ALTER TABLE `providers`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `services`
+--
+ALTER TABLE `services`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `tours`
+--
+ALTER TABLE `tours`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --

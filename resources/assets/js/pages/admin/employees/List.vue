@@ -51,7 +51,7 @@
               </td>
               <td>{{ props.item.first_name }}</td>
               <td>{{ props.item.last_name }}</td>
-              <td>{{ props.item.position }}</td>
+              <td>{{ getPositionName(props.item.position_id).title }}</td>
               <td>
                 <v-btn outline round :to="{name: 'employee', params: {id: props.item.id}}">{{ $t('details') }}</v-btn>   
               </td>
@@ -129,10 +129,14 @@
                     this.$t('delete_items_confirm');
             },
             ...mapGetters({
-                items: 'employees/employees'
+                items: 'employees/employees',
+                positions: 'positions/positions'
             })
         },
         methods: {
+            getPositionName(id) {
+                return this.positions.find(el => el.id == id);
+            },
             deleteDialog(item) {
                 this.deleteWindow = true;
                 this.deleteCategory = item;
