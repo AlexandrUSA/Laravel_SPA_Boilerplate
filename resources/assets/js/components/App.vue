@@ -49,6 +49,7 @@ export default {
   mounted () {
     this.$loading = this.$refs.loading;
     if(this.token) {
+      console.log('totla loading')
       this.employees();
       this.departments();
       this.positions();

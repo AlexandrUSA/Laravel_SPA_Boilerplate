@@ -57,17 +57,14 @@ export default [
   {
     name: '/dashboard',
     path: '/dashboard',
-    component: AdminDashboard,
-    children: []
+    component: AdminDashboard
   },
   {
     path: '/employees',
     name: 'employees',
     component: AdminEmployees,
     beforeEnter (from, to, next) {
-      if (!store.getters['employees/employees'].length) {
-        store.dispatch('employees/load');
-      }
+      store.dispatch('employees/load');
       next()
     }
   },
@@ -93,9 +90,7 @@ export default [
     name: 'clients',
     component: AdminClients,
     beforeEnter (from, to, next) {
-      if (!store.getters['clients/clients'].length) {
-        store.dispatch('clients/load')
-      }
+      store.dispatch('clients/load');
       next()
     }
   },
@@ -121,9 +116,7 @@ export default [
     name: 'positions',
     component: AdminPositions,
     beforeEnter (from, to, next) {
-      if (!store.getters['positions/positions'].length) {
-        store.dispatch('positions/load')
-      }
+      store.dispatch('positions/load');
       next()
     }
   },
@@ -132,9 +125,7 @@ export default [
     name: 'departments',
     component: AdminDepartments,
     beforeEnter (from, to, next) {
-      if (!store.getters['departments/departments'].length) {
-        store.dispatch('departments/load')
-      }
+      store.dispatch('departments/load')
       next()
     }
   },
