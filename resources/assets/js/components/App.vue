@@ -9,6 +9,7 @@
 
 <script>
 import Loading from './Loading';
+import { mapGetters, mapActions } from 'vuex';
 
 
 // Динамическая загрузка компонентов разметки.
@@ -42,11 +43,16 @@ export default {
       titleTemplate: `%s · ${appName}`
     }
   },
-  created() {
-    
-  },
+  computed: mapGetters({
+    token: 'auth/token'
+  }),
   mounted () {
     this.$loading = this.$refs.loading;
+    if(this.token) {
+      this.employees();
+      this.departments();
+      this.positions();
+    }
   },
   methods: {
     /**
@@ -57,7 +63,12 @@ export default {
     setLayout (layout) {
       if (!layout || !layouts[layout]) layout = this.defaultLayout;
       this.layout = layouts[layout]
-    }
+    },
+    ...mapActions({
+      employees: 'employees/load',
+      departments: 'departments/load',
+      positions: 'positions/load'
+    })
   }
 }
 </script>

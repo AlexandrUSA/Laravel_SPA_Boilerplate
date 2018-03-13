@@ -44,14 +44,10 @@
                       v-model="props.selected"
                     ></v-checkbox>
                   </td>
-              <td>
-                <v-list-tile-avatar>
-                    <img :src="props.item.avatar">
-                </v-list-tile-avatar>
-              </td>
-              <td>{{ props.item.first_name }}</td>
-              <td>{{ props.item.last_name }}</td>
-              <td>{{ props.item.position }}</td>
+              <td>{{ props.item.id }}</td>
+              <td>{{ props.item.title }}</td>
+              <td>{{ getPositions(props.item.id).length }}</td>
+              <td>{{ getEmployees(props.item.id).length }}</td>
               <td>
                 <v-btn outline round :to="{name: 'employee', params: {id: props.item.id}}">{{ $t('details') }}</v-btn>   
               </td>
@@ -106,15 +102,15 @@
                     value: 'id'
                 },
                 {
-                    text: 'Имя',
+                    text: 'Наименование',
                     value: 'first_name'
                 },
                 {
-                    text: 'Фамилия',
+                    text: 'Должностей',
                     value: 'last_name'
                 },
                 {
-                    text: 'Должность',
+                    text: 'Сотрудников',
                     value: 'position'
                 },
                 {
@@ -129,10 +125,28 @@
                     this.$t('delete_items_confirm');
             },
             ...mapGetters({
-                items: 'employees/employees'
+                items: 'departments/departments',
+                positions: 'positions/positions',
+                employees: 'employees/employees'
             })
         },
         methods: {
+            getPositions (id) {
+                let positions = []
+                this.positions.forEach( el => {
+                    if(el.department_id == id) positions.push(el);
+                });
+                return positions;
+            },
+            getEmployees (id) {
+                let employees = [];
+                this.employees.forEach( el => {
+                    this.positions.forEach( pos => {
+                        if(el.position_id == pos.id) employees.push(el);
+                    })
+                })
+                return employees;
+            },
             deleteDialog(item) {
                 this.deleteWindow = true;
                 this.deleteCategory = item;
@@ -155,7 +169,7 @@
             },
             ...mapActions({
                 loadItems: 'departments/load',
-                deleteItem: 'employees/remove'
+                deleteItem: 'departments/remove'
             })
         }
     }

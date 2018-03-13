@@ -34,7 +34,7 @@
       <template slot="items" slot-scope="props">
         <td class="text-xs-right">{{ props.item.id }}</td>
         <td class="text-xs-right">{{ props.item.title }}</td>
-        <td class="text-xs-right">{{ props.item.department_id }}</td>
+        <td class="text-xs-right">{{ getDepartmentName(props.item.department_id) }}</td>
         <td class="text-xs-right">{{ props.item.employees }}</td>
         <td class="text-xs-right">
           <v-btn icon class="mx-0" @click="editItem(props.item)">
@@ -46,7 +46,7 @@
         </td>
       </template>
       <template slot="no-data">
-        <v-btn color="primary" @click="initialize">Reset</v-btn>
+        <!-- <v-btn color="primary" @click="initialize">Reset</v-btn> -->
       </template>
     </v-data-table>
   </div>
@@ -95,19 +95,9 @@
         val || this.close()
       }
     },
-    created () {
-      //this.initialize()
-    },
     methods: {
-      initialize () {
-        this.items = [
-          {
-            id: 1,
-            title: 'Директор',
-            department: 'Главный оффис',
-            employees: 1
-          }
-        ]
+      getDepartmentName (id) {
+        return this.departments.find(el => el.id = id).title
       },
       editItem (item) {
         this.editedIndex = this.items.indexOf(item)

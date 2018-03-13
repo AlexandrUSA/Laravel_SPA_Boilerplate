@@ -32,11 +32,16 @@
 					      :counter="70"
 					      :disabled="disabled"
 				></v-text-field>
+<!-- 				<select name="positions">
+					<option v-for="position in positions" :value="position.id">{{position.title}}</option>
+				</select> -->
 				<v-select
 					      :label="$t('position')"
-					      v-model="item.position"
+					      v-model="item.position_id"
 					      prepend-icon="card_travel"
 					      :items="positions"
+					      item-text="title"
+          			item-value="id"
 					      :rules="[v => !!v || 'Выберите должность']"
 					      required
 					      :disabled="disabled"
@@ -125,6 +130,7 @@
 	      name: '',
 	      valid: false,
 	      defaultItem: {},
+	      newPosition: '',
 	      nameRules: [
 	        v => !!v || 'Введите значение',
 	        v => (v && v.length > 1) || 'Имя должно содержать минимум 2 буквы',
@@ -133,17 +139,12 @@
 	        v => !!v || 'Введите E-mail',
 	        v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'Не валидный E-mail'
 	      ],
-	      positions: [
-	        'Старший сотрудник',
-	        'Бухгалтер',
-	        'Директор',
-	        'Сотрудник'
-	      ],
 			}
 		},
 		computed: {
 			...mapGetters({
-				item: 'employees/employee'
+				item: 'employees/employee',
+				positions: 'positions/positions'
 			}),
 			buttonText() {
 				return !this.disabled ? "Обновить" : "Изменить данные";
@@ -161,10 +162,10 @@
 				changeItem: 'employees/edit',
 			}),
 			buttonAction() {
-				if (!this.disabled) {
-					this.changeItem(this.item);
-				}
+				if (!this.disabled) this.changeItem(this.item);
+
 				this.defaultItem = Object.assign({}, this.item);
+				
 				this.disabled = !this.disabled;		
 			},
 			back() {	
