@@ -11,7 +11,6 @@
 import Loading from './Loading';
 import { mapGetters, mapActions } from 'vuex';
 
-
 // Динамическая загрузка компонентов разметки.
 const requireContext = require.context('~/layouts', false, /.*\.vue$/)
 
@@ -35,6 +34,9 @@ export default {
     layout: null,
     defaultLayout: 'default'
   }),
+  computed: mapGetters({
+    logged: 'auth/token'
+  }),
   metaInfo () {
     const { appName } = window.config
 
@@ -43,18 +45,15 @@ export default {
       titleTemplate: `%s · ${appName}`
     }
   },
-  computed: mapGetters({
-    token: 'auth/token'
-  }),
   mounted () {
     this.$loading = this.$refs.loading;
-    if(this.token) {
-      console.log('totla loading')
+    if(this.logged) {
       this.employees();
       this.departments();
       this.positions();
     }
   },
+
   methods: {
     /**
      * Установка разметки приложения.

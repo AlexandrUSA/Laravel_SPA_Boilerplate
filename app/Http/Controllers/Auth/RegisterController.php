@@ -60,14 +60,16 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $user = User::all();
+        
         /**
+        *Временное решение
          * Если это первый пользователь CRM то даем ему права суперадмина, должность директора
          * а также создаем 2 должности по умолчанию (директор, сотрудник)
          * и подразделение.
          * В дальнейшем пользователь сможет добавлять новые должности и подразделения
-         * и изме
+         * и изменять существующие
          */
+        $user = User::all();
         if (count($user) < 1) {
             $role = 'superadmin';
             Department::create([

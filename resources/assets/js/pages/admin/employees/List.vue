@@ -50,8 +50,8 @@
                 </v-list-tile-avatar>
               </td>
               <td>{{ props.item.first_name }}</td>
-              <td>{{ props.item.last_name || 'Не указан' }}</td>
-              <td>{{ getPosition(props.item.position_id) }}</td>
+              <td>{{ props.item.last_name }}</td>
+              <td>{{ props.item.position }}</td>
               <td>
                 <v-btn outline round :to="{name: 'employee', params: {id: props.item.id}}">{{ $t('details') }}</v-btn>   
               </td>
@@ -100,10 +100,10 @@
             delMode: 'single',
             // Заголовки таблицы
             headers: [{
-                    text: 'Аватар',
+                    text: 'ID',
                     align: 'left',
                     sortable: false,
-                    value: 'avatar'
+                    value: 'id'
                 },
                 {
                     text: 'Имя',
@@ -129,14 +129,10 @@
                     this.$t('delete_items_confirm');
             },
             ...mapGetters({
-                items: 'employees/employees',
-                positions: 'positions/positions'
+                items: 'employees/employees'
             })
         },
         methods: {
-            getPosition(id) {
-                return this.positions.find(el => el.id = id).title
-            },
             deleteDialog(item) {
                 this.deleteWindow = true;
                 this.deleteCategory = item;

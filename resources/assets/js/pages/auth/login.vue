@@ -4,7 +4,7 @@
       <div class="auth-switch">
         <div class="auth-switch__text"
              :class="{'fadeIn': !switchText, 'fadeOut': switchText}">
-          <h2 {{ title }} </h2> 
+          <h2> {{ title }} </h2> 
           <v-btn @click.prevent="toggleAuth">{{message}}</v-btn>
         </div>    
       </div>
@@ -65,19 +65,6 @@ export default {
         this.state = (this.state === 'signingin') ? 'registration' : 'signingin';
         setTimeout(() => this.switchText = false, 1000);
       }, 500);
-    },
-    async login () {
-      // Отрпавка формы.
-      const { data } = await this.form.post('/api/login')
-      // Сохранить токен.
-      this.$store.dispatch('auth/saveToken', {
-        token: data.token,
-        remember: this.remember
-      })
-      // Получаем юзера.
-      await this.$store.dispatch('auth/fetchUser')
-      // Перенаправление на главную.
-      this.$router.push({ name: 'AdminDashboard' })
     }
   }
 }

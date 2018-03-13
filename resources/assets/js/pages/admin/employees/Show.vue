@@ -32,9 +32,6 @@
 					      :counter="70"
 					      :disabled="disabled"
 				></v-text-field>
-<!-- 				<select name="positions">
-					<option v-for="position in positions" :value="position.id">{{position.title}}</option>
-				</select> -->
 				<v-select
 					      :label="$t('position')"
 					      v-model="item.position_id"
@@ -81,19 +78,6 @@
 						  min-width="290px"
 						  :return-value.sync="date"
 						>
-						  <v-text-field
-						    slot="activator"
-						    :label="$t('birthday')"
-						    v-model="item.birthday"
-						    prepend-icon="event"
-						    readonly
-						    :disabled="disabled"
-						  ></v-text-field>
-						  <v-date-picker v-if="!disabled" v-model="item.birthday" no-title scrollable>
-						    <v-spacer></v-spacer>
-						    <v-btn flat color="primary" @click="menu = false">{{ $t('cancel') }}</v-btn>
-						    <v-btn flat color="primary" @click="$refs.menu.save(date)">{{ $t('ok') }}</v-btn>
-						  </v-date-picker>
 						</v-menu>
 					</v-flex>
 				</v-layout>
@@ -130,7 +114,6 @@
 	      name: '',
 	      valid: false,
 	      defaultItem: {},
-	      newPosition: '',
 	      nameRules: [
 	        v => !!v || 'Введите значение',
 	        v => (v && v.length > 1) || 'Имя должно содержать минимум 2 буквы',
@@ -138,7 +121,7 @@
 	      emailRules: [
 	        v => !!v || 'Введите E-mail',
 	        v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'Не валидный E-mail'
-	      ],
+	      ]
 			}
 		},
 		computed: {
@@ -162,10 +145,10 @@
 				changeItem: 'employees/edit',
 			}),
 			buttonAction() {
-				if (!this.disabled) this.changeItem(this.item);
-
+				if (!this.disabled) {
+					this.changeItem(this.item);
+				}
 				this.defaultItem = Object.assign({}, this.item);
-				
 				this.disabled = !this.disabled;		
 			},
 			back() {	

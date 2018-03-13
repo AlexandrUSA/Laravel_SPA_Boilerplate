@@ -3,7 +3,6 @@
 </template>
 
 <script>
-
 export default {
   middleware: 'auth',
   data() {
@@ -25,5 +24,4 @@ export default {
     return { title: this.$t('home') }
   }
 }
-
 </script>

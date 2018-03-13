@@ -39,7 +39,9 @@
 </template>
 
 <script>
-import Form from 'vform'
+import Form from 'vform';
+import { mapGetters, mapActions } from 'vuex';
+
 
 export default {
   middleware: 'guest',
@@ -76,9 +78,20 @@ export default {
 
       // Получить юзера.
       await this.$store.dispatch('auth/fetchUser')
-
+      console.log('logged');
+      this.loadContent();
       // Перенаправление на домашнюю.
       this.$router.push({ name: 'home' })
+    },
+    ...mapActions({
+      employees: 'employees/load',
+      departments: 'departments/load',
+      positions: 'positions/load'
+    }),
+    loadContent() {
+      this.employees();
+      this.departments();
+      this.positions();  
     }
   }
 }

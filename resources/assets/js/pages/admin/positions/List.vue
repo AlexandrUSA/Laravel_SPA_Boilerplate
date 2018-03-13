@@ -13,7 +13,16 @@
                 <v-text-field label="Наименование" v-model="editedItem.title"></v-text-field>
               </v-flex>
               <v-flex xs12 sm6>
-                <v-text-field label="Подразделение" v-model="editedItem.department"></v-text-field>
+                <v-select
+                  :label="$t('position')"
+                  v-model="editedItem.department_id"
+                  prepend-icon="card_travel"
+                  :items="departments"
+                  item-text="title"
+                  item-value="id"
+                  :rules="[v => !!v || 'Выберите подразделение']"
+                  required
+                ></v-select>
               </v-flex>
             </v-layout>
           </v-container>
@@ -35,7 +44,7 @@
         <td class="text-xs-right">{{ props.item.id }}</td>
         <td class="text-xs-right">{{ props.item.title }}</td>
         <td class="text-xs-right">{{ getDepartmentName(props.item.department_id) }}</td>
-        <td class="text-xs-right">{{ props.item.employees }}</td>
+        <td class="text-xs-right">{{ getPositionEmployees(props.item.id).length }}</td>
         <td class="text-xs-right">
           <v-btn icon class="mx-0" @click="editItem(props.item)">
             <v-icon color="teal">edit</v-icon>
@@ -46,15 +55,17 @@
         </td>
       </template>
       <template slot="no-data">
-        <!-- <v-btn color="primary" @click="initialize">Reset</v-btn> -->
+        <v-btn color="primary" @click="">Обновить</v-btn>
       </template>
     </v-data-table>
   </div>
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
+  import { mapGetters, mapActions } from 'vuex';
+
   export default {
+    middleware: 'auth',
     data: () => ({
       dialog: false,
       headers: [
@@ -73,18 +84,19 @@
       editedItem: {
         id: '',
         title: '',
-        department: '',
+        department_id: '',
       },
       defaultItem: {
         id: '',
         title: '',
-        department: '',
+        department_id: '',
       }
     }),
     computed: {
       ...mapGetters({
         items: 'positions/positions',
-        departments: 'departments/departments'
+        departments: 'departments/departments',
+        employees: 'employees/employees'
       }),
       formTitle () {
         return this.editedIndex === -1 ? 'Новая должность' : 'Изменить должность'
@@ -95,9 +107,20 @@
         val || this.close()
       }
     },
+    created () {
+      //this.initialize()
+    },
     methods: {
+      ...mapActions({
+        add: 'positions/add',
+        update: 'positions/edit',
+        remove: 'positions/remove'    
+      }),
       getDepartmentName (id) {
         return this.departments.find(el => el.id = id).title
+      },
+      getPositionEmployees(id) {
+        return this.employees.filter(el => el.position_id == id)
       },
       editItem (item) {
         this.editedIndex = this.items.indexOf(item)
@@ -106,7 +129,7 @@
       },
       deleteItem (item) {
         const index = this.items.indexOf(item)
-        confirm('Are you sure you want to delete this item?') && this.items.splice(index, 1)
+        // Удаление должности
       },
       close () {
         this.dialog = false
@@ -117,9 +140,9 @@
       },
       save () {
         if (this.editedIndex > -1) {
-          Object.assign(this.items[this.editedIndex], this.editedItem)
+          this.update(this.editedItem)
         } else {
-          this.items.push(this.editedItem)
+          this.add(this.editedItem);
         }
         this.close()
       }

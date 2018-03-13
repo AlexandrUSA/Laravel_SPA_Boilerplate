@@ -42,7 +42,7 @@
     ></v-text-field>
 
   <v-text-field
-    label="Телефон"
+    label="Адрес"
     v-model="form.phone_number"
     prepend-icon="person"
   ></v-text-field>
@@ -104,4 +104,3 @@ export default {
   }
 }
 </script>
-

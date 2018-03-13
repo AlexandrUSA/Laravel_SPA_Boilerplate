@@ -41,7 +41,6 @@ export default {
       // Перенаправление на сттраницу авторизации
       this.$router.push({ name: 'login' })
     },
-    // Показываем/скрываем сайдар
     switchDrawer() {
       this.$emit('switchDrawer')
     },

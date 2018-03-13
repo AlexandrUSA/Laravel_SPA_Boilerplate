@@ -1,6 +1,7 @@
 import store from '~/store'
 
 const Home = () => import('~/pages/home').then(m => m.default || m)
+// const Welcome = () => import('~/pages/welcome').then(m => m.default || m)
 
 const Login = () => import('~/pages/auth/login').then(m => m.default || m)
 const PasswordReset = () => import('~/pages/auth/password/reset').then(m => m.default || m)
@@ -49,22 +50,25 @@ export default [
     name: 'home',
     component: Home
   },
-  {
-    name: 'settings',
+  { 
     path: '/settings',
+    name: 'settings',
     component: Settings
   },
-  {
-    name: '/dashboard',
+  {  
     path: '/dashboard',
-    component: AdminDashboard
+    name: 'dashboard',
+    component: AdminDashboard,
+    children: []
   },
   {
     path: '/employees',
     name: 'employees',
     component: AdminEmployees,
     beforeEnter (from, to, next) {
-      store.dispatch('employees/load');
+      if (!store.getters['employees/employees'].length) {
+        store.dispatch('employees/load')
+      }
       next()
     }
   },
@@ -88,11 +92,7 @@ export default [
   {
     path: '/clients',
     name: 'clients',
-    component: AdminClients,
-    beforeEnter (from, to, next) {
-      store.dispatch('clients/load');
-      next()
-    }
+    component: AdminClients
   },
   {
     path: '/clients/:id',
@@ -116,7 +116,9 @@ export default [
     name: 'positions',
     component: AdminPositions,
     beforeEnter (from, to, next) {
-      store.dispatch('positions/load');
+      if (!store.getters['positions/positions'].length) {
+        store.dispatch('positions/load')
+      }
       next()
     }
   },
@@ -125,7 +127,9 @@ export default [
     name: 'departments',
     component: AdminDepartments,
     beforeEnter (from, to, next) {
-      store.dispatch('departments/load')
+      if (!store.getters['departments/departments'].length) {
+        store.dispatch('departments/load')
+      }
       next()
     }
   },
