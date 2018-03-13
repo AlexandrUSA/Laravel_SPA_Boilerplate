@@ -129,10 +129,28 @@
                     this.$t('delete_items_confirm');
             },
             ...mapGetters({
-                items: 'employees/employees'
+                items: 'departments/departments',
+                positions: 'positions/positions',
+                employees: 'employees/employees'
             })
         },
         methods: {
+            getPositions (id) {
+                let positions = []
+                this.positions.forEach( el => {
+                    if(el.department_id == id) positions.push(el);
+                });
+                return positions;
+            },
+            getEmployees (id) {
+                let employees = [];
+                this.employees.forEach( el => {
+                    this.positions.forEach( pos => {
+                        if(el.position_id == pos.id) employees.push(el);
+                    })
+                })
+                return employees;
+            },
             deleteDialog(item) {
                 this.deleteWindow = true;
                 this.deleteCategory = item;
@@ -154,8 +172,8 @@
                 this.editedIndex = -1;
             },
             ...mapActions({
-                loadItems: 'employees/load',
-                deleteItem: 'employees/remove'
+                loadItems: 'departments/load',
+                deleteItem: 'departments/remove'
             })
         }
     }

@@ -8,7 +8,8 @@
 </template>
 
 <script>
-import Loading from './Loading'
+import Loading from './Loading';
+import { mapGetters, mapActions } from 'vuex';
 
 // Динамическая загрузка компонентов разметки.
 const requireContext = require.context('~/layouts', false, /.*\.vue$/)
@@ -33,7 +34,9 @@ export default {
     layout: null,
     defaultLayout: 'default'
   }),
-
+  computed: mapGetters({
+    logged: 'auth/token'
+  }),
   metaInfo () {
     const { appName } = window.config
 
@@ -43,7 +46,12 @@ export default {
     }
   },
   mounted () {
-    this.$loading = this.$refs.loading
+    this.$loading = this.$refs.loading;
+    if(this.logged) {
+      this.employees();
+      this.departments();
+      this.positions();
+    }
   },
 
   methods: {
@@ -55,7 +63,12 @@ export default {
     setLayout (layout) {
       if (!layout || !layouts[layout]) layout = this.defaultLayout;
       this.layout = layouts[layout]
-    }
+    },
+    ...mapActions({
+      employees: 'employees/load',
+      departments: 'departments/load',
+      positions: 'positions/load'
+    })
   }
 }
 </script>
