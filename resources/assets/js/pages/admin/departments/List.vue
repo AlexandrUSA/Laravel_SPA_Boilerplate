@@ -44,14 +44,10 @@
                       v-model="props.selected"
                     ></v-checkbox>
                   </td>
-              <td>
-                <v-list-tile-avatar>
-                    <img :src="props.item.avatar">
-                </v-list-tile-avatar>
-              </td>
-              <td>{{ props.item.first_name }}</td>
-              <td>{{ props.item.last_name }}</td>
-              <td>{{ props.item.position }}</td>
+              <td>{{ props.item.id }}</td>
+              <td>{{ props.item.title }}</td>
+              <td>{{ getPositions(props.item.id).length }}</td>
+              <td>{{ getEmployees(props.item.id).length }}</td>
               <td>
                 <v-btn outline round :to="{name: 'employee', params: {id: props.item.id}}">{{ $t('details') }}</v-btn>   
               </td>
@@ -106,15 +102,15 @@
                     value: 'id'
                 },
                 {
-                    text: 'Имя',
+                    text: 'Наименование',
                     value: 'first_name'
                 },
                 {
-                    text: 'Фамилия',
+                    text: 'Должностей',
                     value: 'last_name'
                 },
                 {
-                    text: 'Должность',
+                    text: 'Сотрудников',
                     value: 'position'
                 },
                 {

@@ -34,8 +34,8 @@
       <template slot="items" slot-scope="props">
         <td class="text-xs-right">{{ props.item.id }}</td>
         <td class="text-xs-right">{{ props.item.title }}</td>
-        <td class="text-xs-right">{{ props.item.department }}</td>
-        <td class="text-xs-right">{{ props.item.employees }}</td>
+        <td class="text-xs-right">{{ getDepartmentName(props.item.department_id) }}</td>
+        <td class="text-xs-right">{{ getPositionEmployees(props.item.id).length }}</td>
         <td class="text-xs-right">
           <v-btn icon class="mx-0" @click="editItem(props.item)">
             <v-icon color="teal">edit</v-icon>
@@ -46,13 +46,15 @@
         </td>
       </template>
       <template slot="no-data">
-        <v-btn color="primary" @click="initialize">Reset</v-btn>
+        <v-btn color="primary" @click="">Обновить</v-btn>
       </template>
     </v-data-table>
   </div>
 </template>
 
 <script>
+  import { mapGetters } from 'vuex';
+
   export default {
     data: () => ({
       dialog: false,
@@ -68,7 +70,6 @@
         { text: 'Сотрудников', align: 'right', value: 'employees' },
         { text: 'Действия', align: 'right', value: 'title', sortable: false }
       ],
-      items: [],
       editedIndex: -1,
       editedItem: {
         id: '',
@@ -82,6 +83,11 @@
       }
     }),
     computed: {
+      ...mapGetters({
+        items: 'positions/positions',
+        departments: 'departments/departments',
+        employees: 'employees/employees'
+      }),
       formTitle () {
         return this.editedIndex === -1 ? 'Новая должность' : 'Изменить должность'
       }
@@ -92,18 +98,14 @@
       }
     },
     created () {
-      this.initialize()
+      //this.initialize()
     },
     methods: {
-      initialize () {
-        this.items = [
-          {
-            id: 1,
-            title: 'Директор',
-            department: 'Главный оффис',
-            employees: 1
-          }
-        ]
+      getDepartmentName (id) {
+        return this.departments.find(el => el.id = id).title
+      },
+      getPositionEmployees(id) {
+        return this.employees.filter(el => el.position_id == id)
       },
       editItem (item) {
         this.editedIndex = this.items.indexOf(item)
