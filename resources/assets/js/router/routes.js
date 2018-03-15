@@ -50,14 +50,14 @@ export default [
     name: 'home',
     component: Home
   },
-  {
-    name: 'settings',
+  { 
     path: '/settings',
+    name: 'settings',
     component: Settings
   },
-  {
-    name: '/dashboard',
+  {  
     path: '/dashboard',
+    name: 'dashboard',
     component: AdminDashboard,
     children: []
   },
@@ -66,7 +66,9 @@ export default [
     name: 'employees',
     component: AdminEmployees,
     beforeEnter (from, to, next) {
-      store.dispatch('employees/load')
+      if (!store.getters['employees/employees'].length) {
+        store.dispatch('employees/load')
+      }
       next()
     }
   },
@@ -112,12 +114,24 @@ export default [
   {
     path: '/positions',
     name: 'positions',
-    component: AdminPositions
+    component: AdminPositions,
+    beforeEnter (from, to, next) {
+      if (!store.getters['positions/positions'].length) {
+        store.dispatch('positions/load')
+      }
+      next()
+    }
   },
   {
     path: '/departments',
     name: 'departments',
-    component: AdminDepartments
+    component: AdminDepartments,
+    beforeEnter (from, to, next) {
+      if (!store.getters['departments/departments'].length) {
+        store.dispatch('departments/load')
+      }
+      next()
+    }
   },
   {
     path: '/messages',

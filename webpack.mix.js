@@ -30,7 +30,7 @@ if (mix.inProduction()) {
   ])
 }
 
-mix.browserSync('web')
+mix.browserSync('www')
 
 mix.webpackConfig({
   plugins: [
