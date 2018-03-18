@@ -69,7 +69,6 @@ class RegisterController extends Controller
          * В дальнейшем пользователь сможет добавлять новые должности и подразделения
          * и изменять существующие
          */
-        $role = null;
         $user = User::all();
         if (count($user) < 1) {
             $role = 'superadmin';

@@ -8,3 +8,12 @@ export const UPDATE_USER = 'UPDATE_USER';
 
 // Языковые
 export const SET_LOCALE = 'SET_LOCALE';
+
+// CRUD елементов
+export const LOAD     = 'load';
+export const LOAD_ONE = 'loadOne';
+export const ADD      = 'add';
+export const EDIT     = 'edit';
+export const REMOVE   = 'remove';
+
+

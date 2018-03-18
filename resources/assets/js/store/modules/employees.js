@@ -1,4 +1,5 @@
-import axios from 'axios'
+import axios from 'axios';
+import * as types from '../mutation-types';
 
 export const state = {
   employees: [],
@@ -12,27 +13,27 @@ export const getters = {
 }
 
 export const mutations = {
-  load (state, employees) {
+  [types.LOAD] (state, employees) {
     state.employees = employees
   },
-  loadOne (state, employee) {
+  [types.LOAD_ONE] (state, employee) {
     state.employee = employee
   },
-  add (state, employees) {
+  [types.ADD] (state, employees) {
     state.employees.push(employees)
   },
-  edit (state, employee) {
+  [types.EDIT] (state, employee) {
     const index = state.employees.findIndex(el => el.id === employee.id)
     state.employees.splice(index, 1, employee)
   },
-  remove (state, employeId) {
+  [types.REMOVE] (state, employeId) {
     const pos = state.employees.findIndex(el => el.id === employeId)
     if (pos !== -1) state.employees.splice(pos, 1)
   }
 }
 
 export const actions = {
-  async load ({ commit }) {
+  async [types.LOAD] ({ commit }) {
     try {
       const { data } = await axios.get('/api/employees')
       commit('load', data)
@@ -40,7 +41,7 @@ export const actions = {
       console.error('Не загрузились сотрудники', e)
     }
   },
-  async loadOne ({ commit }, payload) {
+  async [types.LOAD_ONE] ({ commit }, payload) {
     try {
       const { data } = await axios.get('/api/employees/' + payload)
       commit('loadOne', data)
@@ -48,7 +49,7 @@ export const actions = {
       console.error('Не загрузился сотрудник', e)
     }
   },
-  async add ({ commit }, payload) {
+  async [types.ADD] ({ commit }, payload) {
     try {
       const { data } = await axios.post('/api/employees', payload)
       commit('add', data)
@@ -56,7 +57,7 @@ export const actions = {
       console.error('Не создался сотрудник', e)
     }
   },
-  async edit ({ commit }, employee) {
+  async [types.EDIT] ({ commit }, employee) {
     try {
       const { data } = await axios.put('/api/employees/' + employee.id, employee)
       commit('edit', data)
@@ -64,7 +65,7 @@ export const actions = {
       console.error('Не изменился сотрудник', e)
     }
   },
-  async remove ({ commit }, employee) {
+  async [types.REMOVE] ({ commit }, employee) {
     try {
       await axios.delete('/api/employees/' + employee)
       commit('remove', employee)
