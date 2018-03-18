@@ -13,10 +13,11 @@
                 <v-btn outline color="error" @click.native="deleteCancel">{{ $t('cancel') }}</v-btn>
             </v-card-actions>
         </v-card>
-    </v-dialog>  
+    </v-dialog>
+
     <v-card>
         <v-card-title>
-            <h2>{{ $t('employees') }}</h2>
+            <h2>{{ $t('department') }}</h2>
             <v-spacer></v-spacer>
             <v-text-field
                         append-icon="search"

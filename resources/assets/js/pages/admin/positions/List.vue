@@ -1,5 +1,21 @@
 <template>
   <div id="positions">
+    <v-dialog v-model="deleteAlert" max-width="800px">
+      <v-btn color="primary" dark slot="activator" class="mb-2">Добавить должность</v-btn>
+      <v-card>
+        <v-card-title>
+          <span class="headline">Внимание!</span>
+        </v-card-title>
+        <v-card-text>
+          {{ deleteMsg }}
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" flat @click.native="deleteAlert = !deleteAlert">Отмена</v-btn>
+          <v-btn v-show="!deleteDenied" color="blue darken-1" flat @click.native="deleteConfirm">Удалить</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-dialog v-model="dialog" max-width="500px">
       <v-btn color="primary" dark slot="activator" class="mb-2">Добавить должность</v-btn>
       <v-card>
@@ -14,7 +30,7 @@
               </v-flex>
               <v-flex xs12 sm6>
                 <v-select
-                  :label="$t('position')"
+                  :label="$t('department')"
                   v-model="editedItem.department_id"
                   prepend-icon="card_travel"
                   :items="departments"
@@ -68,6 +84,8 @@
     middleware: 'auth',
     data: () => ({
       dialog: false,
+      deleteAlert: false,
+      deleteDenied: false,
       headers: [
         {
           text: 'Номер',
@@ -98,6 +116,10 @@
         departments: 'departments/departments',
         employees: 'employees/employees'
       }),
+      deleteMsg() {
+        return (this.deleteDenied) ? ' За данной должностью закреплены сотрудники. Пожалуйста, распределите их на другие должности прежде чем удалять текущую.' :
+                                 ' Вы действительно хотите удалить данную должность?';
+      },
       formTitle () {
         return this.editedIndex === -1 ? 'Новая должность' : 'Изменить должность'
       }
@@ -106,9 +128,6 @@
       dialog (val) {
         val || this.close()
       }
-    },
-    created () {
-      //this.initialize()
     },
     methods: {
       ...mapActions({
@@ -128,8 +147,18 @@
         this.dialog = true
       },
       deleteItem (item) {
-        const index = this.items.indexOf(item)
-        // Удаление должности
+        this.deleteAlert = true;
+        if(this.getPositionEmployees(item.id).length) {
+          this.deleteDenied = true;
+        } else {
+          this.deleteDenied = false;
+          this.editedIndex = item.id;
+        }
+      },
+      deleteConfirm() {
+        this.remove(this.editedIndex);
+        this.deleteAlert = false;
+        this.editedIndex = -1;
       },
       close () {
         this.dialog = false

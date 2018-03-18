@@ -48,6 +48,7 @@
   "strings": "строк",
   "search_input": "Введите значение",
   "position": "Должность",
+  "department": "Подразделение",
   "phone_number": "Номер телефона",
   "salary": "Заработная плата",
   "address": "Адрес",
