@@ -15,6 +15,23 @@
         </v-card>
     </v-dialog>
 
+    <v-dialog v-model="departmentCreate" max-width="500px">
+        <v-card>
+            <v-card-title>
+                <span class="headline">Новое подразделение</span>
+            </v-card-title>
+            <v-card-text>
+                <v-flex xs12>
+                    <v-text-field label="Наименование" v-model="departmentName"></v-text-field>
+                </v-flex>
+            </v-card-text>
+            <v-card-actions>
+                <v-btn outline color="info" @click.native="addConfirm">{{ $t('ok') }}</v-btn>
+                <v-btn outline color="error" @click.native="addCancel">{{ $t('cancel') }}</v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
+
     <v-card>
         <v-card-title>
             <h2>{{ $t('department') }}</h2>
@@ -31,27 +48,33 @@
             :items="items"
             :search="search"
             v-model="selected"
-            select-all
             item-key="id"
             :no-results-text="$t('no_match_found')"
             :rows-per-page-text="$t('strings')"
             class="elevation-1"
         >
             <template slot="items" slot-scope="props">
+                <td>{{ props.item.id }}</td>
                 <td>
-                    <v-checkbox
-                      primary
-                      hide-details
-                      v-model="props.selected"
-                    ></v-checkbox>
-                  </td>
-              <td>{{ props.item.id }}</td>
-              <td>{{ props.item.title }}</td>
-              <td>{{ getPositions(props.item.id).length }}</td>
-              <td>{{ getEmployees(props.item.id).length }}</td>
-              <td>
-                <v-btn outline round :to="{name: 'employee', params: {id: props.item.id}}">{{ $t('details') }}</v-btn>   
-              </td>
+                    <v-edit-dialog
+                        :return-value.sync="props.item.title"
+                        lazy
+                    > {{ props.item.title }}
+                        <v-text-field
+                            slot="input"
+                            label="Edit"
+                            v-model="props.item.title"
+                            single-line
+                            counter
+                            @change="editItem(props.item)"
+                        ></v-text-field>
+                    </v-edit-dialog>
+                </td>
+                <td>{{ getPositions(props.item.id).length }}</td>
+                <td>{{ getEmployees(props.item.id).length }}</td>
+                <td>
+                    <v-btn outline round :to="{name: 'employee', params: {id: props.item.id}}">{{ $t('details') }}</v-btn>   
+                </td>
             </template>
             <template slot="no-data">
               <v-alert :value="true" color="red" icon="warning">
@@ -60,7 +83,7 @@
             </template>
         </v-data-table>
         <div class="table__buttons">
-            <v-btn fab dark large color="cyan" :to="{name: 'employeeCreate'}">
+            <v-btn fab dark large color="cyan" @click="departmentCreate = true">
                 <v-icon dark>add</v-icon>
             </v-btn>
             <transition enter-active-class="buttonEnter" leave-active-class="buttonLeave" mode="out-in">
@@ -95,6 +118,9 @@
             deleteWindow: false,
             deleteCategory: null,
             delMode: 'single',
+            //Создание
+            departmentCreate: false,
+            departmentName: '',
             // Заголовки таблицы
             headers: [{
                     text: 'ID',
@@ -140,13 +166,22 @@
                 return positions;
             },
             getEmployees (id) {
-                let employees = [];
-                this.employees.forEach( el => {
-                    this.positions.forEach( pos => {
-                        if(el.position_id == pos.id) employees.push(el);
-                    })
-                })
+                let employees = [],
+                    positions = this.getPositions(id);
+                
+                positions.forEach( pos => {
+                    this.employees.forEach( el => {
+                        if( el.position_id == pos.id) employees.push(el);
+                    });
+                });     
                 return employees;
+            },
+            addConfirm() {
+                this.addItem({ 'title': this.departmentName });
+                this.departmentCreate = false;
+            },
+            addCancel() {
+                this.departmentCreate = false;
             },
             deleteDialog(item) {
                 this.deleteWindow = true;
@@ -170,6 +205,8 @@
             },
             ...mapActions({
                 loadItems: 'departments/load',
+                addItem: 'departments/add',
+                editItem: 'departments/edit',
                 deleteItem: 'departments/remove'
             })
         }
