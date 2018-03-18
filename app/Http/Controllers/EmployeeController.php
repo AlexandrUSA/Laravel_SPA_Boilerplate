@@ -59,8 +59,9 @@ class EmployeeController extends Controller
         if($request->hasFile('image')) {
             $employee = Employee::find($id);
 
-            if($employee->avatar !== '/uploads/images/avatars/no-avatar.jpg') {
-                Storage::delete($employee->avatar);
+            if($employee->avatar !== '/storage/avatars/no-avatar.jpg') {
+                $path = 'public/' . substr($employee->avatar, 9);
+                Storage::delete($path);
             }
 
             $path = Storage::putFile('public/avatars', $request->file('image'));
