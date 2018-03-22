@@ -15,7 +15,6 @@ use Illuminate\Http\Request;
 
 Route::group(['middleware' => 'auth:api'], function () {
     Route::post('logout', 'Auth\LoginController@logout');
-
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
@@ -37,8 +36,6 @@ Route::group(['middleware' => 'guest:api'], function () {
     Route::post('password/reset', 'Auth\ResetPasswordController@reset');
     Route::post('oauth/{driver}', 'Auth\OAuthController@redirectToProvider');
     Route::get('oauth/{driver}/callback', 'Auth\OAuthController@handleProviderCallback')->name('oauth.callback');
-
-    
 });
 
 

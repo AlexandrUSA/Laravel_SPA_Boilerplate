@@ -170,6 +170,7 @@
 					     }
 					 });
 					this.item.avatar = data;
+					this.$store.commit('employees/edit', this.item)
     		} catch (e) {
       		console.error('Не загрузился аватар', e)
     		}	

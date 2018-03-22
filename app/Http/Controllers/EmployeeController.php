@@ -84,10 +84,17 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, Employee $employee)
     {
-        $user = User::all()->find($employee);
-        $employee->update($request->all());
-        $user->update($request->all());
-        return $employee;
+
+
+       $user = User::find($employee->user_id);
+
+       $params = ['name' => $request->get('first_name')];
+
+       $user->update($params);
+
+       $employee->update($request->all());
+
+       return $employee;
     }
 
     /**

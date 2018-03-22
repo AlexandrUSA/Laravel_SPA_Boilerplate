@@ -31,7 +31,6 @@ axios.interceptors.request.use(request => {
  * Перехватчик AJAX ответов
  */
 axios.interceptors.response.use(response => response, error => {
-  console.log(error)
   const { status } = error.response
 
   if (status >= 500) {  // Если внутренняя ошибка сервера - оповещаем пользователя
@@ -57,7 +56,6 @@ axios.interceptors.response.use(response => response, error => {
     }).then(async () => {
       // После чего делаем логаут и переводим его на страницу авторизации
       await store.dispatch('auth/logout')
-
       router.push({ name: 'login' })
     })
   }

@@ -136,7 +136,7 @@
         remove: 'positions/remove'    
       }),
       getDepartmentName (id) {
-        return this.departments.find(el => el.id = id).title
+        return this.departments.find(el => el.id == id).title
       },
       getPositionEmployees(id) {
         return this.employees.filter(el => el.position_id == id)

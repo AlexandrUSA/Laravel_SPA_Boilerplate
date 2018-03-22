@@ -11,22 +11,6 @@
     <has-error :form="form" field="name"/>
 
     <v-text-field
-      label="Фамилия"
-      v-model="form.last_name"
-      :rules="form.nameRules"
-      :counter="70"
-      prepend-icon="person"
-    ></v-text-field>
-
-    <v-text-field
-      label="Отчество"
-      v-model="form.patronymic"
-      :rules="form.nameRules"
-      :counter="70"
-      prepend-icon="person"
-    ></v-text-field>
-
-    <v-text-field
       :label="$t('email')"
       v-model="form.email"
       :rules="form.emailRules"
@@ -34,18 +18,6 @@
       required
     ></v-text-field>
     <has-error :form="form" field="email" />
-  
-    <v-text-field
-      label="Адрес"
-      v-model="form.address"
-      prepend-icon="person"
-    ></v-text-field>
-
-  <v-text-field
-    label="Адрес"
-    v-model="form.phone_number"
-    prepend-icon="person"
-  ></v-text-field>
 
     <v-btn large block :loading="form.busy" type="submit">{{ $t('update') }}</v-btn>
   </v-form>

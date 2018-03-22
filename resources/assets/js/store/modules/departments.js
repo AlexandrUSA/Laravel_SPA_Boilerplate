@@ -1,4 +1,5 @@
-import axios from 'axios'
+import axios from 'axios';
+import * as types from '../mutation-types';
 
 export const state = {
   departments: [],
@@ -11,27 +12,27 @@ export const getters = {
 }
 
 export const mutations = {
-  load (state, departments) {
+  [types.LOAD] (state, departments) {
     state.departments = departments
   },
-  loadOne (state, department) {
+  [types.LOAD_ONE] (state, department) {
     state.department = department
   },
-  add (state, departments) {
+  [types.ADD] (state, departments) {
     state.departments.push(departments)
   },
-  edit (state, department) {
+  [types.EDIT] (state, department) {
     const index = state.departments.findIndex(el => el.id === department.id)
     state.departments.splice(index, 1, department)
   },
-  remove (state, departmentId) {
+  [types.REMOVE] (state, departmentId) {
     const pos = state.departments.findIndex(el => el.id === departmentId)
     if (pos !== -1) state.departments.splice(pos, 1)
   }
 }
 
 export const actions = {
-  async load ({ commit }) {
+  async [types.LOAD] ({ commit }) {
     try {
       const { data } = await axios.get('/api/departments')
       commit('load', data)
@@ -39,7 +40,7 @@ export const actions = {
       console.error('Не загрузились отделы', e)
     }
   },
-  async loadOne ({ commit }, payload) {
+  async [types.LOAD_ONE] ({ commit }, payload) {
     try {
       const { data } = await axios.get('/api/departments/' + payload)
       commit('loadOne', data)
@@ -47,7 +48,7 @@ export const actions = {
       console.error('Не загрузился отдел', e)
     }
   },
-  async add ({ commit }, payload) {
+  async [types.ADD] ({ commit }, payload) {
     try {
       const { data } = await axios.post('/api/departments', payload)
       commit('add', data)
@@ -55,7 +56,7 @@ export const actions = {
       console.error('Не создался отдел', e)
     }
   },
-  async edit ({ commit }, department) {
+  async [types.EDIT] ({ commit }, department) {
     try {
       const { data } = await axios.put('/api/departments/' + department.id, department)
       commit('edit', data)
@@ -63,7 +64,7 @@ export const actions = {
       console.error('Не изменился отдел', e)
     }
   },
-  async remove ({ commit }, department) {
+  async [types.REMOVE] ({ commit }, department) {
     try {
       await axios.delete('/api/departments/' + department)
       commit('remove', department)

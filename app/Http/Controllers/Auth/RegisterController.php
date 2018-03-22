@@ -9,8 +9,10 @@ use App\Position;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\DB;
 
 class RegisterController extends Controller
 {
@@ -61,14 +63,22 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $params = Organization::addMember($data);
 
-        $role = Organization::addMember($data);
-
-        return User::create([
+        $user = User::create([
+            'employee_id' => $params['employee_id'],
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-            'role' => $role
+            'role' => $params['role']
         ]);
+
+       // Employee::all()->get($params['employee_id']);
+
+        DB::table('employees')
+            ->where('id', $params['employee_id'])
+            ->update(['user_id' => $user->id]);
+
+        return $user;
     }
 }

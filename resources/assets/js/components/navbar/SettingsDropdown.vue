@@ -5,7 +5,6 @@
         flat 
         slot="activator"
       >
-        <img :src="user.photo_url" class="profile-avatar">
         <span>{{ user.name }}</span>
         <fa 
           pull="right" 

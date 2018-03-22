@@ -19,5 +19,6 @@ const modules = requireContext.keys()
   }, {})
 
 export default new Vuex.Store({
-  modules
+  modules,
+  strict: false
 })

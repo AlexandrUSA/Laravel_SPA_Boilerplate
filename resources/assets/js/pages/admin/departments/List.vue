@@ -32,22 +32,12 @@
         </v-card>
     </v-dialog>
 
+    
+
     <v-card>
-        <v-card-title>
-            <h2>{{ $t('department') }}</h2>
-            <v-spacer></v-spacer>
-            <v-text-field
-                        append-icon="search"
-                        :label="$t('search_input')"
-                        single-line         
-                        v-model="search"
-            ></v-text-field>
-        </v-card-title>
         <v-data-table
             :headers="headers"
             :items="items"
-            :search="search"
-            v-model="selected"
             item-key="id"
             :no-results-text="$t('no_match_found')"
             :rows-per-page-text="$t('strings')"
@@ -73,7 +63,7 @@
                 <td>{{ getPositions(props.item.id).length }}</td>
                 <td>{{ getEmployees(props.item.id).length }}</td>
                 <td>
-                    <v-btn outline round :to="{name: 'employee', params: {id: props.item.id}}">{{ $t('details') }}</v-btn>   
+                    <v-btn outline round @click="openInfoPanel(props.item.id)">{{ $t('details') }}</v-btn>   
                 </td>
             </template>
             <template slot="no-data">
@@ -108,6 +98,11 @@
     export default {
         middleware: 'auth',
         data: () => ({
+            //Подробности
+            showInfo: false,
+            selectedEmployees: [],
+            selectedPositions: [],
+            // Всплывашки
             snackbarShow: false,
             snackbarTimeout: 10000,
             // Поиск / Выборка
@@ -122,11 +117,11 @@
             departmentCreate: false,
             departmentName: '',
             // Заголовки таблицы
-            headers: [{
-                    text: 'ID',
+            headers: [
+                {
+                    text: 'Номер',
                     align: 'left',
-                    sortable: false,
-                    value: 'id'
+                    sortable: false
                 },
                 {
                     text: 'Наименование',
@@ -158,11 +153,18 @@
             })
         },
         methods: {
+            openInfoPanel(id) {   
+                this.selectedPositions = this.getPositions(id);
+                this.selectedEmployees = this.getEmployees(id);
+                this.showInfo = true;
+            },
             getPositions (id) {
-                let positions = []
+                let positions = [];
+
                 this.positions.forEach( el => {
                     if(el.department_id == id) positions.push(el);
                 });
+
                 return positions;
             },
             getEmployees (id) {

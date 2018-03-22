@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Settings;
 
+use App\Employee;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class ProfileController extends Controller
 {
@@ -21,6 +23,12 @@ class ProfileController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email,'.$user->id,
         ]);
+
+        $employee = Employee::find($user->employee_id);
+
+        $params = ['first_name' => $request->get('name')];
+
+        $employee->update($params);
 
         return tap($user)->update($request->only('name', 'email'));
     }
