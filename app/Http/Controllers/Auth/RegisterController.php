@@ -66,18 +66,15 @@ class RegisterController extends Controller
         $params = Organization::addMember($data);
 
         $user = User::create([
-            'employee_id' => $params['employee_id'],
+            'employee_id' => $params['employee']->id,
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
             'role' => $params['role']
         ]);
-
-       // Employee::all()->get($params['employee_id']);
-
-        DB::table('employees')
-            ->where('id', $params['employee_id'])
-            ->update(['user_id' => $user->id]);
+        $params['employee']->update(['user_id' => $user->id]);
+//        $employee = Employee::find($params['employee_id']);
+//        $employee->update(['user_id' => $user->id]);
 
         return $user;
     }

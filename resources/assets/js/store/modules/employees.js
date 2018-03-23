@@ -22,8 +22,11 @@ export const mutations = {
     state.employees.push(employees)
   },
   [types.EDIT] (state, employee) {
-    const index = state.employees.findIndex(el => el.id === employee.id)
+
+    const index = state.employees.findIndex(el => el.id == employee.id)
+    
     state.employees.splice(index, 1, employee)
+    console.log(state.employees[0], employee)
   },
   [types.REMOVE] (state, employeId) {
     const pos = state.employees.findIndex(el => el.id === employeId)

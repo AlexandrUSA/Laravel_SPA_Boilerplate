@@ -30,7 +30,7 @@ class Organization extends Model
             'first_name' => $data['name'],
             'position_id' => $position_id
         ]);
-        return $employee->id;
+        return $employee;
 
     }
 
@@ -47,8 +47,8 @@ class Organization extends Model
             $position_id = 2;
         }
 
-        $employee_id = self::createEmployee($data, $position_id);
+        $employee = self::createEmployee($data, $position_id);
 
-        return ['role' => $role, 'employee_id' => $employee_id];
+        return ['role' => $role, 'employee' => $employee];
     }
 }

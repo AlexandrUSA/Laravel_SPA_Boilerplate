@@ -56,10 +56,15 @@ export default {
     })
   }),
 
-  computed: mapGetters({
-    user: 'auth/user'
-  }),
-
+  computed: {
+    ...mapGetters({
+      user: 'auth/user',
+      employees: 'employees/employees'
+    }),
+    employee() {
+      return this.employees.find(el => el.user_id == this.user.employee_id)
+    }
+  },
   created () {
     // Заполняем форму данными юзера.
     this.form.keys().forEach(key => {
@@ -70,8 +75,10 @@ export default {
   methods: {
     async update () {
       const { data } = await this.form.patch('/api/settings/profile')
-
-      this.$store.dispatch('auth/updateUser', { user: data })
+      const newEmployee = Object.assign({}, this.employee);
+      newEmployee.first_name = data.name;
+      this.$store.commit('employees/edit', newEmployee)
+      this.$store.dispatch('auth/updateUser', data)
     }
   }
 }

@@ -48,9 +48,16 @@ export default {
     })
   }),
 
-  computed: mapGetters({
-    user: 'auth/user'
-  }),
+  computed: {
+    ...mapGetters({
+      user: 'auth/user',
+      employees: 'employees/employees'
+    }),
+    employee() {
+      console.log(this.employees.find(el => el.user_id == this.user.employee_id))
+      return this.employees.find(el => el.user_id == this.user.employee_id)
+    }
+  },
 
   created () {
     // Fill the form with user data.

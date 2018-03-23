@@ -15,6 +15,7 @@
 - Изменить `.env` по свою БД
 - `php artisan key:generate` + `php artisan jwt:secret`
 - `php artisan migrate`
+- `php artisan storage:link`
 - `yarn` / `npm install`
 
 ## Использование

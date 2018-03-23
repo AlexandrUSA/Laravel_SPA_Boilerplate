@@ -10,86 +10,87 @@
   			</div>	
 			</div>
 	  	<div class="employee__descr">
-	  		<v-text-field
+	  		<v-form v-model="valid" ref="form" lazy-validation>
+	  			<v-text-field
 					      :label="$t('name')"
 					      v-model="item.first_name"
 					      :counter="70"
 					      required
 					      :disabled="disabled"
-				></v-text-field>
-					    <v-text-field
-					      :label="$t('last_name')"
-					      v-model="item.last_name"
-					      :rules="nameRules"
-					      :counter="70"
-					      required
-					      :disabled="disabled"
-				></v-text-field>
-				<v-text-field
-					      :label="$t('patronymic')"
-					      v-model="item.patronymic"
-					      :rules="nameRules"
-					      :counter="70"
-					      :disabled="disabled"
-				></v-text-field>
-				<v-select
-					      :label="$t('position')"
-					      v-model="item.position_id"
-					      prepend-icon="card_travel"
-					      :items="positions"
-					      item-text="title"
-          			item-value="id"
-					      :rules="[v => !!v || 'Выберите должность']"
-					      required
-					      :disabled="disabled"
-				></v-select>
-	  		<v-text-field
-					      :label="$t('phone_number')"
-					      v-model="item.phone_number"
-					      prepend-icon="phone_iphone"
-					      required
-					      :disabled="disabled"
-				></v-text-field>
-				<v-text-field
-					      :label="$t('salary')"
-					      v-model="item.salary"
-					      prepend-icon="attach_money"
-					      required
-					      :disabled="disabled"
-				></v-text-field>
-				<v-text-field
-					      :label="$t('address')"
-					      v-model="item.address"
-					      prepend-icon="home"
-					      required
-					      :disabled="disabled"
-				></v-text-field>
-				<v-layout row wrap>
-					<v-flex xs12>
-						<v-menu
-						  ref="menu"
-						  lazy
-						  :close-on-content-click="false"
-						  v-model="menu"
-						  transition="scale-transition"
-						  offset-y
-						  full-width
-						  :nudge-right="40"
-						  min-width="290px"
-						  :return-value.sync="date"
-						>
-						</v-menu>
-					</v-flex>
-				</v-layout>
-				<div class="buttons">
-					<v-btn large @click="buttonAction()">
-					{{ buttonText }}
-					</v-btn>
-					<v-btn large @click="back">
-					Назад
-					</v-btn>
-				</div>
-	  		
+					></v-text-field>
+						    <v-text-field
+						      :label="$t('last_name')"
+						      v-model="item.last_name"
+						      :rules="nameRules"
+						      :counter="70"
+						      required
+						      :disabled="disabled"
+					></v-text-field>
+					<v-text-field
+						      :label="$t('patronymic')"
+						      v-model="item.patronymic"
+						      :rules="nameRules"
+						      :counter="70"
+						      :disabled="disabled"
+					></v-text-field>
+					<v-select
+						      :label="$t('position')"
+						      v-model="item.position_id"
+						      prepend-icon="card_travel"
+						      :items="positions"
+						      item-text="title"
+	          			item-value="id"
+						      :rules="[v => !!v || 'Выберите должность']"
+						      required
+						      :disabled="disabled"
+					></v-select>
+		  		<v-text-field
+						      :label="$t('phone_number')"
+						      v-model="item.phone_number"
+						      prepend-icon="phone_iphone"
+						      required
+						      :disabled="disabled"
+					></v-text-field>
+					<v-text-field
+						      :label="$t('salary')"
+						      v-model="item.salary"
+						      prepend-icon="attach_money"
+						      required
+						      :disabled="disabled"
+					></v-text-field>
+					<v-text-field
+						      :label="$t('address')"
+						      v-model="item.address"
+						      prepend-icon="home"
+						      required
+						      :disabled="disabled"
+					></v-text-field>
+					<v-layout row wrap>
+						<v-flex xs12>
+							<v-menu
+							  ref="menu"
+							  lazy
+							  :close-on-content-click="false"
+							  v-model="menu"
+							  transition="scale-transition"
+							  offset-y
+							  full-width
+							  :nudge-right="40"
+							  min-width="290px"
+							  :return-value.sync="date"
+							>
+							</v-menu>
+						</v-flex>
+					</v-layout>
+					<div class="buttons">
+						<v-btn large @click="buttonAction()" :disabled="!valid">
+						{{ buttonText }}
+						</v-btn>
+						<v-btn large @click="back">
+						Назад
+						</v-btn>
+					</div>
+	  		</v-form>	  		
 	  </div>
   </div>		
 </template>
@@ -127,7 +128,8 @@
 		computed: {
 			...mapGetters({
 				item: 'employees/employee',
-				positions: 'positions/positions'
+				positions: 'positions/positions',
+				user: 'auth/user'
 			}),
 			buttonText() {
 				return !this.disabled ? "Обновить" : "Изменить данные";
@@ -143,10 +145,19 @@
 		methods: {
 			...mapActions({
 				changeItem: 'employees/edit',
+				updateUser: 'auth/updateUser'
 			}),
+			userUpdate() {
+				const newUser = Object.assign({}, this.user);
+				newUser.name = this.item.first_name;
+				this.updateUser(newUser);
+			},
 			buttonAction() {
 				if (!this.disabled) {
 					this.changeItem(this.item);
+					if(this.item.user_id == this.user.id) {
+						this.userUpdate()
+					}
 				}
 				this.defaultItem = Object.assign({}, this.item);
 				this.disabled = !this.disabled;		

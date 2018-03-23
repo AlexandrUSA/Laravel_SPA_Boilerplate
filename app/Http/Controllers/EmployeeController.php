@@ -32,12 +32,11 @@ class EmployeeController extends Controller
         $this->validate($request, [
             'first_name'   => 'required|String|min:2|max:70',
             'last_name'    => 'required|String|min:2|max:70',
-            'patronymic'   => 'nullable|String|min:2|max:70',
-            'phone_number' => 'nullable|String|min:7|max:15',
-            'position'     => 'nullable|String',
-            'salary'       => 'nullable|String',
-            'birthday'     => 'nullable|date',
-            'avatar'       => 'nullable|image'
+            'patronymic'   => 'String|min:2|max:70',
+            'phone_number' => 'String|min:7|max:15',
+            'position'     => 'String',
+            'salary'       => 'String',
+            'birthday'     => 'date'
         ]);
         Employee::create($request->all());
         return Employee::all()->last();
@@ -54,9 +53,21 @@ class EmployeeController extends Controller
         return $employee;
     }
 
+    /**
+     * Set employee avatar
+     *
+     * @param Request $request
+     * @param $id
+     * @return string
+     */
     public function addImage(Request $request, $id)
     {
         if($request->hasFile('image')) {
+
+            $this->validate($request, [
+                'avatar' => 'image'
+            ]);
+
             $employee = Employee::find($id);
 
             if($employee->avatar !== '/storage/avatars/no-avatar.jpg') {
@@ -67,9 +78,7 @@ class EmployeeController extends Controller
             $path = Storage::putFile('public/avatars', $request->file('image'));
 
             $link = '/storage/' . substr($path, 7);
-            DB::table('employees')
-                ->where('id', $id)
-                ->update(['avatar' => $link]);
+            $employee->update(['avatar' => $link]);
 
             return $link;
          }
@@ -84,17 +93,19 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, Employee $employee)
     {
-
-
-       $user = User::find($employee->user_id);
-
-       $params = ['name' => $request->get('first_name')];
-
-       $user->update($params);
-
-       $employee->update($request->all());
-
-       return $employee;
+        $this->validate($request, [
+            'first_name'   => 'required|String|min:2|max:70',
+            'last_name'    => 'String|min:2|max:70',
+            'patronymic'   => 'String|min:2|max:70',
+            'phone_number' => 'String|min:7|max:15',
+            'position'     => 'String',
+            'salary'       => 'Integer',
+            'birthday'     => 'date'
+        ]);
+        $user = User::find($employee->user_id);
+        $user->update(['name' => $request->get('first_name')]);
+        $employee->update($request->all());
+        return $employee;
     }
 
     /**

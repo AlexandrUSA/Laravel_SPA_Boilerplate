@@ -38,7 +38,8 @@ export const mutations = {
     Cookies.remove('token')
   },
 
-  [types.UPDATE_USER] (state, { user }) {
+  [types.UPDATE_USER] (state, user) {
+
     state.user = user
   }
 }
