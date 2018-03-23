@@ -29,6 +29,7 @@ class User extends Authenticatable implements JWTSubject
         'password', 'remember_token',
     ];
 
+
     /**
      * The accessors to append to the model's array form.
      *
@@ -37,6 +38,11 @@ class User extends Authenticatable implements JWTSubject
     protected $appends = [
         'photo_url',
     ];
+
+    public function employee()
+    {
+        return $this->hasOne(Employee::class);
+    }
 
     /**
      * Get the profile photo URL attribute.

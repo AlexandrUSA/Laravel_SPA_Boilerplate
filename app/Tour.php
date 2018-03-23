@@ -19,14 +19,21 @@ class Tour extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function orders() {
+    public function orders()
+    {
         return $this->hasMany(Order::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function services() {
-        return $this->hasOne(Service::class);
+    public function services()
+    {
+        return $this->belongsToMany(
+            Service::class,
+            'tours_services',
+            'tour_id',
+            'service_id'
+            );
     }
 }

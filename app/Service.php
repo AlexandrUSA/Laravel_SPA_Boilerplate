@@ -14,10 +14,15 @@ class Service extends Model
     protected $fillable = ['provider_id', 'execution_date'];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function tours() {
-        return $this->hasMany(Tour::class);
+        return $this->belongsToMany(
+            Tour::class,
+            'tours_services',
+            'service_id',
+            'tour_id'
+        );
     }
 
     /**

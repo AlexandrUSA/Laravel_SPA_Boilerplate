@@ -11,7 +11,8 @@ class Department extends Model
      */
     protected $fillable = ['title'];
 
-    public function positions() {
+    public function positions()
+    {
         return $this->hasMany(Position::class);
     }
 }

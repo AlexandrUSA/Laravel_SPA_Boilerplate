@@ -11,7 +11,13 @@ class Position extends Model
      */
     protected $fillable = ['title', 'department_id'];
 
-    public function positions() {
-        return $this->hasOne(Department::class);
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
+
+    public function employees()
+    {
+        return $this->hasMany(Employee::class);
     }
 }
