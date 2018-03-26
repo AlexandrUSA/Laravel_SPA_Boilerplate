@@ -6,6 +6,7 @@ use App\Employee;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Mail;
 use Mockery\Exception;
 use Illuminate\Support\Facades\DB;
 
@@ -22,6 +23,26 @@ class EmployeeController extends Controller
     }
 
     /**
+     * Архив удаленных сотрудников.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function archive()
+    {
+        return Employee::onlyTrashed()->get();
+    }
+
+    /**
+     * Удаление сотрудников из архива.
+     *
+     */
+    public function deleteFromArchive($id)
+    {
+        $employee = Employee::find($id);
+        return $employee->forceDelete();
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -29,6 +50,7 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
+
         $this->validate($request, [
             'first_name'   => 'required|String|min:2|max:70',
             'last_name'    => 'required|String|min:2|max:70',
@@ -38,8 +60,34 @@ class EmployeeController extends Controller
             'salary'       => 'String',
             'birthday'     => 'date'
         ]);
+
         Employee::create($request->all());
-        return Employee::all()->last();
+
+        $employee = Employee::all()->last();;
+
+        if ($request->get('userCreate')) {
+            $name = $request->get('first_name');
+            $email = $request->get('email');
+            $password = User::generatePassword();
+
+
+            User::create([
+                'employee_id' => $employee->id,
+                'name' => $name,
+                'email' => $email,
+                'password' => bcrypt($password),
+                'role' => 'member' // Пока так. Но будет выбираться из списка прав для юзеров
+            ]);
+
+
+            Mail::send(['text' => 'newUserInvite'], ['name', 'Alexandr'], function ($msg) {
+                global $name, $email;
+                $msg->to($name, 'To '. $email)->subject('Test invite email');
+                $msg->from($_ENV['MAIL_HOST'], 'Alejandro');
+            });
+        }
+
+        return $employee;
     }
 
     /**

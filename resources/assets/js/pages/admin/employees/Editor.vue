@@ -26,14 +26,16 @@
 					      :rules="nameRules"
 					      :counter="70"
 					    ></v-text-field>
-						  <v-select
-					      :label="$t('position')"
-					      v-model="item.position"
-					      prepend-icon="card_travel"
-					      :items="positions"
-					      :rules="[v => !!v || 'Выберите должность']"
-					      required
-					    ></v-select>
+					    <v-select
+						      :label="$t('position')"
+						      v-model="item.position_id"
+						      prepend-icon="card_travel"
+						      :items="positions"
+						      item-text="title"
+	          			item-value="id"
+						      :rules="[v => !!v || 'Выберите должность']"
+						      required
+							></v-select>
 						  <v-text-field
 					      :label="$t('salary')"
 					      v-model="item.salary"
@@ -114,18 +116,13 @@
 	      emailRules: [
 	        v => !!v || 'Введите E-mail',
 	        v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'Не валидный E-mail'
-	      ],
-	      positions: [
-	        'Старший сотрудник',
-	        'Бухгалтер',
-	        'Директор',
-	        'Сотрудник'
-	      ],
+	      ]
 			}
 		},
 		computed: {
 			...mapGetters({
-				employee: 'employees/employee'
+				item: 'employees/employee',
+				positions: 'positions/positions'
 			}),
 			title() {
 				return (this.id) ? this.$t('edit_employee') : this.$t('new_employee');

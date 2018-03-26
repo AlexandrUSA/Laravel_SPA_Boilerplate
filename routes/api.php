@@ -22,7 +22,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::patch('settings/profile', 'Settings\ProfileController@update');
     Route::patch('settings/password', 'Settings\PasswordController@update');
 
-
+    Route::get('/employees/archive', 'EmployeeController@archive');
     Route::resource('/employees', 'EmployeeController', ['except' => ['create', 'edit']]);
     Route::resource('/positions', 'PositionController', ['except' => ['create', 'edit']]);
     Route::resource('/departments', 'DepartmentController', ['except' => ['create', 'edit']]);

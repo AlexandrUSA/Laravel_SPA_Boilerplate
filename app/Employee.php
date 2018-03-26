@@ -3,9 +3,17 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Employee extends Model
 {
+    use SoftDeletes;
+
+    /**
+     * @var array
+     */
+
+    protected $dates = ['deleted_at'];
     /**
      * The attributes that are mass assignable.
      * @var array
@@ -21,13 +29,21 @@ class Employee extends Model
         return $this->hasMany(Order::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function position()
     {
         return $this->belongsTo(Position::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
+
 }

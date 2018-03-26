@@ -30,7 +30,7 @@ if (mix.inProduction()) {
   ])
 }
 
-mix.browserSync('crm')
+mix.browserSync('web')
 
 mix.webpackConfig({
   plugins: [
