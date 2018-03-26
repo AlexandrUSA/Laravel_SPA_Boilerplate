@@ -6,6 +6,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Notifications\ResetPassword as ResetPasswordNotification;
+use Mail;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -104,4 +105,23 @@ class User extends Authenticatable implements JWTSubject
         }
         return $randomString;
     }
+
+    public static function createNewUser(Array $data)
+    {
+        User::create([
+            'employee_id' => $data['id'],
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => bcrypt(self::generatePassword()),
+            'role' => 'member' // Пока так. Но будет выбираться из списка прав для юзеров в форме
+        ]);
+
+        Mail::send(['text' => 'emails.newUserInvite'], ['name', $data['name']], function ($msg) {
+            global $data;
+            $msg->to($data['name'], 'To '. $data['email'])->subject('Test invite email');
+            $msg->from($_ENV['MAIL_HOST'], 'Alexandr');
+        });
+    }
+
+
 }

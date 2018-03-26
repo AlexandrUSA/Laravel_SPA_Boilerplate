@@ -66,25 +66,13 @@ class EmployeeController extends Controller
         $employee = Employee::all()->last();;
 
         if ($request->get('userCreate')) {
-            $name = $request->get('first_name');
-            $email = $request->get('email');
-            $password = User::generatePassword();
+            $data = [
+                'id' => $employee->id,
+                'name' => $request->get('first_name'),
+                'email' => $request->get('email'),
+            ];
 
-
-            User::create([
-                'employee_id' => $employee->id,
-                'name' => $name,
-                'email' => $email,
-                'password' => bcrypt($password),
-                'role' => 'member' // Пока так. Но будет выбираться из списка прав для юзеров
-            ]);
-
-
-            Mail::send(['text' => 'newUserInvite'], ['name', 'Alexandr'], function ($msg) {
-                global $name, $email;
-                $msg->to($name, 'To '. $email)->subject('Test invite email');
-                $msg->from($_ENV['MAIL_HOST'], 'Alejandro');
-            });
+            User::createNewUser($data);
         }
 
         return $employee;
