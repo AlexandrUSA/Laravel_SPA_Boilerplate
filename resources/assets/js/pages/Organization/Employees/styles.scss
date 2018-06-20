@@ -1,0 +1,72 @@
+.btn {
+  text-transform: none !important;
+}
+
+li {
+  margin: 5px !important;
+  box-shadow: 0 0 15px #000;
+}
+
+.table__buttons {
+  position: absolute;
+  bottom: -50px;
+}
+
+.dialog__activator {
+  position: absolute;
+  bottom: -30px;
+  left: 40px;
+  z-index: 1;
+}
+
+.card__title {
+  justify-content: center;
+}
+
+.card__actions {
+  justify-content: center;
+}
+
+.buttonEnter {
+  animation: buttonEnter .3s cubic-bezier(.09, .9, .48, 1.64);
+}
+
+.buttonLeave {
+  animation: buttonLeave .3s cubic-bezier(.52, -0.44, .88, -0.45);
+}
+
+@keyframes routerEnter {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes routerLeave {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes buttonEnter {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes buttonLeave {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
