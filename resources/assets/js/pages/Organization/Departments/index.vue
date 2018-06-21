@@ -1,6 +1,6 @@
 <template>
   <div id="departments">
-
+    <h2>Подразделения</h2>
     <v-dialog v-model="deleteWindow" max-width="500px">
       <v-card>
         <v-card-title>

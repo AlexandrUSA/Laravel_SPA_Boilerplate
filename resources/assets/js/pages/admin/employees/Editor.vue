@@ -5,7 +5,7 @@
             <h2>{{title}} <v-icon class="title__icon">{{titleIcon}}</v-icon></h2>
           </v-card-title>
           <v-card-text>
-            <v-form v-model="valid" ref="form" lazy-validation>
+            <v-form v-model="valid" ref="form">
 					    <v-text-field
 					      :label="$t('name')"
 					      v-model="item.first_name"
@@ -25,6 +25,7 @@
 					      v-model="item.patronymic"
 					      :rules="nameRules"
 					      :counter="70"
+								required
 					    ></v-text-field>
 					    <v-select
 						      :label="$t('position')"
@@ -122,7 +123,8 @@
 		computed: {
 			...mapGetters({
 				item: 'employees/employee',
-				positions: 'positions/positions'
+				positions: 'positions/positions',
+        creationError: 'employees/error'
 			}),
 			title() {
 				return (this.id) ? this.$t('edit_employee') : this.$t('new_employee');
@@ -144,12 +146,15 @@
 		methods: {
 			...mapActions({
 				loadItem: 'employees/loadOne',
-				changeItem: 'employees/edit',
 				addItem: 'employees/add'
 			}),
-			save() {
-				this.addItem(this.item);
-				this.$router.go(-1);
+			async save() {
+			  await this.addItem(this.item);
+				if (!this.creationError) {
+				  this.$router.go(-1);
+        } else {
+				  console.log(this.creationError.errors);
+				}
 			},
 			close() {
 				this.$router.go(-1);

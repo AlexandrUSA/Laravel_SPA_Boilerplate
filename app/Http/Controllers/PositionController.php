@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Position;
-use Illuminate\Http\Request;
+use App\Http\Requests\PositionRequest;
 
 class PositionController extends Controller
 {
@@ -14,23 +14,17 @@ class PositionController extends Controller
      */
     public function index()
     {
-        return Position::all();
+      return response(Position::all());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+  /**
+   * @param PositionRequest $request
+   * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+   */
+    public function store(PositionRequest $request)
     {
-        $this->validate($request, [
-            'title'         => 'required|String|min:1|max:70',
-            'department_id' => 'required'
-        ]);
         Position::create($request->all());
-        return Position::all()->last();
+        return response(Position::all()->last(), 201);
     }
 
     /**
@@ -41,25 +35,19 @@ class PositionController extends Controller
      */
     public function show(Position $position)
     {
-        return $position;
+      return response($position);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Position  $position
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Position $position)
+  /**
+   * Update the specified resource in storage.
+   * @param PositionRequest $request
+   * @param Position $position
+   * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+   */
+    public function update(PositionRequest $request, Position $position)
     {
-        $this->validate($request, [
-            'title'         => 'required|String|min:1|max:70',
-            'department_id' => 'required'
-        ]);
-
         $position->update($request->all());
-        return $position;
+        return response($position);
     }
 
     /**
@@ -71,5 +59,6 @@ class PositionController extends Controller
     public function destroy(Position $position)
     {
         $position->delete();
+        return response('', 204);
     }
 }

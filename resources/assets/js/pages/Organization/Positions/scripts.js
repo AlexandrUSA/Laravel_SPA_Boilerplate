@@ -22,13 +22,13 @@ export default {
       editedItem: {
         id: '',
         title: '',
-        department_id: '',
+        department_id: 0,
       },
       // Для возврата к дефолтным значениям
       defaultItem: {
         id: '',
         title: '',
-        department_id: '',
+        department_id: 0,
       }
     }
   },
@@ -74,6 +74,7 @@ export default {
     editItem (id) {
       const item = this.positions.find(el => +el.id === +id);
       this.editedItem = Object.assign({}, item);
+      this.editedItem.department_id = +item.department_id;
       this.editedIndex = item.id;
       this.dialog = true;
     },

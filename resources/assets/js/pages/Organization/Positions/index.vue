@@ -1,5 +1,6 @@
 <template>
   <div id="positions">
+    <h2>{{ $t('positions') }}</h2>
     <!--Диалог удаления должности-->
     <v-dialog v-model="deleteWindow" max-width="800px">
       <v-btn color="primary" dark slot="activator" class="mb-2">Добавить должность</v-btn>
@@ -35,7 +36,7 @@
               <v-flex xs12 sm6>
                 <v-select
                   :label="$t('department')"
-                  v-model="+editedItem.department_id"
+                  v-model="editedItem.department_id"
                   prepend-icon="card_travel"
                   :items="departments"
                   item-text="title"
@@ -57,7 +58,6 @@
 
     <v-card>
       <v-card-title class="t-head">
-        <h2>{{ $t('positions') }}</h2>
         <v-spacer></v-spacer>
         <v-text-field
           append-icon="search"

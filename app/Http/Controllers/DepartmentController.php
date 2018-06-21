@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Department;
-use Illuminate\Http\Request;
+use App\Http\Requests\DepartmentRequest;
 
 class DepartmentController extends Controller
 {
@@ -14,22 +14,18 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-        return Department::all();
+      return response(Department::all());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+  /**
+   * Store a newly created resource in storage.
+   * @param DepartmentRequest $request
+   * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+   */
+    public function store(DepartmentRequest $request)
     {
-        $this->validate($request, [
-            'title' => 'required|String|min:1|max:70'
-        ]);
-        Department::create($request->all());
-        return Department::all()->last();
+      Department::create($request->all());
+      return response(Department::all()->last(), 201);
     }
 
     /**
@@ -40,23 +36,18 @@ class DepartmentController extends Controller
      */
     public function show(Department $department)
     {
-        return $department;
+      return response($department);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Department  $department
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Department $department)
+  /**
+   * @param DepartmentRequest $request
+   * @param Department $department
+   * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+   */
+    public function update(DepartmentRequest $request, Department $department)
     {
-        $this->validate($request, [
-            'title' => 'required|String|min:1|max:70'
-        ]);
         $department->update(request()->all());
-        return $department;
+        return response($department);
     }
 
     /**
@@ -67,6 +58,7 @@ class DepartmentController extends Controller
      */
     public function destroy(Department $department)
     {
-        $department->delete();
+      $department->delete();
+      return response('', 204);
     }
 }

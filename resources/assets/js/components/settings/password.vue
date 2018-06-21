@@ -9,7 +9,6 @@
       type="password"
       required
     ></v-text-field>
-    <has-error :form="form" field="password"/>
     <v-text-field
       :label="$t('confirm_password')"
       v-model="form.password_confirmation"
@@ -19,7 +18,7 @@
       type="password"
       required
     ></v-text-field>
-    <has-error :form="form" field="password_confirmation" />
+    <has-error :form="form" field="password"/>
 
     <v-btn large block :loading="form.busy" type="submit">{{ $t('update') }}</v-btn>
   </v-form>
@@ -48,9 +47,8 @@ export default {
 
   methods: {
     async update () {
-      await this.form.patch('/api/settings/password')
-
-      this.form.reset()
+      await this.form.patch('/api/settings/password');
+      this.form.reset();
       this.$router.go(-1);
     }
   }

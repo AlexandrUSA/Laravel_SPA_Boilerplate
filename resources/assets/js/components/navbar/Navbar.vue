@@ -1,21 +1,27 @@
 <template>
   <v-toolbar app fixed clipped-left>
-      <v-toolbar-side-icon v-show="user" @click="switchDrawer()"></v-toolbar-side-icon>
-      <v-btn fab small v-show="user" @click="historyBack()" class="arrow">
+    <template v-if="user">
+      <v-toolbar-side-icon @click="switchDrawer()"></v-toolbar-side-icon>
+      <v-btn fab small @click="historyBack()" class="arrow">
         <fa icon="angle-left"/>
-      </v-btn>    
-      <v-btn flat :to="{ name: user ? 'home' : 'welcome' }">{{ appName }}</v-btn>
-      <locale-dropdown/>
-      <v-spacer></v-spacer>
-        <!--  Пользователь -->
-        <template v-if="user">
-          <settings-dropdown></settings-dropdown>
-        </template>     
-        <!-- Гость -->
-        <template v-else>
-          <v-btn flat :to="{ name: 'login' }">{{ $t('login') }}</v-btn>
-        </template>   
-    </v-toolbar>    
+      </v-btn>
+    </template>
+    <v-btn flat :to="{ name: user ? 'home' : 'welcome' }">{{ appName }}</v-btn>
+    <locale-dropdown/>
+    <v-spacer/>
+    <!--  Пользователь -->
+    <template v-if="user">
+      <v-btn flat>
+        <fa icon="sign-out-alt"/>
+        {{ $t('logout') }}
+      </v-btn>
+    </template>
+    <!-- Гость -->
+    <template v-else>
+      <fa icon="sign-in-alt"/>
+      <v-btn flat :to="{ name: 'login' }">{{ $t('login') }}</v-btn>
+    </template>
+  </v-toolbar>
 </template>
 
 <script>
@@ -52,6 +58,9 @@ export default {
 </script>
 
 <style scoped>
+  .svg-inline--fa {
+    margin-right: 5px;
+  }
 .profile-photo {
   width: 2rem;
   height: 2rem;

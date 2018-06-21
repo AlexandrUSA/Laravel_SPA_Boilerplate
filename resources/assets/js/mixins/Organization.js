@@ -23,12 +23,14 @@ export default {
     })
   },
   created () {
-    if (this.searchProp) this.search = this.searchProp;
+    if (this.searchProp) {
+      this.search = this.searchProp;
+    }
     if(!this.headers) {
-      throw new Error('You must to specify table headers!')
+      throw new Error('You must to specify table headers!');
     }
     if(!this.items) {
-      throw new Error('You must to specify table items!')
+      throw new Error('You must to specify table items!');
     }
   }
 }

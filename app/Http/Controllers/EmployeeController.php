@@ -7,8 +7,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Mail;
-use Mockery\Exception;
-use Illuminate\Support\Facades\DB;
+use App\Http\Requests\EmployeeRequest;
 
 class EmployeeController extends Controller
 {
@@ -19,7 +18,7 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        return Employee::all();
+        return response(Employee::all());
     }
 
     /**
@@ -39,32 +38,17 @@ class EmployeeController extends Controller
     public function deleteFromArchive($id)
     {
         $employee = Employee::find($id);
-        return $employee->forceDelete();
+        return response($employee->forceDelete(), 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+  /**
+   * @param EmployeeRequest $request
+   * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+   */
+    public function store(EmployeeRequest $request)
     {
-
-        $this->validate($request, [
-            'first_name'   => 'required|String|min:2|max:70',
-            'last_name'    => 'required|String|min:2|max:70',
-            'patronymic'   => 'String|min:2|max:70',
-            'phone_number' => 'String|min:7|max:15',
-            'position'     => 'String',
-            'salary'       => 'String',
-            'birthday'     => 'date'
-        ]);
-
         Employee::create($request->all());
-
         $employee = Employee::all()->last();;
-
         if ($request->get('userCreate')) {
             $data = [
                 'id' => $employee->id,
@@ -74,8 +58,7 @@ class EmployeeController extends Controller
 
             User::createNewUser($data);
         }
-
-        return $employee;
+        return response($employee, 201);
     }
 
     /**
@@ -86,7 +69,7 @@ class EmployeeController extends Controller
      */
     public function show(Employee $employee)
     {
-        return $employee;
+        return response($employee);
     }
 
     /**
@@ -98,52 +81,38 @@ class EmployeeController extends Controller
      */
     public function addImage(Request $request, $id)
     {
-        if($request->hasFile('image')) {
+      if($request->hasFile('image')) {
+        $this->validate($request, [
+          'avatar' => 'image'
+        ]);
 
-            $this->validate($request, [
-                'avatar' => 'image'
-            ]);
+        $employee = Employee::find($id);
+        if($employee->avatar !== '/storage/avatars/no-avatar.jpg') {
+          $path = 'public/' . substr($employee->avatar, 9);
+          Storage::delete($path);
+        }
+        $path = Storage::putFile('public/avatars', $request->file('image'));
 
-            $employee = Employee::find($id);
-
-            if($employee->avatar !== '/storage/avatars/no-avatar.jpg') {
-                $path = 'public/' . substr($employee->avatar, 9);
-                Storage::delete($path);
-            }
-
-            $path = Storage::putFile('public/avatars', $request->file('image'));
-
-            $link = '/storage/' . substr($path, 7);
-            $employee->update(['avatar' => $link]);
-
-            return $link;
-         }
+        $link = '/storage/' . substr($path, 7);
+        $employee->update(['avatar' => $link]);
+        return response($link, 200);
+      }
+      return response('', 204);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Employee  $employee
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Employee $employee)
+  /**
+   * @param EmployeeRequest $request
+   * @param Employee $employee
+   * @return Employee
+   */
+    public function update(EmployeeRequest $request, Employee $employee)
     {
-        $this->validate($request, [
-            'first_name'   => 'required|String|min:2|max:70',
-            'last_name'    => 'String|min:2|max:70',
-            'patronymic'   => 'String|min:2|max:70',
-            'phone_number' => 'String|min:7|max:15',
-            'position'     => 'String',
-            'salary'       => 'Integer',
-            'birthday'     => 'date'
-        ]);
-        $user = User::find($employee->user_id);
-        if ($user) {
-            $user->update(['name' => $request->get('first_name')]);
-        }
-        $employee->update($request->all());
-        return $employee;
+      $user = User::find($employee->user_id);
+      if ($user) {
+        $user->update(['name' => $request->get('first_name')]);
+      }
+      $employee->update($request->all());
+      return response($employee);
     }
 
     /**
@@ -154,6 +123,7 @@ class EmployeeController extends Controller
      */
     public function destroy(Employee $employee)
     {
-        $employee->delete();
+      $employee->delete();
+      return response('', 204);
     }
 }
