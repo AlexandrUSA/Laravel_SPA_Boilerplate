@@ -23,6 +23,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::patch('settings/password', 'Settings\PasswordController@update');
 
     Route::get('/employees/archive', 'EmployeeController@archive');
+    Route::get('/employees/archive/{id}', 'EmployeeController@archiveOne');
+    Route::delete('/employees/archive/{id}', 'EmployeeController@deleteFromArchive');
     Route::resource('/employees', 'EmployeeController', ['except' => ['create', 'edit']]);
     Route::resource('/positions', 'PositionController', ['except' => ['create', 'edit']]);
     Route::resource('/departments', 'DepartmentController', ['except' => ['create', 'edit']]);

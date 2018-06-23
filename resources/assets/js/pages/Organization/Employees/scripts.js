@@ -12,36 +12,37 @@ export default {
       snackbarTimeout: 10000,
       // Поиск / Выборка
       selected: [],
-      // Удаление
-      delMode: 'single',
-      // Заголовки таблицы
-      headers: [
+      isArchive: false
+    }
+  },
+  computed: {
+    // Заголовки таблицы
+    headers () {
+      return  [
         {
-          text: 'Имя',
+          text: this.$t('name'),
           value: 'first_name'
         },
         {
-          text: 'Фамилия',
+          text: this.$t('last_name'),
           value: 'last_name'
         },
         {
-          text: 'Должность',
+          text: this.$t('position'),
           value: 'position'
         },
         {
-          text: 'Подразделение',
+          text: this.$t('department'),
           value: 'department'
         },
         {
-          text: 'Действия',
+          text: this.$t('actions'),
           align: 'left',
           sortable: false
         }
       ]
-    }
-  },
-  computed: {
-    items() {
+    },
+    items () {
       const data = [];
       this.employees.forEach(el => {
         data.push({
@@ -54,7 +55,7 @@ export default {
       });
       return data;
     },
-    deleteMsg() {
+    deleteMsg () {
       return (this.selected.length === 1) ? this.$t('delete_item_confirm') :
         this.$t('delete_items_confirm');
     },
@@ -101,8 +102,21 @@ export default {
     deleteCancel() {
       this.deleteWindow = false;
     },
+    loadItems (archive) {
+      if (archive) {
+        this.getArchive();
+      } else {
+        this.getEmployees()
+      }
+      this.isArchive = archive;
+    },
     ...mapActions({
-      deleteItem: 'employees/remove'
+      deleteItem: 'employees/remove',
+      getArchive: 'employees/getArchive',
+      getEmployees: 'employees/load'
     })
+  },
+  beforeDestroy () {
+    this.getEmployees();
   }
 }

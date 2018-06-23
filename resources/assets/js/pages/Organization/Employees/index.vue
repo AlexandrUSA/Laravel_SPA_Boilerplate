@@ -44,17 +44,12 @@
               v-model="props.selected"
             ></v-checkbox>
           </td>
-          <!--<td>-->
-          <!--<v-list-tile-avatar>-->
-          <!--<img :src="props.item.avatar">-->
-          <!--</v-list-tile-avatar>-->
-          <!--</td>-->
           <td>{{ props.item.first_name }}</td>
           <td>{{ props.item.last_name }}</td>
           <td>{{ props.item.position }}</td>
           <td>{{ props.item.department }}</td>
           <td>
-            <v-btn outline round :to="{name: 'employee', params: {id: props.item.id}}">{{ $t('details') }}</v-btn>
+            <v-btn outline round :to="{name: (isArchive) ? 'employeeArchive' : 'employee', params: {id: props.item.id}}">{{ $t('details') }}</v-btn>
           </td>
         </template>
         <template slot="no-data">
@@ -64,8 +59,24 @@
         </template>
       </v-data-table>
       <div class="table__buttons">
-        <v-btn fab dark large color="cyan" :to="{ name: 'employeeCreate' }">
+        <v-btn fab dark large color="cyan"
+               :to="{ name: 'employeeCreate' }"
+               title="Добавить нового">
           <v-icon dark>add</v-icon>
+        </v-btn>
+        <v-btn v-if="!isArchive"
+               fab dark large
+               color="light-blue darken-1"
+               title="Архив"
+               @click="loadItems(true)">
+          <fa icon="archive"/>
+        </v-btn>
+        <v-btn fab dark large
+               color="light-blue darken-1"
+               title="Сотрудники"
+               @click="loadItems(false)"
+               v-else>
+          <fa icon="address-card"/>
         </v-btn>
         <transition enter-active-class="buttonEnter" leave-active-class="buttonLeave" mode="out-in">
           <v-btn v-show="selected.length > 0" class="delete-btn" fab large dark @click="deleteDialog(selected)">

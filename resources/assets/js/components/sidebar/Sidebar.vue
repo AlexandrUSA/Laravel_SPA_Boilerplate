@@ -11,6 +11,16 @@
       </v-list-tile>
       <v-list-tile :to="{name: 'settings'}">
         <v-list-tile-action>
+          <fa icon="user"/>
+        </v-list-tile-action>
+        <v-list-tile-content>
+          <v-list-tile-title>
+            {{ $t('profile') }}
+          </v-list-tile-title>
+        </v-list-tile-content>
+      </v-list-tile>
+      <v-list-tile :to="{name: 'settings'}">
+        <v-list-tile-action>
           <fa icon="cog"/>
         </v-list-tile-action>
         <v-list-tile-content>
@@ -74,31 +84,29 @@
         required: true
       }
     },
-    data() {
-      return {
-        items: [
-          {icon: 'home', text: 'Главная', to: {name: 'home'}},
+    computed: {
+      items () {
+        return [
+          {icon: 'home', text: this.$t('nav-main'), to: {name: 'home'}},
           {
             icon: 'account_balance',
             // 'append-icon': 'users',
-            text: 'Организация',
+            text: this.$t('nav-organization'),
             model: false,
             children: [
-              {icon: 'address-card', text: 'Сотрудники', to: {name: 'employees'}},
-              {icon: 'sitemap', text: 'Отделы', to: {name: 'departments'}},
-              {icon: 'briefcase', text: 'Должности', to: {name: 'positions'}}
+              {icon: 'address-card', text: this.$t('employees'), to: {name: 'employees'}},
+              {icon: 'sitemap', text: this.$t('departments'), to: {name: 'departments'}},
+              {icon: 'briefcase', text: this.$t('positions'), to: {name: 'positions'}}
             ]
           },
-          {icon: 'users', text: 'Клиенты', to: {name: 'clients'}},
-          {icon: 'plane', text: 'Туры', to: {name: 'clients'}},
-          {icon: 'address-book', text: 'Поставщики', to: {name: 'clients'}},
-          {icon: 'calendar', text: 'Календарь', to: {name: 'clients'}},
-          {icon: 'comments', text: 'Сообщения', to: {name: 'messages'}},
-          {icon: 'question-circle', text: 'Помощь', to: {name: 'helpers'}}
+          {icon: 'users', text: this.$t('nav-clients'), to: {name: 'clients'}},
+          {icon: 'plane', text: this.$t('nav-tours'), to: {name: 'clients'}},
+          {icon: 'address-book', text: this.$t('nav-providers'), to: {name: 'clients'}},
+          {icon: 'calendar', text: this.$t('nav-calendar'), to: {name: 'clients'}},
+          {icon: 'comments', text: this.$t('nav-chat'), to: {name: 'messages'}},
+          {icon: 'question-circle', text: this.$t('nav-help'), to: {name: 'helpers'}}
         ]
-      }
-    },
-    computed: {
+      },
       avatar() {
         return (this.user.avatar) ? this.user.avatar : "/storage/avatars/no-avatar.jpg"
       }

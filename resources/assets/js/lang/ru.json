@@ -37,6 +37,7 @@
   "new_password": "Новый пароль",
   "login_with": "Войти через...",
   "register_with": "Регистрация через...",
+  "actions": "Действия",
 
   "employees": "Сотрудники",
   "employee": "Сотрудник",
@@ -50,6 +51,7 @@
   "position": "Должность",
   "positions": "Должности",
   "department": "Подразделение",
+  "departments": "Подразделения",
   "phone_number": "Номер телефона",
   "salary": "Заработная плата",
   "address": "Адрес",
@@ -66,5 +68,14 @@
   "delete_done": "Информация была удалена!",
   "add_done": "Информация была добавлена!",
   "welcome": "Добро пожаловать!",
-  "dark_theme": "Темная тема"
+  "dark_theme": "Темная тема",
+
+  "nav-main": "Главная",
+  "nav-organization": "Организация",
+  "nav-clients": "Клиенты",
+  "nav-tours": "Туры",
+  "nav-providers": "Поставщики",
+  "nav-calendar": "Календарь",
+  "nav-chat": "Чат",
+  "nav-help": "Помощь"
 }

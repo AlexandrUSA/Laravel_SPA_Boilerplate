@@ -18,8 +18,10 @@
     </template>
     <!-- Гость -->
     <template v-else>
-      <fa icon="sign-in-alt"/>
-      <v-btn flat :to="{ name: 'login' }">{{ $t('login') }}</v-btn>
+      <v-btn flat :to="{ name: 'login' }">
+        <fa icon="sign-in-alt"/>
+        {{ $t('login') }}
+      </v-btn>
     </template>
   </v-toolbar>
 </template>

@@ -6,12 +6,14 @@ const url = '/api/employees';
 export const state = {
   employees: [],
   employee: {},
+  archive: [],
   error: null
 };
 
 export const getters = {
   employees: state => state.employees,
   employee: state => state.employee,
+  archive: state => state.archive,
   error: state => state.error
 };
 
@@ -37,16 +39,17 @@ export const mutations = {
     const pos = state.employees.findIndex(el => el.id === employeId);
     if (pos !== -1) state.employees.splice(pos, 1);
   },
-
   setError (state, error) {
     state.error = error;
+  },
+  removeFromArchive(state) {
+    state.employee = {};
   }
 };
 
 export const actions = {
   
-  async [types.LOAD] ({ commit, state }) {
-    if(state.employees.length) return state.employees;
+  async [types.LOAD] ({ commit }) {
     try {
       const { data } = await axios.get(url);
       commit('load', data)
@@ -55,15 +58,13 @@ export const actions = {
     }
   },
     
-  async [types.LOAD_ONE] ({ commit, state }, employee_id) {
-    if(state.employees.length) {
-      return state.employees.find(el => +el.id === +employee_id)
-    }
+  async [types.LOAD_ONE] ({ commit }, employee_id) {
+    console.log('current');
     try {
       const { data } = await axios.get(url + '/' + employee_id);
       commit('loadOne', data)
     } catch (e) {
-      console.error('Не загрузился сотрудник', e)
+      commit('setError', e.response.data);
     }
   },
     
@@ -81,7 +82,7 @@ export const actions = {
       const { data } = await axios.put(url + '/' + employee.id, employee);
       commit('edit', data)
     } catch (e) {
-      console.error('Не изменился сотрудник', e)
+      commit('setError', e.response.data);
     }
   },
     
@@ -90,7 +91,35 @@ export const actions = {
       await axios.delete(url + '/' + employee_id);
       commit('remove', employee_id)
     } catch (e) {
-      console.error('Не удалился сотрудник', e)
+      commit('setError', e.response.data);
+    }
+  },
+
+  async getArchive ({ commit }) {
+    try {
+      const { data } = await axios.get(url + '/archive');
+      commit('load', data);
+    } catch (e) {
+      commit('setError', e.response.data);
+    }
+  },
+
+  async getArchiveOne ({ commit }, employee_id) {
+    console.log('archive');
+    try {
+      const { data } = await axios.get(url + '/archive/' + employee_id);
+      commit('loadOne', data);
+    } catch (e) {
+      commit('setError', e.response.data);
+    }
+  },
+
+  async removeFromArchive ({ commit }, employee_id) {
+    try {
+      await axios.delete(url + '/archive/' + employee_id);
+      commit('removeFromArchive', employee_id)
+    } catch (e) {
+      commit('setError', e.response.data);
     }
   }
 };

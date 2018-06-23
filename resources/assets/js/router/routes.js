@@ -78,6 +78,12 @@ export default [
     props: true
   },
   {
+    path: '/employees/archive/:id',
+    name: 'employeeArchive',
+    component: AdminEmployee,
+    props: true
+  },
+  {
     path: '/employees/:id/edit',
     name: 'employeeEdit',
     component: AdminEmployeeEdit,
