@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ClientRequest extends FormRequest
 {
@@ -13,7 +14,8 @@ class ClientRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+      $user = JWTAuth::parseToken()->toUser();
+      return $user->can('crud-clients');
     }
 
     /**

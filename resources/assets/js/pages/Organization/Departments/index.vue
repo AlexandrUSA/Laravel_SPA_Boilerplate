@@ -39,6 +39,7 @@
         :headers="headers"
         :items="items"
         item-key="id"
+        :search="search"
         :no-results-text="$t('no_match_found')"
         :rows-per-page-text="$t('strings')"
         class="elevation-1">

@@ -4,8 +4,10 @@ namespace Tests\Browser;
 
 use App\User;
 use Tests\DuskTestCase;
+use Laravel\Dusk\Browser;
 use Tests\Browser\Pages\Home;
 use Tests\Browser\Pages\Login;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class LoginTest extends DuskTestCase
 {
@@ -17,7 +19,7 @@ class LoginTest extends DuskTestCase
     }
 
     /** @test */
-    public function login_with_valid_credentials()
+    function login_with_valid_credentials()
     {
         $user = factory(User::class)->create();
 

@@ -8,15 +8,16 @@ import i18n from '~/plugins/i18n'
  *  Глобальный перехватчик AJAX запроса на сервер для его обработки
  */
 axios.interceptors.request.use(request => {
+  store.state['httpPending'] = true
   // Получаем токен из хранилища
-  const token = store.getters['auth/token'];
+  const token = store.getters['auth/token']
   // Если токе получен(юзер авторизован) - записываем в заголовки
   if (token) {
     request.headers.common['Authorization'] = `Bearer ${token}`
   }
 
   // Получаем язык пользователя
-  const locale = store.getters['lang/locale'];
+  const locale = store.getters['lang/locale']
   if (locale) { // И записываем в заголовки
     request.headers.common['Accept-Language'] = locale
   }
@@ -25,13 +26,17 @@ axios.interceptors.request.use(request => {
   // request.headers['X-Socket-Id'] = Echo.socketId()
 
   return request
-});
+})
 
 /**
  * Перехватчик AJAX ответов
  */
-axios.interceptors.response.use(response => response, error => {
-  const { status } = error.response;
+axios.interceptors.response.use(response => {
+  store.state['httpPending'] = false
+  return response
+}, error => {
+  store.state['httpPending'] = false
+  const {status} = error.response
 
   if (status >= 500) {  // Если внутренняя ошибка сервера - оповещаем пользователя
     swal({
@@ -55,10 +60,10 @@ axios.interceptors.response.use(response => response, error => {
       cancelButtonText: i18n.t('cancel')
     }).then(async () => {
       // После чего делаем логаут и переводим его на страницу авторизации
-      await store.dispatch('auth/logout');
-      router.push({ name: 'login' })
+      await store.dispatch('auth/logout')
+      router.push({name: 'login'})
     })
   }
 
   return Promise.reject(error)
-});
+})

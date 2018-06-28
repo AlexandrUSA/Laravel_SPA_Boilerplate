@@ -1,6 +1,13 @@
 {
-  "parser": "babel-eslint",
+  "env": {
+    "browser": true
+  },
   "extends": [
     "plugin:vue-libs/recommended"
-  ]
+  ],
+  "rules": {
+    "semi": [ 2, "always" ],
+    "no-extra-semi": 2,
+    "generator-star-spacing": "off"
+  }
 }

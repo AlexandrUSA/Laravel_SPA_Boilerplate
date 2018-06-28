@@ -10,20 +10,26 @@ const PasswordRequest = () => import('~/pages/auth/password/email').then(m => m.
 const Settings = () => import('~/pages/settings/index').then(m => m.default || m);
 
 const AdminDashboard = () => import('~/pages/admin/Dashboard').then(m => m.default || m);
-// const AdminEmployees = () => import('~/pages/admin/employees/List').then(m => m.default || m);
-const AdminEmployee = () => import('~/pages/admin/employees/Show').then(m => m.default || m);
-const AdminEmployeeEdit = () => import('~/pages/admin/employees/Editor').then(m => m.default || m);
-
-// const AdminPositions = () => import('~/pages/admin/positions/List').then(m => m.default || m);
-// const AdminDepartments = () => import('~/pages/admin/departments/List').then(m => m.default || m);
 const AdminMessages = () => import('~/pages/admin/messages/List').then(m => m.default || m);
 const AdminHelpers = () => import('~/pages/admin/helpers/List').then(m => m.default || m);
 
-const AdminClients = () => import('~/pages/admin/clients/List').then(m => m.default || m);
-const AdminClient = () => import('~/pages/admin/clients/Show').then(m => m.default || m);
-const AdminClientEdit = () => import('~/pages/admin/clients/Editor').then(m => m.default || m);
+const AdminBalance = () => import('~/pages/Balance').then(m => m.default || m);
+const AdminCalendar = () => import('~/pages/Calendar').then(m => m.default || m);
+const AdminChat = () => import('~/pages/Chat').then(m => m.default || m);
+const AdminHelp = () => import('~/pages/Help').then(m => m.default || m);
 
-const Employees = () => import('~/pages/Organization/Employees').then(m => m.default || m);
+const AdminClients = () => import('~/pages/Clients/list').then(m => m.default || m);
+const AdminClientEdit = () => import('~/pages/Clients/editor').then(m => m.default || m);
+
+const AdminTours = () => import('~/pages/Clients/list').then(m => m.default || m);
+const AdminToursEdit = () => import('~/pages/Clients/editor').then(m => m.default || m);
+
+// const AdminProviders = () => import('~/pages/Clients/list').then(m => m.default || m);
+const AdminProvidersEdit = () => import('~/pages/Clients/editor').then(m => m.default || m);
+
+const AdminEmployees = () => import('~/pages/Organization/Employees/list').then(m => m.default || m);
+const AdminEmployee = () => import('~/pages/Organization/employees/show').then(m => m.default || m);
+const AdminEmployeeEditor = () => import('~/pages/Organization/employees/editor').then(m => m.default || m);
 const Positions = () => import('~/pages/Organization/Positions').then(m => m.default || m);
 const Departments = () => import('~/pages/Organization/Departments').then(m => m.default || m);
 
@@ -66,10 +72,35 @@ export default [
     children: []
   },
   {
+    path: '/balance',
+    name: 'balance',
+    component: AdminBalance
+  },
+  {
+    path: '/calendar',
+    name: 'calendar',
+    component: AdminCalendar
+  },
+  {
+    path: '/chat',
+    name: 'chat',
+    component: AdminChat
+  },
+  {
+    path: '/help',
+    name: 'help',
+    component: AdminHelp
+  },
+  {
     path: '/employees',
     name: 'employees',
-    component: Employees,
+    component: AdminEmployees,
     props: true
+  },
+  {
+    path: '/employees/create',
+    name: 'employeeCreate',
+    component: AdminEmployeeEditor
   },
   {
     path: '/employees/:id',
@@ -84,15 +115,36 @@ export default [
     props: true
   },
   {
-    path: '/employees/:id/edit',
-    name: 'employeeEdit',
-    component: AdminEmployeeEdit,
+    path: '/tours',
+    name: 'tours',
+    component: AdminTours
+  },
+  {
+    path: '/tours/:id',
+    name: 'toursShow',
+    component: AdminToursEdit,
     props: true
   },
   {
-    path: '/employees/create',
-    name: 'employeeCreate',
-    component: AdminEmployeeEdit
+    path: '/tours/create',
+    name: 'toursCreate',
+    component: AdminToursEdit
+  },
+  {
+    path: '/providers',
+    name: 'providers',
+    component: AdminProvidersEdit
+  },
+  {
+    path: '/providers/:id',
+    name: 'providersShow',
+    component: AdminProvidersEdit,
+    props: true
+  },
+  {
+    path: '/providers/create',
+    name: 'providersCreate',
+    component: AdminProvidersEdit
   },
   {
     path: '/clients',
@@ -102,7 +154,7 @@ export default [
   {
     path: '/clients/:id',
     name: 'client',
-    component: AdminClient,
+    component: AdminClientEdit,
     props: true
   },
   {

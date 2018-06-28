@@ -85,27 +85,37 @@
       }
     },
     computed: {
-      items () {
+      initialItems () {
         return [
-          {icon: 'home', text: this.$t('nav-main'), to: {name: 'home'}},
+          {icon: 'home', text: this.$t('nav-main'), to: {name: 'home'}, permissions: false},
           {
             icon: 'account_balance',
             // 'append-icon': 'users',
             text: this.$t('nav-organization'),
             model: false,
+            permissions: 'crud-employee',
             children: [
               {icon: 'address-card', text: this.$t('employees'), to: {name: 'employees'}},
               {icon: 'sitemap', text: this.$t('departments'), to: {name: 'departments'}},
               {icon: 'briefcase', text: this.$t('positions'), to: {name: 'positions'}}
             ]
           },
-          {icon: 'users', text: this.$t('nav-clients'), to: {name: 'clients'}},
-          {icon: 'plane', text: this.$t('nav-tours'), to: {name: 'clients'}},
-          {icon: 'address-book', text: this.$t('nav-providers'), to: {name: 'clients'}},
-          {icon: 'calendar', text: this.$t('nav-calendar'), to: {name: 'clients'}},
-          {icon: 'comments', text: this.$t('nav-chat'), to: {name: 'messages'}},
-          {icon: 'question-circle', text: this.$t('nav-help'), to: {name: 'helpers'}}
+          {icon: 'dollar-sign', text: this.$t('nav-balance'), to: {name: 'balance'}, permissions: 'finance-actions'},
+          {icon: 'users', text: this.$t('nav-clients'), to: {name: 'clients'}, permissions: 'crud-clients'},
+          {icon: 'plane', text: this.$t('nav-tours'), to: {name: 'tours'}, permissions: 'crud-tours'},
+//          {icon: 'address-book', text: this.$t('nav-providers'), to: {name: 'clients'}},
+          {icon: 'calendar', text: this.$t('nav-calendar'), to: {name: 'calendar'}},
+          {icon: 'comments', text: this.$t('nav-chat'), to: {name: 'chat'}},
+          {icon: 'question-circle', text: this.$t('nav-help'), to: {name: 'help'}}
         ]
+      },
+      items () {
+        return this.initialItems.filter(el => {
+          if (el.permissions) {
+            return this.user.permissions.indexOf(el.permissions) !== -1
+          }
+          return true
+        })
       },
       avatar() {
         return (this.user.avatar) ? this.user.avatar : "/storage/avatars/no-avatar.jpg"

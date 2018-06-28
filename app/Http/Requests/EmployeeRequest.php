@@ -24,13 +24,8 @@ class EmployeeRequest extends FormRequest
     public function rules()
     {
         return [
-          'first_name'   => 'required|String|min:2|max:70',
-          'last_name'    => 'required|String|min:2|max:70',
-          'patronymic'   => 'required|String|min:2|max:70',
-          'phone_number' => 'String|min:7|max:15',
-          'position'     => 'String',
-          'salary'       => 'String',
-          'birthday'     => 'date'
+          'name'   => 'required|String|min:2|max:70',
+          'last_name'    => 'required|String|min:2|max:70'
         ];
     }
 }

@@ -1,3 +1,8 @@
 {
-  "plugins": ["syntax-dynamic-import"]
+  "plugins": [
+    "syntax-dynamic-import",
+    "transform-runtime",
+    "transform-async-to-generator",
+    "transform-object-rest-spread"
+  ]
 }

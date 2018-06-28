@@ -71,6 +71,7 @@
 
   "nav-main": "Dashboard",
   "nav-organization": "Organization",
+  "nav-balance": "Balance",
   "nav-clients": "Clients",
   "nav-tours": "Tours",
   "nav-providers": "Providers",

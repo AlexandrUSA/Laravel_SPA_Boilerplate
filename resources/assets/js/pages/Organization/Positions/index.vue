@@ -3,7 +3,6 @@
     <h2>{{ $t('positions') }}</h2>
     <!--Диалог удаления должности-->
     <v-dialog v-model="deleteWindow" max-width="800px">
-      <v-btn color="primary" dark slot="activator" class="mb-2">Добавить должность</v-btn>
       <v-card>
         <v-card-title>
           <span class="headline">Внимание!</span>
@@ -31,7 +30,7 @@
           <v-container grid-list-md>
             <v-layout wrap>
               <v-flex xs12 sm6>
-                <v-text-field label="Наименование" v-model="editedItem.title"></v-text-field>
+                <v-text-field label="Наименование" v-model="editedItem.display_name"></v-text-field>
               </v-flex>
               <v-flex xs12 sm6>
                 <v-select
@@ -45,13 +44,24 @@
                   required
                 ></v-select>
               </v-flex>
+              <v-flex xs12>
+                <v-text-field label="Описание" v-model="editedItem.description"></v-text-field>
+              </v-flex>
+              <v-flex xs12>
+                <p>Разрешенные операции</p>
+                <v-checkbox v-for="item in permissions"
+                            :key="item.id"
+                            :label="item.display_name"
+                            v-model="editedItem.permissionsList"
+                            :value="item.id"></v-checkbox>
+              </v-flex>
             </v-layout>
           </v-container>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" flat @click.native="close">Cancel</v-btn>
-          <v-btn color="blue darken-1" flat @click.native="save">Save</v-btn>
+          <v-btn color="blue darken-1" flat @click.native="close">{{ $t('cancel') }}</v-btn>
+          <v-btn color="blue darken-1" flat @click.native="save">{{ $t('ok') }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -75,14 +85,14 @@
       >
         <template slot="items" slot-scope="props">
           <td class="text-xs-right">{{ props.item.id }}</td>
-          <td class="text-xs-right">{{ props.item.title }}</td>
+          <td class="text-xs-right">{{ props.item.display_name }}</td>
           <td class="text-xs-right">{{ props.item.department }}</td>
           <td class="text-xs-right">
             <router-link tag="span"
                          :to="{name: 'employees', params: {
-                                 searchProp: props.item.title
+                                 searchProp: props.item.display_name
                                }}">
-              {{ props.item.employees }}
+              {{ props.item.users.length }}
             </router-link>
           </td>
           <td class="text-xs-right">

@@ -2,12 +2,14 @@
 
 namespace Tests;
 
+use Closure;
 use Laravel\Dusk\Page;
 use Laravel\Dusk\Browser;
 use Laravel\Dusk\TestCase as BaseTestCase;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 Browser::macro('assertPageIs', function ($page) {
@@ -43,7 +45,7 @@ abstract class DuskTestCase extends BaseTestCase
     {
         $options = (new ChromeOptions)->addArguments([
             '--disable-gpu',
-            '--headless',
+            '--headless'
         ]);
 
         return RemoteWebDriver::create(

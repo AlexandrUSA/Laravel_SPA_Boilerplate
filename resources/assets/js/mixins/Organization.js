@@ -1,4 +1,4 @@
-import { mapGetters } from 'vuex';
+import { mapGetters } from 'vuex'
 
 export default {
   props: {
@@ -12,25 +12,26 @@ export default {
       // Поисковая строка
       search: '',
       // Удаление
-      deleteWindow: false,
+      deleteWindow: false
     }
   },
   computed: {
     ...mapGetters({
-      positions: 'positions/positions',
       departments: 'departments/departments',
-      employees: 'employees/employees'
+      employees: 'employees/employees',
+      permissions: 'permissions/permissions',
+      positions: 'positions/positions'
     })
   },
   created () {
     if (this.searchProp) {
-      this.search = this.searchProp;
+      this.search = this.searchProp
     }
-    if(!this.headers) {
-      throw new Error('You must to specify table headers!');
+    if (!this.headers) {
+      throw new Error('You must to specify table headers!')
     }
-    if(!this.items) {
-      throw new Error('You must to specify table items!');
+    if (!this.items) {
+      throw new Error('You must to specify table items!')
     }
   }
 }

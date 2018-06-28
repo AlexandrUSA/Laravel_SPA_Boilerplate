@@ -20,5 +20,11 @@ const modules = requireContext.keys()
 
 export default new Vuex.Store({
   modules,
+  state: {
+    httpPending: false
+  },
+  getters: {
+    httpPending: state => state.httpPending
+  },
   strict: false
 })

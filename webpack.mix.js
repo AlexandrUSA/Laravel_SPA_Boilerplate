@@ -1,50 +1,42 @@
-const path = require('path');
-const mix = require('laravel-mix');
-const LiveReloadPlugin = require('webpack-livereload-plugin');
+const path = require('path')
+const webpack = require('webpack')
+const mix = require('laravel-mix')
 // const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 
 mix
   .js('resources/assets/js/app.js', 'public/js')
   .sass('resources/assets/sass/app.scss', 'public/css')
-
   .sourceMaps()
   .disableNotifications()
+  .copyDirectory('resources/assets/img', 'public/img')
 
 if (mix.inProduction()) {
-  mix.version()
+  mix.version();
 
   mix.extract([
     'vue',
     'vform',
     'axios',
     'vuex',
-    'popper.js',
     'vue-i18n',
     'vue-meta',
     'js-cookie',
     'vue-router',
-    'sweetalert2',
-    'vuex-router-sync',
-    '@fortawesome/fontawesome',
-    '@fortawesome/vue-fontawesome'
+    'vuetify',
+    'vee-validate',
+    'vuex-router-sync'
   ])
 }
 
-mix.browserSync('web');
-
 mix.webpackConfig({
   plugins: [
-  	//new LiveReloadPlugin()
-    // new BundleAnalyzerPlugin()
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
   ],
   resolve: {
-    extensions: ['.js', '.json', '.vue'],
     alias: {
       '~': path.join(__dirname, './resources/assets/js')
     }
-  },
-  output: {
-    chunkFilename: 'js/[name].[chunkhash].js',
-    publicPath: mix.config.hmr ? '//localhost:8080' : '/'
   }
-})
+});
+
+mix.browserSync('last');

@@ -12,6 +12,17 @@
       required
     ></v-text-field>
 
+    <!-- Фамилия пользователя -->
+    <has-error :form="form" field="last_name"/>
+    <v-text-field
+      :label="$t('last_name')"
+      v-model="form.last_name"
+      :rules="nameRules"
+      :counter="70"
+      prepend-icon="person"
+      required
+    ></v-text-field>
+
     <!-- Емаил -->
     <has-error :form="form" field="email" />
     <v-text-field
@@ -66,7 +77,7 @@ export default {
   data: () => ({
     form: new Form({
       name: '',
-      last_name: 'last',
+      last_name: '',
       email: '',
       password: '',
       password_confirmation: ''

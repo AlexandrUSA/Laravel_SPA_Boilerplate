@@ -4,10 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Cashier\Billable;
 
 class Employee extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, Billable;
 
     /**
      * @var array
@@ -21,6 +22,28 @@ class Employee extends Model
     protected $fillable = [
         'first_name', 'last_name', 'patronymic', 'salary', 'user_id', 'position_id', 'address', 'avatar', 'phone_number'
     ];
+
+    public static function getList ()
+    {
+      $employees = [];
+      $users = User::all();
+      foreach ($users as $user) {
+        $employees[] = self::getOne($user);
+      }
+      return $employees;
+    }
+
+    public static function getOne ($user)
+    {
+      $data = $user;
+      $position = $user->roles()->get()[0];
+      $department = Department::find($position['department_id']);
+      $data['position_id'] = $position->id;
+      $data['position_title'] = $position->display_name;
+      $data['department_id'] = $department->id;
+      $data['department_title'] = $department->title;
+      return $data;
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

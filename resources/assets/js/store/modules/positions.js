@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+const url = '/api/organisation/roles'
+
 export const state = {
   positions: [],
   position: {}
@@ -24,8 +26,8 @@ export const mutations = {
     const index = state.positions.findIndex(el => el.id === position.id);
     state.positions.splice(index, 1, position)
   },
-  remove (state, positionId) {
-    const pos = state.positions.findIndex(el => el.id === positionId);
+  remove (state, positionID) {
+    const pos = state.positions.findIndex(el => el.id === positionID);
     if (pos !== -1) state.positions.splice(pos, 1)
   }
 };
@@ -33,23 +35,23 @@ export const mutations = {
 export const actions = {
   async load ({ commit }) {
     try {
-      const { data } = await axios.get('/api/positions');
+      const { data } = await axios.get(url);
       commit('load', data)
     } catch (e) {
       console.error('Не загрузились должности', e)
     }
   },
-  async loadOne ({ commit }, payload) {
+  async loadOne ({ commit }, positionID) {
     try {
-      const { data } = await axios.get('/api/positions/' + payload);
+      const { data } = await axios.get(url + '/' + positionID);
       commit('loadOne', data)
     } catch (e) {
       console.error('Не загрузилась должность', e)
     }
   },
-  async add ({ commit }, payload) {
+  async add ({ commit }, position) {
     try {
-      const { data } = await axios.post('/api/positions', payload);
+      const { data } = await axios.post(url, position);
       commit('add', data)
     } catch (e) {
       console.error('Не создалась должность', e)
@@ -57,16 +59,16 @@ export const actions = {
   },
   async edit ({ commit }, position) {
     try {
-      const { data } = await axios.put('/api/positions/' + position.id, position);
+      const { data } = await axios.put(url + '/' + position.id, position);
       commit('edit', data)
     } catch (e) {
       console.error('Не изменилась должность', e)
     }
   },
-  async remove ({ commit }, position) {
+  async remove ({ commit }, positionID) {
     try {
-      await axios.delete('/api/positions/' + position);
-      commit('remove', position)
+      await axios.delete(url + '/' + positionID)
+      commit('remove', positionID)
     } catch (e) {
       console.error('Не удалилась должность', e.response.data)
     }
