@@ -1,10 +1,7 @@
-import { mapActions, mapGetters } from 'vuex';
-import Organization from '~/mixins/Organization';
-import swal from 'sweetalert2'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  middleware: ['auth', 'organisation'],
-  mixins: [ Organization ],
+  middleware: ['auth', 'activity'],
   data () {
     return {
       /* Подсказки о результате удаления */
@@ -12,25 +9,35 @@ export default {
       snackbarTimeout: 10000,
       // Поиск / Выборка
       selected: [],
+      search: '',
       // Удаление
+      deleteWindow: false,
       delMode: 'single',
       // Заголовки таблицы
       headers: [
         {
-          text: 'Имя',
-          value: 'first_name'
+          text: 'ФИО',
+          value: 'name'
         },
         {
-          text: 'Фамилия',
-          value: 'last_name'
+          text: 'Страна',
+          value: 'country'
         },
         {
-          text: 'Должность',
-          value: 'position'
+          text: 'Город',
+          value: 'city'
         },
         {
-          text: 'Подразделение',
-          value: 'department'
+          text: 'Улица',
+          value: 'street'
+        },
+        {
+          text: 'Номер',
+          value: 'number'
+        },
+        {
+          text: 'Тур',
+          value: 'tour'
         },
         {
           text: 'Действия',
@@ -41,68 +48,55 @@ export default {
     }
   },
   computed: {
-    items() {
-      const data = [];
-      this.employees.forEach(el => {
+    ...mapGetters({
+      clients: 'clients/clients',
+      tours: 'tours/tours'
+    }),
+    items () {
+      const data = []
+      this.clients.forEach(el => {
         data.push({
           id: el.id,
-          first_name: el.first_name,
-          last_name: el.last_name || 'Нет данных',
-          position: this._getPosition(el.position_id).title || 'Нет данных',
-          department: this._getDepartment(el.position_id).title || 'Нет данных'
+          fio: `${el.last_name} ${el.first_name[0]}. ${el.patronymic[0]}.`,
+          city: el.city,
+          country: el.country,
+          street: el.street,
+          number: el.number,
+          passport: el.passport,
+          tour: this.tours.find(tour => +tour.id === +el.tour_id)
         })
-      });
-      return data;
+      })
+      return data
     },
-    deleteMsg() {
-      return (this.selected.length === 1) ? this.$t('delete_item_confirm') :
-        this.$t('delete_items_confirm');
-    },
-    ...mapGetters({
-      'user': 'auth/user'
-    })
+    deleteMsg () {
+      return (this.selected.length === 1) ? this.$t('delete_item_confirm')
+        : this.$t('delete_items_confirm')
+    }
   },
   methods: {
-    _getPosition(position_id) {
-      return this.positions.find(el => +el.id === +position_id) || {};
-    },
-    _getDepartment(position_id) {
-      const position = this._getPosition(position_id);
-      return this.departments.find(el => +el.id === +position.department_id) || {};
+    /**
+     * Открыть диалог удаления клиента
+     */
+    deleteDialog () {
+      this.deleteWindow = true
     },
     /**
-     * Открыть диалог удаления сотрудника
+     * Удаление клиента
      */
-    deleteDialog() {
-      if(this.selected.find(el => +el.id === +this.user.id)) {
-        swal({
-          type: 'error',
-          title: 'Внимание',
-          text: 'Вы не можете удалить самого себя',
-          reverseButtons: true,
-          confirmButtonText: this.$i18n.t('ok')
-        })
-      } else {
-        this.deleteWindow = true;
-      }
-    },
-    /**
-     * Удаление сотрудника
-     */
-    deleteConfirm() {
-      this.selected.forEach(el => this.deleteItem(el.id));
-      this.selected = [];
-      this.deleteWindow = false;
-      this.snackbarShow = true;
+    deleteConfirm () {
+      this.selected.forEach(el => this.deleteItem(el.id))
+      this.selected = []
+      this.deleteWindow = false
+      this.snackbarShow = true
     },
     /**
      * Отмена удаления
      */
-    deleteCancel() {
-      this.deleteWindow = false;
+    deleteCancel () {
+      this.deleteWindow = false
     },
     ...mapActions({
-      deleteItem: 'employees/remove'
+      deleteItem: 'clients/remove'
     })
   }
 }

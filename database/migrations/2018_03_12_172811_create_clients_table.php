@@ -17,9 +17,15 @@ class CreateClientsTable extends Migration
             $table->increments('id');
             $table->char('first_name', 70);
             $table->char('last_name', 70);
-            $table->char('patronymic', 70)->default('');
-            $table->char('address', 255)->default('');
-            $table->char('phone_number', 100)->default('');
+            $table->char('patronymic', 70)->default('Нет данных');
+            $table->char('country', 70)->default('Нет данных');
+            $table->char('city', 70)->default('Нет данных');
+            $table->char('street', 70)->default('Нет данных');
+            $table->integer('number')->default(0);
+            $table->integer('passport')->default(0);
+            $table->char('phone_number', 70)->default('Нет данных');
+            $table->char('email', 70)->default('Нет данных');
+            $table->integer('tour_id')->default(0);
             $table->timestamps();
         });
     }

@@ -103,7 +103,7 @@
           {icon: 'dollar-sign', text: this.$t('nav-balance'), to: {name: 'balance'}, permissions: 'finance-actions'},
           {icon: 'users', text: this.$t('nav-clients'), to: {name: 'clients'}, permissions: 'crud-clients'},
           {icon: 'plane', text: this.$t('nav-tours'), to: {name: 'tours'}, permissions: 'crud-tours'},
-//          {icon: 'address-book', text: this.$t('nav-providers'), to: {name: 'clients'}},
+          {icon: 'briefcase', text: this.$t('nav-vouchers'), to: {name: 'vouchers'}, permissions: 'crud-tours'},
           {icon: 'calendar', text: this.$t('nav-calendar'), to: {name: 'calendar'}},
           {icon: 'comments', text: this.$t('nav-chat'), to: {name: 'chat'}},
           {icon: 'question-circle', text: this.$t('nav-help'), to: {name: 'help'}}

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Activity;
 
 use App\Service;
 use Illuminate\Http\Request;
 
-class ServiceController extends Controller
+class ServiceController extends BaseController
 {
     /**
      * Display a listing of the resource.

@@ -12,7 +12,9 @@ export default {
       // Поисковая строка
       search: '',
       // Удаление
-      deleteWindow: false
+      deleteWindow: false,
+      // Ожидание ответа от сервера
+      pending: false
     }
   },
   computed: {

@@ -21,11 +21,15 @@ const AdminHelp = () => import('~/pages/Help').then(m => m.default || m);
 const AdminClients = () => import('~/pages/Clients/list').then(m => m.default || m);
 const AdminClientEdit = () => import('~/pages/Clients/editor').then(m => m.default || m);
 
-const AdminTours = () => import('~/pages/Clients/list').then(m => m.default || m);
-const AdminToursEdit = () => import('~/pages/Clients/editor').then(m => m.default || m);
+const AdminVouchers = () => import('~/pages/Vouchers/list').then(m => m.default || m);
+const AdminVoucher = () => import('~/pages/Vouchers/list').then(m => m.default || m);
+const AdminVoucherEdit = () => import('~/pages/Vouchers/editor').then(m => m.default || m);
+
+const AdminTours = () => import('~/pages/Tours/list').then(m => m.default || m);
+const AdminToursEdit = () => import('~/pages/Tours/editor').then(m => m.default || m);
 
 // const AdminProviders = () => import('~/pages/Clients/list').then(m => m.default || m);
-const AdminProvidersEdit = () => import('~/pages/Clients/editor').then(m => m.default || m);
+// const AdminProvidersEdit = () => import('~/pages/Clients/editor').then(m => m.default || m);
 
 const AdminEmployees = () => import('~/pages/Organization/Employees/list').then(m => m.default || m);
 const AdminEmployee = () => import('~/pages/Organization/employees/show').then(m => m.default || m);
@@ -120,31 +124,31 @@ export default [
     component: AdminTours
   },
   {
+    path: '/tours/create',
+    name: 'toursCreate',
+    component: AdminToursEdit
+  },
+  {
     path: '/tours/:id',
     name: 'toursShow',
     component: AdminToursEdit,
     props: true
   },
   {
-    path: '/tours/create',
-    name: 'toursCreate',
-    component: AdminToursEdit
+    path: '/vouchers',
+    name: 'vouchers',
+    component: AdminVouchers
   },
   {
-    path: '/providers',
-    name: 'providers',
-    component: AdminProvidersEdit
+    path: '/vouchers/create',
+    name: 'voucherCreate',
+    component: AdminVoucherEdit
   },
   {
-    path: '/providers/:id',
-    name: 'providersShow',
-    component: AdminProvidersEdit,
+    path: '/vouchers/:id',
+    name: 'voucherShow',
+    component: AdminVoucher,
     props: true
-  },
-  {
-    path: '/providers/create',
-    name: 'providersCreate',
-    component: AdminProvidersEdit
   },
   {
     path: '/clients',
@@ -152,9 +156,16 @@ export default [
     component: AdminClients
   },
   {
+    path: '/clients/create',
+    name: 'clientCreate',
+    component: AdminClientEdit,
+    meta: {type: 'create'}
+  },
+  {
     path: '/clients/:id',
     name: 'client',
     component: AdminClientEdit,
+    meta: {type: 'edit'},
     props: true
   },
   {
@@ -162,11 +173,6 @@ export default [
     name: 'clientEdit',
     component: AdminClientEdit,
     props: true
-  },
-  {
-    path: '/clients/create',
-    name: 'clientCreate',
-    component: AdminClientEdit
   },
   {
     path: '/positions',

@@ -12,10 +12,10 @@ export const getters = {
 
 export const mutations = {
   load (state, tours) {
-    state.employees = tours
+    state.tours = tours
   },
   add (state, tours) {
-    state.employees.push(tours)
+    state.tours.push(tours)
   },
   edit (state, tour) {
     const index = state.tours.findIndex(el => el.id === tour.id)

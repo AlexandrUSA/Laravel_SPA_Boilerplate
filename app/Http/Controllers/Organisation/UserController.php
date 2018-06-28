@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Organisation;
 use App\User;
 use App\Http\Requests\EmployeeRequest;
 use App\Employee;
+use App\Organization;
 
 class UserController extends BaseController
 {

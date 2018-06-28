@@ -24,7 +24,7 @@ export default {
       return [
         {
           text: this.$t('name'),
-          value: 'first_name'
+          value: 'name'
         },
         {
           text: this.$t('last_name'),

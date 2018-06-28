@@ -14,6 +14,12 @@
 	  		        ref="form"
 	  		        lazy-validation
 	  		        >
+					<v-text-field
+						v-if="item.deleted_at"
+						label="Дата увольнения"
+						v-model="item.deleted_at"
+						disabled>
+					</v-text-field>
 	  			<v-text-field
 					      :label="$t('name')"
 					      v-model="item.first_name"
@@ -86,8 +92,16 @@
 						</v-flex>
 					</v-layout>
 					<div class="buttons">
-						<v-btn large @click="buttonAction()" :disabled="!valid">
+						<v-btn large
+									 v-if="!item.deleted_at"
+									 @click="buttonAction()"
+									 :disabled="!valid">
 						{{ buttonText }}
+						</v-btn>
+						<v-btn large
+									 v-else
+									 @click="removeFromHistory">
+							Стереть данные
 						</v-btn>
 						<v-btn large @click="back">
 						Назад
@@ -130,13 +144,11 @@
 		},
 		computed: {
 			...mapGetters({
+				item: 'employees/employee',
 				items: 'employees/employees',
 				positions: 'positions/positions',
 				user: 'auth/user'
 			}),
-      item() {
-        return this.items.find(el => el.id === +this.id) || {}
-      },
 			buttonText() {
 				return !this.disabled ? "Обновить" : "Изменить данные";
 			},
@@ -144,14 +156,13 @@
 				return (this.item.avatar) ? this.item.avatar : "/storage/avatars/no-avatar.jpg"
 			}
 		},
-		// Загрузка пользователя перед монтированием компонента
-		beforeRouteEnter (to, from, next) {
-    	next(vm => vm.$store.dispatch('employees/loadOne', vm.id));
-  	},
 		methods: {
 			...mapActions({
 				changeItem: 'employees/edit',
-				updateUser: 'auth/updateUser'
+				updateUser: 'auth/updateUser',
+				getOne: 'employees/loadOne',
+        getArchiveOne: 'employees/getArchiveOne',
+        removeFromArchive: 'employees/removeFromArchive'
 			}),
 			userUpdate() {
 				const newUser = Object.assign({}, this.user);
@@ -161,12 +172,16 @@
 			buttonAction() {
 				if (!this.disabled) {
 					this.changeItem(this.item);
-					if (this.item.user_id == this.user.id) {
+					if (+this.item.user_id === +this.user.id) {
 						this.userUpdate()
 					}
 				}
 				this.defaultItem = Object.assign({}, this.item);
 				this.disabled = !this.disabled;		
+			},
+      removeFromHistory() {
+			  this.removeFromArchive(this.item.id);
+			  this.$router.replace({name: 'employees'});
 			},
 			back() {	
 				if (this.disabled) return this.$router.go(-1);
@@ -191,6 +206,13 @@
     		} catch (e) {
       		console.error('Не загрузился аватар', e)
     		}	
+			}
+		},
+		created () {
+		  if (this.$route.name === 'employeeArchive') {
+		    this.getArchiveOne(this.$route.params.id);
+			} else {
+		    this.getOne(this.$route.params.id);
 			}
 		}
 	}

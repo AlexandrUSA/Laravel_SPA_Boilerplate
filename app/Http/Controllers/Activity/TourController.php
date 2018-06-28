@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Activity;
 
 use App\Tour;
 use Illuminate\Http\Request;
 
-class TourController extends Controller
+class TourController extends BaseController
 {
     /**
      * Display a listing of the resource.

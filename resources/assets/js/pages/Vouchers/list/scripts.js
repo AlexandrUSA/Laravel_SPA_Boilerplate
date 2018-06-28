@@ -1,10 +1,7 @@
 import { mapActions, mapGetters } from 'vuex'
-import Organization from '~/mixins/Organization'
-import swal from 'sweetalert2'
 
 export default {
-  middleware: ['auth', 'organisation'],
-  mixins: [ Organization ],
+  middleware: ['auth', 'activity'],
   data () {
     return {
       /* Подсказки о результате удаления */
@@ -24,7 +21,7 @@ export default {
       return [
         {
           text: this.$t('name'),
-          value: 'first_name'
+          value: 'name'
         },
         {
           text: this.$t('last_name'),
@@ -71,17 +68,7 @@ export default {
      * Открыть диалог удаления сотрудника
      */
     deleteDialog () {
-      if (this.selected.find(el => +el.id === +this.user.id)) {
-        swal({
-          type: 'error',
-          title: 'Внимание',
-          text: 'Вы не можете удалить самого себя',
-          reverseButtons: true,
-          confirmButtonText: this.$i18n.t('ok')
-        })
-      } else {
-        this.deleteWindow = true
-      }
+      this.deleteWindow = true
     },
     /**
      * Удаление сотрудника

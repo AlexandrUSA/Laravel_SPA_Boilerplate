@@ -1,7 +1,7 @@
 import axios from 'axios'
 import * as types from '../mutation-types'
 
-const url = '/api/clients'
+const url = '/api/activity/clients'
 
 export const state = {
   clients: [],
@@ -11,21 +11,22 @@ export const state = {
 }
 
 export const getters = {
-  employees: state => state.employees,
-  employee: state => state.employee,
+  clients: state => state.clients,
+  client: state => state.client,
   archive: state => state.archive,
   error: state => state.error
 }
 
 export const mutations = {
   [types.LOAD] (state, clients) {
-    state.employees = clients
+    state.clients = clients
   },
   [types.LOAD_ONE] (state, client) {
-    state.employee = client
+    state.client = client
   },
-  [types.ADD] (state, clients) {
-    state.employees.push(clients)
+  [types.ADD] (state, client) {
+    console.log(client)
+    state.clients.push(client)
   },
   [types.EDIT] (state, client) {
     const index = state.clients.findIndex(el => +el.id === +client.id)

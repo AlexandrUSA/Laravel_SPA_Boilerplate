@@ -15,18 +15,13 @@ class CreateToursTable extends Migration
     {
         Schema::create('tours', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('title', 70);
             $table->integer('service_id')->nullable();
             $table->string('country', 70);
-            $table->string('resort', 100);
             $table->string('transport', 100);
             $table->boolean('visa_service')->default(false);
             $table->boolean('accommodation')->default(false);
-            $table->string('accommodation_type', 50);
-            $table->boolean('food')->default(false);
-            $table->string('food_type', 50);
-            $table->boolean('excursions')->default(false);
-            $table->date('departure_date');
-            $table->date('arrival_date');
+            $table->integer('days');
             $table->integer('price');
             $table->timestamps();
         });

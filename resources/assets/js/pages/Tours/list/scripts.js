@@ -1,36 +1,39 @@
-import { mapActions, mapGetters } from 'vuex';
-import Organization from '~/mixins/Organization';
-import swal from 'sweetalert2'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  middleware: ['auth', 'organisation'],
-  mixins: [ Organization ],
+  middleware: ['auth', 'activity'],
   data () {
     return {
       /* Подсказки о результате удаления */
       snackbarShow: false,
       snackbarTimeout: 10000,
       // Поиск / Выборка
+      search: '',
       selected: [],
       // Удаление
+      deleteWindow: false,
       delMode: 'single',
       // Заголовки таблицы
       headers: [
         {
-          text: 'Имя',
-          value: 'first_name'
+          text: 'Название',
+          value: 'title'
         },
         {
-          text: 'Фамилия',
-          value: 'last_name'
+          text: 'Страна',
+          value: 'country'
         },
         {
-          text: 'Должность',
-          value: 'position'
+          text: 'Дней',
+          value: 'days'
         },
         {
-          text: 'Подразделение',
-          value: 'department'
+          text: 'Цена',
+          value: 'price'
+        },
+        {
+          text: 'Путевок',
+          value: 'vouchers'
         },
         {
           text: 'Действия',
@@ -41,68 +44,57 @@ export default {
     }
   },
   computed: {
-    items() {
-      const data = [];
-      this.employees.forEach(el => {
+    items () {
+      const data = []
+      this.tours.forEach(tour => {
         data.push({
-          id: el.id,
-          first_name: el.first_name,
-          last_name: el.last_name || 'Нет данных',
-          position: this._getPosition(el.position_id).title || 'Нет данных',
-          department: this._getDepartment(el.position_id).title || 'Нет данных'
+          title: tour.title,
+          country: tour.country,
+          service: this.services.find(el => +el.id === tour.service_id) || {},
+          transport: tour.transport,
+          visaService: tour.visa_service,
+          accommodation: tour.accommodation,
+          vouchers: this.vouchers.filter(el => +el.id === tour.id) || [],
+          days: tour.days,
+          price: tour.price
         })
-      });
-      return data;
+      })
+      return data
     },
-    deleteMsg() {
-      return (this.selected.length === 1) ? this.$t('delete_item_confirm') :
-        this.$t('delete_items_confirm');
+    deleteMsg () {
+      return (this.selected.length === 1) ? this.$t('delete_item_confirm')
+        : this.$t('delete_items_confirm')
     },
     ...mapGetters({
-      'user': 'auth/user'
+      'tours': 'tours/tours',
+      'services': 'services/services',
+      'vouchers': 'vouchers/vouchers'
     })
   },
   methods: {
-    _getPosition(position_id) {
-      return this.positions.find(el => +el.id === +position_id) || {};
-    },
-    _getDepartment(position_id) {
-      const position = this._getPosition(position_id);
-      return this.departments.find(el => +el.id === +position.department_id) || {};
+    /**
+     * Открыть диалог удаления тура
+     */
+    deleteDialog () {
+      this.deleteWindow = true
     },
     /**
-     * Открыть диалог удаления сотрудника
+     * Удаление тура
      */
-    deleteDialog() {
-      if(this.selected.find(el => +el.id === +this.user.id)) {
-        swal({
-          type: 'error',
-          title: 'Внимание',
-          text: 'Вы не можете удалить самого себя',
-          reverseButtons: true,
-          confirmButtonText: this.$i18n.t('ok')
-        })
-      } else {
-        this.deleteWindow = true;
-      }
-    },
-    /**
-     * Удаление сотрудника
-     */
-    deleteConfirm() {
-      this.selected.forEach(el => this.deleteItem(el.id));
-      this.selected = [];
-      this.deleteWindow = false;
-      this.snackbarShow = true;
+    deleteConfirm () {
+      this.selected.forEach(el => this.deleteItem(el.id))
+      this.selected = []
+      this.deleteWindow = false
+      this.snackbarShow = true
     },
     /**
      * Отмена удаления
      */
-    deleteCancel() {
-      this.deleteWindow = false;
+    deleteCancel () {
+      this.deleteWindow = false
     },
     ...mapActions({
-      deleteItem: 'employees/remove'
+      deleteItem: 'tours/remove'
     })
   }
 }

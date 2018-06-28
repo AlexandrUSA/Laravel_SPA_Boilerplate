@@ -25,6 +25,9 @@
   "phone_number": "Номер телефона",
   "salary": "Заработная плата",
 
+  "task": "Задания",
+  "expiry": "Выполнить к",
+
   "toggle_navigation": "Язык",
   "home": "Главная",
   "dashboard": "Админ. панель",
@@ -49,6 +52,14 @@
   "employee": "Сотрудник",
   "clients": "Клиенты",
   "client": "Клиент",
+  "new_client": "Новый клиент",
+  "edit_client": "Редактирование клиента",
+
+  "personal_data": "Личные данные",
+  "city": "Город",
+  "country": "Страна",
+  "street": "Улица",
+  "number": "Номер",
 
 
   "details": "Подробнее",
@@ -79,6 +90,7 @@
   "nav-balance": "Баланс",
   "nav-clients": "Клиенты",
   "nav-tours": "Туры",
+  "nav-vouchers": "Путевки",
   "nav-providers": "Поставщики",
   "nav-calendar": "Календарь",
   "nav-chat": "Чат",

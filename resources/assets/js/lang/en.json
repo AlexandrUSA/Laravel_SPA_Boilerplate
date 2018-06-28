@@ -38,10 +38,23 @@
   "login_with": "Login with",
   "register_with": "Register with",
 
+  "task": "Tasks",
+  "expiry": "Expiry",
+
   "employees": "Employees",
   "employee": "Employee",
   "clients": "Сlients",
   "client": "Сlients",
+  "new_client": "New client",
+  "edit_client": "Edit client",
+
+  "personal_data": "Personal data",
+  "city": "City",
+  "country": "Country",
+  "street": "Street",
+  "number": "Number",
+
+
   "last_name": "Last name",
   "patronymic": "Patronymic",
   "details": "Details",
@@ -74,6 +87,7 @@
   "nav-balance": "Balance",
   "nav-clients": "Clients",
   "nav-tours": "Tours",
+  "nav-vouchers": "Vouchers",
   "nav-providers": "Providers",
   "nav-calendar": "Calendar",
   "nav-chat": "Chat",

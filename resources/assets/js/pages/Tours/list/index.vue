@@ -1,6 +1,6 @@
 <template>
-  <div id="employees">
-    <h2>{{ $t('employees') }}</h2>
+  <div id="tours-list">
+    <h2>{{ $t('nav-tours') }}</h2>
     <v-dialog v-model="deleteWindow" max-width="500px">
       <v-card>
         <v-card-title>
@@ -44,8 +44,12 @@
               v-model="props.selected"
             ></v-checkbox>
           </td>
-          <td>{{ props.item.first_name }}</td>
-          <td>{{ props.item.last_name }}</td>
+          <td>{{ props.item.title }}</td>
+          <td>{{ props.item.country }}</td>
+          <td>{{ props.item.service.title }}</td>
+          <td>{{ props.item.days }}</td>
+          <td>{{ props.item.vouchers.length }}</td>
+          <td>{{ props.item.price }}</td>
           <td>
             <v-btn outline round :to="{name: 'employee', params: {id: props.item.id}}">{{ $t('details') }}</v-btn>
           </td>
@@ -57,7 +61,7 @@
         </template>
       </v-data-table>
       <div class="table__buttons">
-        <v-btn fab dark large color="cyan" :to="{ name: 'employeeCreate' }">
+        <v-btn fab dark large color="cyan" :to="{ name: 'clientCreate' }">
           <v-icon dark>add</v-icon>
         </v-btn>
         <transition enter-active-class="buttonEnter" leave-active-class="buttonLeave" mode="out-in">

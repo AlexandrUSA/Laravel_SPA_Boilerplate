@@ -23,12 +23,14 @@ Route::group(['middleware' => 'auth:api'], function () {
     return $user;
   });
 
-  Route::patch('settings/profile', 'Settings\UpdateProfile');
-  Route::patch('settings/password', 'Settings\UpdatePassword');
-
-  Route::post('tasks/updateStatus','TaskController@setCompleteStatus');
-  Route::post('tasks/updateExpiry','TaskController@setExpireStatus');
-  Route::resource('tasks','TaskController');
+  /**
+   * Настройки аккаунта
+   */
+  Route::prefix('settings')->namespace('Settings')->group(function ()
+  {
+    Route::patch('profile', 'UpdateProfile');
+    Route::patch('password', 'UpdatePassword');
+  });
 
   /**
    * Финансовая деятельность
@@ -47,17 +49,32 @@ Route::group(['middleware' => 'auth:api'], function () {
    */
   Route::prefix('organisation')->namespace('Organisation')->group(function()
   {
-    Route::get('/employees/archive', 'EmployeeController@archive');
-    Route::get('/employees/archive/{id}', 'EmployeeController@archiveOne')->where('id', '[0-9]+');
-    Route::delete('/employees/archive/{id}', 'EmployeeController@deleteFromArchive')->where('id', '[0-9]+');
+    Route::get('/employees/archive', 'UserController@archive');
+    Route::get('/employees/archive/{id}', 'UserController@archiveOne')->where('id', '[0-9]+');
+    Route::delete('/employees/archive/{id}', 'UserController@deleteFromArchive')->where('id', '[0-9]+');
     Route::resource('/employees', 'UserController', ['except' => ['create', 'edit']]);
-//    Route::resource('/positions', 'PositionController', ['except' => ['create', 'edit']]);
     Route::resource('/roles', 'RoleController', ['except' => ['create', 'edit']]);
     Route::resource('/permissions', 'PermissionController', ['only' => ['index', 'store', 'destroy']]);
     Route::resource('/departments', 'DepartmentController', ['except' => ['create', 'edit']]);
-    Route::resource('/clients', 'ClientController', ['except' => ['create', 'edit']]);
     Route::get('/all', 'BaseController@getAll');
   });
+
+  /**
+   * Деятельность организации (туры, клиенты, путевки)
+   */
+  Route::prefix('activity')->namespace('Activity')->group(function ()
+  {
+    Route::resource('/clients', 'ClientController', ['except' => ['create', 'edit']]);
+    Route::resource('/tours', 'TourController', ['except' => ['create', 'edit']]);
+    Route::resource('/vouchers', 'VoucherController', ['except' => ['create', 'edit']]);
+    Route::resource('/services', 'ServiceController', ['except' => ['create', 'edit', 'update']]);
+    Route::get('/all', 'BaseController@getAll');
+  });
+
+  Route::post('tasks/updateStatus','TaskController@setCompleteStatus');
+  Route::post('tasks/updateExpiry','TaskController@setExpireStatus');
+  Route::resource('tasks','TaskController');
+
 });
 
 Route::group(['middleware' => 'guest:api'], function () {

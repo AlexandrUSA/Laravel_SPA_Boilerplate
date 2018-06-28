@@ -21,10 +21,12 @@ class BaseController extends Controller
   public function getAll ()
   {
     $output = [];
-    $output['employees'] = Employee::getList();
-    $output['positions'] = Role::getList();
-    $output['permissions'] = Permission::all();
-    $output['departments'] = Department::all();
+//    DB::transaction(function () {
+      $output['employees'] = Employee::getList();
+      $output['positions'] = Role::getList();
+      $output['permissions'] = Permission::all();
+      $output['departments'] = Department::all();
+//    });
 
     return response($output, 200);
   }
