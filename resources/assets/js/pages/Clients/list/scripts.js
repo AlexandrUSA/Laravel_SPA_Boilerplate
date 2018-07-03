@@ -13,39 +13,7 @@ export default {
       search: '',
       // Удаление
       deleteWindow: false,
-      delMode: 'single',
-      // Заголовки таблицы
-      headers: [
-        {
-          text: 'ФИО',
-          value: 'name'
-        },
-        {
-          text: 'Страна',
-          value: 'country'
-        },
-        {
-          text: 'Город',
-          value: 'city'
-        },
-        {
-          text: 'Улица',
-          value: 'street'
-        },
-        {
-          text: 'Номер',
-          value: 'number'
-        },
-        {
-          text: 'Тур',
-          value: 'tour'
-        },
-        {
-          text: 'Действия',
-          align: 'left',
-          sortable: false
-        }
-      ]
+      delMode: 'single'
     }
   },
   computed: {
@@ -54,6 +22,40 @@ export default {
       tours: 'tours/tours',
       loading: 'httpPending'
     }),
+    // Заголовки таблицы
+    headers () {
+      return [
+        {
+          text: this.$t('fio'),
+          value: 'name'
+        },
+        {
+          text: this.$t('country'),
+          value: 'country'
+        },
+        {
+          text: this.$t('city'),
+          value: 'city'
+        },
+        {
+          text: this.$t('street'),
+          value: 'street'
+        },
+        {
+          text: this.$t('number'),
+          value: 'number'
+        },
+        {
+          text: this.$t('tour'),
+          value: 'tour'
+        },
+        {
+          text: this.$t('actions'),
+          align: 'left',
+          sortable: false
+        }
+      ]
+    },
     title () {
       return this.isArchive ? this.$t('clients-archive') : this.$t('nav-clients')
     },

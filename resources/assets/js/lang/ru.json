@@ -55,11 +55,12 @@
   "new_client": "Новый клиент",
   "edit_client": "Редактирование клиента",
 
+  "fio": "ФИО",
   "personal_data": "Личные данные",
   "city": "Город",
   "country": "Страна",
   "street": "Улица",
-  "number": "Номер",
+  "number": "Дом",
 
 
   "details": "Подробнее",

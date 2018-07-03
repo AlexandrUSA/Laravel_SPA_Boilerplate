@@ -44,7 +44,7 @@
   "employees": "Employees",
   "employee": "Employee",
   "clients": "Сlients",
-  "client": "Сlients",
+  "client": "Сlient",
   "new_client": "New client",
   "edit_client": "Edit client",
 
@@ -59,6 +59,7 @@
   "days": "Days",
   "price": "Price",
 
+  "fio": "Last name",
   "personal_data": "Personal data",
   "city": "City",
   "country": "Country",

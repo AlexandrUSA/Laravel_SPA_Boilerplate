@@ -63,11 +63,15 @@ export default {
     ...mapActions({
       loadItem: 'clients/loadOne',
       addItem: 'clients/add',
-      editItem: 'client/edit'
+      editItem: 'clients/edit'
     }),
     async save () {
       this.pending = true
-      await this.addItem(this.item)
+      if (this.id) {
+        await this.editItem(this.item)
+      } else {
+        await this.addItem(this.item)
+      }
       if (!this.creationError) {
         this.$router.replace({ name: 'clients' })
       } else {
