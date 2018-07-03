@@ -27,7 +27,7 @@ export default {
       return [
         {
           text: this.$t('fio'),
-          value: 'name'
+          value: 'fio'
         },
         {
           text: this.$t('country'),
