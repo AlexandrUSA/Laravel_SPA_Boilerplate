@@ -7,6 +7,7 @@ export default {
       /* Подсказки о результате удаления */
       snackbarShow: false,
       snackbarTimeout: 10000,
+      isArchive: false,
       // Поиск / Выборка
       selected: [],
       search: '',
@@ -50,8 +51,12 @@ export default {
   computed: {
     ...mapGetters({
       clients: 'clients/clients',
-      tours: 'tours/tours'
+      tours: 'tours/tours',
+      loading: 'httpPending'
     }),
+    title () {
+      return this.isArchive ? this.$t('clients-archive') : this.$t('nav-clients')
+    },
     items () {
       const data = []
       this.clients.forEach(el => {
@@ -63,7 +68,7 @@ export default {
           street: el.street,
           number: el.number,
           passport: el.passport,
-          tour: this.tours.find(tour => +tour.id === +el.tour_id)
+          tour: this.tours.find(tour => +tour.id === +el.tour_id) || {}
         })
       })
       return data
@@ -84,7 +89,12 @@ export default {
      * Удаление клиента
      */
     deleteConfirm () {
-      this.selected.forEach(el => this.deleteItem(el.id))
+      if (this.isArchive) {
+        this.selected.forEach(el => this.removeFromArchive(el.id))
+        this.loadItems(true)
+      } else {
+        this.selected.forEach(el => this.deleteItem(el.id))
+      }
       this.selected = []
       this.deleteWindow = false
       this.snackbarShow = true
@@ -95,8 +105,19 @@ export default {
     deleteCancel () {
       this.deleteWindow = false
     },
+    loadItems (archive) {
+      if (archive) {
+        this.getArchive()
+      } else {
+        this.getEmployees()
+      }
+      this.isArchive = archive
+    },
     ...mapActions({
-      deleteItem: 'clients/remove'
+      deleteItem: 'clients/remove',
+      removeFromArchive: 'clients/removeFromArchive',
+      getArchive: 'clients/getArchive',
+      getEmployees: 'clients/load'
     })
   }
 }

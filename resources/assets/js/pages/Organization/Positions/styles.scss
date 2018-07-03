@@ -4,9 +4,10 @@
   margin: 10px auto;
 }
 
-.mb-2.btn {
-  position: absolute;
-  bottom: -50px;
+.v-dialog__container {
+  position: absolute !important;
+  bottom: -50px !important;
+  z-index: 2 !important;
 }
 
 .card__title.t-head {

@@ -80,6 +80,9 @@
         :headers="headers"
         :items="items"
         :search="search"
+        :loading="loading"
+        :no-results-text="$t('no_match_found')"
+        :rows-per-page-text="$t('strings')"
         hide-actions
         class="elevation-1"
       >
@@ -105,7 +108,9 @@
           </td>
         </template>
         <template slot="no-data">
-          <v-btn color="primary" @click="">Обновить</v-btn>
+          <v-alert :value="true" color="red" icon="warning">
+            Нет данных :(
+          </v-alert>
         </template>
       </v-data-table>
     </v-card>

@@ -48,11 +48,23 @@
   "new_client": "New client",
   "edit_client": "Edit client",
 
+  "edit_tour": "Edit tour",
+  "new_tour": "New tour",
+
+  "title": "Title",
+  "service": "Service",
+  "transport": "Transport",
+  "visa_service": "Visa service",
+  "accommodation": "Accommodation",
+  "days": "Days",
+  "price": "Price",
+
   "personal_data": "Personal data",
   "city": "City",
   "country": "Country",
   "street": "Street",
   "number": "Number",
+  "passport": "Паспорт",
 
 
   "last_name": "Last name",
@@ -91,5 +103,11 @@
   "nav-providers": "Providers",
   "nav-calendar": "Calendar",
   "nav-chat": "Chat",
-  "nav-help": "Help"
+  "nav-help": "Help",
+
+  "tours-archive": "Tours archive",
+  "clients-archive": "Clients archive",
+  "tour": "Tour",
+  "departure_date": "Departure date",
+  "arrival_date": "Arrival date"
 }

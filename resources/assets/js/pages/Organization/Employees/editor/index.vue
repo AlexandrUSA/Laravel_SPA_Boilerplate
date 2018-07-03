@@ -24,6 +24,7 @@
 											:rules="nameRules"
 											:counter="70"
 											required
+											clearable
 										></v-text-field>
 										<v-text-field
 										:label="$t('last_name')"
@@ -31,11 +32,13 @@
 										:rules="nameRules"
 										:counter="70"
 										required
+										clearable
 										></v-text-field>
 										<v-text-field
 										:label="$t('patronymic')"
 										v-model="item.patronymic"
 										:counter="70"
+										clearable
 										></v-text-field>
 										<v-text-field
 											:label="$t('email')"
@@ -43,11 +46,13 @@
 											:rules="emailRules"
 											:counter="70"
 											required
+											clearable
 										></v-text-field>
 										<v-text-field
 											:label="$t('phone_number')"
 											v-model="item.phone_number"
 											:counter="70"
+											clearable
 										></v-text-field>
 									</v-flex>
 								</v-layout>
@@ -85,6 +90,7 @@
 										v-model="item.sex"
 										prepend-icon="card_travel"
 										:items="['Мужской', 'Женский']"
+										clearable
 										></v-select>
 									</v-flex>
 								</v-layout>
@@ -98,7 +104,7 @@
 										item-text="display_name"
 										item-value="id"
 										:rules="[v => !!v || 'Выберите должность']"
-										required
+										clearable
 										></v-select>
 									</v-flex>
 									<v-flex xs12 sm6>
@@ -107,11 +113,40 @@
 										v-model="item.salary"
 										prepend-icon="attach_money"
 										required
+										clearable
 										></v-text-field>
+									</v-flex>
+									<v-flex xs12 sm6>
+										<v-text-field
+											:label="$t('address')"
+											v-model="item.address"
+											prepend-icon="home"
+											clearable
+										></v-text-field>
+									</v-flex>
+									<v-flex xs12 sm6>
+										<v-text-field
+											:label="$t('passport')"
+											v-model="item.passport"
+											prepend-icon="contact_mail"
+											clearable
+										></v-text-field>
+									</v-flex>
+									<v-flex xs12>
+										<v-textarea
+											v-model="item.details"
+											name="details"
+											box
+											label="Дополнительная информация"
+											auto-grow
+											clearable
+										></v-textarea>
 									</v-flex>
 								</v-layout>
 							</v-container>
 
+
+							<!-- Сообщение с ошибками валидации на сервере -->
 							<v-dialog
 								v-model="hasErrors"
 								max-width="800"

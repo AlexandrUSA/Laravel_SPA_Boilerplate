@@ -87,7 +87,12 @@ export default {
      * Удаление сотрудника
      */
     deleteConfirm () {
-      this.selected.forEach(el => this.deleteItem(el.id))
+      if (this.isArchive) {
+        this.selected.forEach(el => this.removeFromArchive(el.id))
+        this.loadItems(true)
+      } else {
+        this.selected.forEach(el => this.deleteItem(el.id))
+      }
       this.selected = []
       this.deleteWindow = false
       this.snackbarShow = true
@@ -96,7 +101,7 @@ export default {
      * Отмена удаления
      */
     deleteCancel () {
-      this.deleteWindow = false;
+      this.deleteWindow = false
     },
     loadItems (archive) {
       if (archive) {
@@ -108,12 +113,10 @@ export default {
     },
     ...mapActions({
       deleteItem: 'employees/remove',
+      removeFromArchive: 'employees/removeFromArchive',
       getArchive: 'employees/getArchive',
       getEmployees: 'employees/load'
     })
-  },
-  mounted () {
-    console.log(typeof this.employees)
   },
   beforeDestroy () {
     this.getEmployees()

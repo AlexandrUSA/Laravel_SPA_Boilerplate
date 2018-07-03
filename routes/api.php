@@ -64,8 +64,17 @@ Route::group(['middleware' => 'auth:api'], function () {
    */
   Route::prefix('activity')->namespace('Activity')->group(function ()
   {
+    Route::get('/clients/archive', 'ClientController@archive');
+    Route::get('/clients/archive/{id}', 'ClientController@archiveOne')->where('id', '[0-9]+');
+    Route::delete('/clients/archive/{id}', 'ClientController@deleteFromArchive')->where('id', '[0-9]+');
     Route::resource('/clients', 'ClientController', ['except' => ['create', 'edit']]);
+    Route::get('/tours/archive', 'TourController@archive');
+    Route::get('/tours/archive/{id}', 'TourController@archiveOne')->where('id', '[0-9]+');
+    Route::delete('/tours/archive/{id}', 'TourController@deleteFromArchive')->where('id', '[0-9]+');
     Route::resource('/tours', 'TourController', ['except' => ['create', 'edit']]);
+    Route::get('/vouchers/archive', 'VoucherController@archive');
+    Route::get('/vouchers/archive/{id}', 'VoucherController@archiveOne')->where('id', '[0-9]+');
+    Route::delete('/vouchers/archive/{id}', 'VoucherController@deleteFromArchive')->where('id', '[0-9]+');
     Route::resource('/vouchers', 'VoucherController', ['except' => ['create', 'edit']]);
     Route::resource('/services', 'ServiceController', ['except' => ['create', 'edit', 'update']]);
     Route::get('/all', 'BaseController@getAll');

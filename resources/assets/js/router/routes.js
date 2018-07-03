@@ -121,23 +121,25 @@ export default [
   {
     path: '/tours',
     name: 'tours',
-    component: AdminTours
+    component: AdminTours,
+    props: true
   },
   {
     path: '/tours/create',
-    name: 'toursCreate',
+    name: 'tourCreate',
     component: AdminToursEdit
   },
   {
     path: '/tours/:id',
-    name: 'toursShow',
+    name: 'tourShow',
     component: AdminToursEdit,
     props: true
   },
   {
     path: '/vouchers',
     name: 'vouchers',
-    component: AdminVouchers
+    component: AdminVouchers,
+    props: true
   },
   {
     path: '/vouchers/create',
@@ -153,7 +155,8 @@ export default [
   {
     path: '/clients',
     name: 'clients',
-    component: AdminClients
+    component: AdminClients,
+    props: true
   },
   {
     path: '/clients/create',
@@ -163,7 +166,7 @@ export default [
   },
   {
     path: '/clients/:id',
-    name: 'client',
+    name: 'clientShow',
     component: AdminClientEdit,
     meta: {type: 'edit'},
     props: true

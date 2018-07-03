@@ -1,18 +1,26 @@
 import axios from 'axios'
+import * as types from '../mutation-types'
 
-const url = '/api/tours'
+const url = '/api/activity/tours'
 
 export const state = {
-  tours: []
+  tours: [],
+  tour: {},
+  error: null
 }
 
 export const getters = {
-  tours: state => state.tours
+  tours: state => state.tours,
+  tour: state => state.tour,
+  error: state => state.error
 }
 
 export const mutations = {
   load (state, tours) {
     state.tours = tours
+  },
+  [types.LOAD_ONE] (state, tour) {
+    state.tour = tour
   },
   add (state, tours) {
     state.tours.push(tours)
@@ -24,6 +32,13 @@ export const mutations = {
   remove (state, tourID) {
     const pos = state.tours.findIndex(el => el.id === tourID)
     if (pos !== -1) state.tours.splice(pos, 1)
+  },
+  setError (state, error) {
+    state.error = error
+  },
+  removeFromArchive (state, tourID) {
+    const pos = state.archive.findIndex(el => +el.id === +tourID)
+    if (pos !== -1) state.archive.splice(pos, 1)
   }
 }
 
@@ -39,6 +54,15 @@ export const actions = {
       commit('load', data)
     } catch (e) {
       console.error('Не загрузились туры', e)
+    }
+  },
+  async [types.LOAD_ONE] ({ commit }, tourID) {
+    commit('setError', null)
+    try {
+      const { data } = await axios.get(url + '/' + tourID)
+      commit('loadOne', data)
+    } catch (e) {
+      commit('setError', e.response.data)
     }
   },
   /**
@@ -81,6 +105,36 @@ export const actions = {
       commit('remove', tourID)
     } catch (e) {
       console.error('Не удалился тур', e)
+    }
+  },
+
+  async getArchive ({ commit }) {
+    commit('setError', null)
+    try {
+      const { data } = await axios.get(url + '/archive')
+      commit('load', data)
+    } catch (e) {
+      commit('setError', e.response.data)
+    }
+  },
+
+  async getArchiveOne ({ commit }, tourID) {
+    commit('setError', null)
+    try {
+      const { data } = await axios.get(url + '/archive/' + tourID)
+      commit('loadOne', data)
+    } catch (e) {
+      commit('setError', e.response.data)
+    }
+  },
+
+  async removeFromArchive ({ commit }, tourID) {
+    commit('setError', null)
+    try {
+      await axios.delete(url + '/archive/' + tourID)
+      commit('remove', tourID)
+    } catch (e) {
+      commit('setError', e.response.data)
     }
   }
 }

@@ -31,15 +31,16 @@ export const mutations = {
     const index = state.employees.findIndex(el => +el.id === +employee.id)
     state.employees.splice(index, 1, employee)
   },
-  [types.REMOVE] (state, employeId) {
-    const pos = state.employees.findIndex(el => el.id === employeId)
+  [types.REMOVE] (state, employeeID) {
+    const pos = state.employees.findIndex(el => el.id === employeeID)
     if (pos !== -1) state.employees.splice(pos, 1)
   },
   setError (state, error) {
     state.error = error
   },
-  removeFromArchive (state) {
-    state.employee = {}
+  removeFromArchive (state, employeeID) {
+    const pos = state.archive.findIndex(el => +el.id === +employeeID)
+    if (pos !== -1) state.archive.splice(pos, 1)
   }
 }
 
@@ -54,7 +55,7 @@ export const actions = {
   },
 
   async [types.LOAD_ONE] ({ commit }, employeeID) {
-    console.log('current')
+    commit('setError', null)
     try {
       const { data } = await axios.get(url + '/' + employeeID)
       commit('loadOne', data)
@@ -64,6 +65,7 @@ export const actions = {
   },
 
   async [types.ADD] ({ commit }, payload) {
+    commit('setError', null)
     try {
       const { data } = await axios.post(url, payload)
       commit('add', data)
@@ -73,6 +75,7 @@ export const actions = {
   },
 
   async [types.EDIT] ({ commit }, employee) {
+    commit('setError', null)
     try {
       const { data } = await axios.put(url + '/' + employee.id, employee)
       commit('edit', data)
@@ -82,6 +85,7 @@ export const actions = {
   },
 
   async [types.REMOVE] ({ commit }, employeeID) {
+    commit('setError', null)
     try {
       await axios.delete(url + '/' + employeeID)
       commit('remove', employeeID)
@@ -91,6 +95,7 @@ export const actions = {
   },
 
   async getArchive ({ commit }) {
+    commit('setError', null)
     try {
       const { data } = await axios.get(url + '/archive')
       commit('load', data)
@@ -100,6 +105,7 @@ export const actions = {
   },
 
   async getArchiveOne ({ commit }, employeeID) {
+    commit('setError', null)
     console.log('archive')
     try {
       const { data } = await axios.get(url + '/archive/' + employeeID)
@@ -110,6 +116,7 @@ export const actions = {
   },
 
   async removeFromArchive ({ commit }, employeeID) {
+    commit('setError', null)
     try {
       await axios.delete(url + '/archive/' + employeeID)
       commit('removeFromArchive', employeeID)

@@ -22,7 +22,8 @@ export default {
       departments: 'departments/departments',
       employees: 'employees/employees',
       permissions: 'permissions/permissions',
-      positions: 'positions/positions'
+      positions: 'positions/positions',
+      loading: 'httpPending'
     })
   },
   created () {

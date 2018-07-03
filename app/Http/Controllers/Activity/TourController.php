@@ -17,6 +17,37 @@ class TourController extends BaseController
         return Tour::all();
     }
 
+  public function archive()
+  {
+    return Tour::onlyTrashed()->get();
+  }
+
+  /**
+   * Получаем конкретного уволенного сотрудника
+   * @param Request $request
+   * @return mixed
+   */
+  public function archiveOne(Request $request)
+  {
+    return Tour::onlyTrashed()
+      ->where('id', $request->route('id'))
+      ->first();
+  }
+
+  /**
+   * Удаление сотрудников из архива.
+   * @param Request $request
+   * @return mixed
+   */
+  public function deleteFromArchive(Request $request)
+  {
+    $client = Tour::onlyTrashed()
+      ->where('id', $request->route('id'))
+      ->first();
+    $client->forceDelete();
+    return response('', 204);
+  }
+
     /**
      * Store a newly created resource in storage.
      *

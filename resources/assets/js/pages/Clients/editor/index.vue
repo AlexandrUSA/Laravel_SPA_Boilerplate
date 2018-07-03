@@ -18,6 +18,7 @@
 											:rules="nameRules"
 											:counter="70"
 											required
+											clearable
 										></v-text-field>
 									</v-flex>
 									<v-flex xs4>
@@ -27,6 +28,7 @@
 										:rules="nameRules"
 										:counter="70"
 										required
+										clearable
 										></v-text-field>
 									</v-flex>
 									<v-flex xs4>
@@ -34,6 +36,7 @@
 										:label="$t('patronymic')"
 										v-model="item.patronymic"
 										:counter="70"
+										clearable
 										></v-text-field>
 									</v-flex>
 									<v-flex xs6>
@@ -42,6 +45,7 @@
 											v-model="item.email"
 											:rules="emailRules"
 											:counter="70"
+											clearable
 										></v-text-field>
 									</v-flex>
 									<v-flex xs6>
@@ -50,6 +54,7 @@
 											v-model="item.phone_number"
 											:counter="70"
 											required
+											clearable
 										></v-text-field>
 									</v-flex>
 								</v-layout>
@@ -99,6 +104,7 @@
 											:label="$t('country')"
 											v-model="item.country"
 											required
+											clearable
 										></v-text-field>
 									</v-flex>
 									<v-flex xs12 sm3>
@@ -106,6 +112,7 @@
 											:label="$t('city')"
 											v-model="item.city"
 											required
+											clearable
 										></v-text-field>
 									</v-flex>
 									<v-flex xs12 sm4>
@@ -113,6 +120,7 @@
 											:label="$t('street')"
 											v-model="item.street"
 											required
+											clearable
 										></v-text-field>
 									</v-flex>
 									<v-flex xs12 sm2>
@@ -120,6 +128,7 @@
 										:label="$t('number')"
 										v-model="item.number"
 										required
+										clearable
 									></v-text-field>
 								</v-flex>
 								</v-layout>

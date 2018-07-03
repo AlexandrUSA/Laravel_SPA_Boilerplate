@@ -16,7 +16,7 @@ class CreateToursTable extends Migration
         Schema::create('tours', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title', 70);
-            $table->integer('service_id')->nullable();
+            $table->char('service', 70);
             $table->string('country', 70);
             $table->string('transport', 100);
             $table->boolean('visa_service')->default(false);
@@ -24,6 +24,7 @@ class CreateToursTable extends Migration
             $table->integer('days');
             $table->integer('price');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

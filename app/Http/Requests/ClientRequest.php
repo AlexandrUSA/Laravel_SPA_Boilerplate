@@ -26,7 +26,13 @@ class ClientRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+          'first_name'   => 'required|String|min:2|max:70',
+          'last_name'    => 'required|String|min:2|max:70',
+          'country'      => 'required|String|min:2|max:70',
+          'city'         => 'required|String|min:2|max:70',
+          'street'       => 'required|String|min:2|max:70',
+          'tour_id'      => 'required|integer',
+          'phone_number' => 'required|integer',
         ];
     }
 }

@@ -1,6 +1,6 @@
 <template>
   <div id="tours-list">
-    <h2>{{ $t('nav-tours') }}</h2>
+    <h2>{{ title }}</h2>
     <v-dialog v-model="deleteWindow" max-width="500px">
       <v-card>
         <v-card-title>
@@ -15,9 +15,9 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
     <v-card>
       <v-card-title>
-        <v-spacer></v-spacer>
         <v-text-field
           append-icon="search"
           :label="$t('search_input')"
@@ -31,6 +31,7 @@
         :search="search"
         v-model="selected"
         select-all
+        :loading="loading"
         item-key="id"
         :no-results-text="$t('no_match_found')"
         :rows-per-page-text="$t('strings')"
@@ -46,12 +47,22 @@
           </td>
           <td>{{ props.item.title }}</td>
           <td>{{ props.item.country }}</td>
-          <td>{{ props.item.service.title }}</td>
           <td>{{ props.item.days }}</td>
-          <td>{{ props.item.vouchers.length }}</td>
           <td>{{ props.item.price }}</td>
           <td>
-            <v-btn outline round :to="{name: 'employee', params: {id: props.item.id}}">{{ $t('details') }}</v-btn>
+            <router-link tag="span"
+                         :to="{name: 'vouchers', params: {
+                                 searchProp: props.item.title
+                               }}">
+            {{ props.item.vouchers.length }}
+            </router-link>
+          </td>
+          <td>
+            <v-btn icon class="mx-0"
+                    :to="{name: 'tourShow', params: { id: props.item.id }}">
+              <v-icon color="teal">edit</v-icon>
+            </v-btn>
+            <!--<v-btn outline round :to="{name: 'tourShow', params: {id: props.item.id}}">{{ $t('details') }}</v-btn>-->
           </td>
         </template>
         <template slot="no-data">
@@ -61,8 +72,22 @@
         </template>
       </v-data-table>
       <div class="table__buttons">
-        <v-btn fab dark large color="cyan" :to="{ name: 'clientCreate' }">
+        <v-btn fab dark large color="cyan" :to="{ name: 'tourCreate' }">
           <v-icon dark>add</v-icon>
+        </v-btn>
+        <v-btn v-if="!isArchive"
+               fab dark large
+               color="light-blue darken-1"
+               title="Архив"
+               @click="loadItems(true)">
+          <fa icon="archive"/>
+        </v-btn>
+        <v-btn fab dark large
+               color="light-blue darken-1"
+               title="Клиенты"
+               @click="loadItems(false)"
+               v-else>
+          <fa icon="address-card"/>
         </v-btn>
         <transition enter-active-class="buttonEnter" leave-active-class="buttonLeave" mode="out-in">
           <v-btn v-show="selected.length > 0" class="delete-btn" fab large dark @click="deleteDialog(selected)">

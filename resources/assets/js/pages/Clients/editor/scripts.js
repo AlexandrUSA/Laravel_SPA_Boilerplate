@@ -17,7 +17,7 @@ export default {
         patronymic: 'Владимирович',
         sex: 'Мужской',
         passport: '342343',
-        birthday: null,
+        birthday: '',
         phone_number: '+39999999999',
         country: 'Россия',
         city: 'Москва',
@@ -44,6 +44,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      client: 'clients/client',
       tours: 'tours/tours',
       creationError: 'clients/error',
       user: 'auth/user'
@@ -65,11 +66,13 @@ export default {
       editItem: 'client/edit'
     }),
     async save () {
+      this.pending = true
       await this.addItem(this.item)
       if (!this.creationError) {
         this.$router.replace({ name: 'clients' })
       } else {
-        console.log(this.creationError.errors)
+        this.pending = false
+        this.hasErrors = true
       }
     },
     close () {
@@ -77,8 +80,9 @@ export default {
     }
   },
   async created () {
-    console.log(this.$route)
-    const { data } = await axios.get('/api/organisation/employees/1')
-    console.log(data)
+    if (this.id) {
+      await this.loadItem(this.id)
+      this.item = this.client
+    }
   }
 }

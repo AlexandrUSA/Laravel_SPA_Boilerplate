@@ -6,6 +6,7 @@ use App\User;
 use App\Http\Requests\EmployeeRequest;
 use App\Employee;
 use App\Organization;
+use Illuminate\Http\Request;
 
 class UserController extends BaseController
 {
@@ -27,6 +28,32 @@ class UserController extends BaseController
   public function archive()
   {
     return User::onlyTrashed()->get();
+  }
+
+  /**
+   * Получаем конкретного уволенного сотрудника
+   * @param Request $request
+   * @return mixed
+   */
+  public function archiveOne(Request $request)
+  {
+    return User::onlyTrashed()
+      ->where('id', $request->route('id'))
+      ->first();
+  }
+
+  /**
+   * Удаление сотрудников из архива.
+   * @param Request $request
+   * @return mixed
+   */
+  public function deleteFromArchive(Request $request)
+  {
+    $employee =User::onlyTrashed()
+      ->where('id', $request->route('id'))
+      ->first();
+    $employee->forceDelete();
+    return response('', 204);
   }
 
   /**

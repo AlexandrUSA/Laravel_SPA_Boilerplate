@@ -1,6 +1,6 @@
 <template>
   <div id="clients-list">
-    <h2>{{ $t('clients') }}</h2>
+    <h2>{{ title }}</h2>
     <v-dialog v-model="deleteWindow" max-width="500px">
       <v-card>
         <v-card-title>
@@ -17,7 +17,6 @@
     </v-dialog>
     <v-card>
       <v-card-title>
-        <v-spacer></v-spacer>
         <v-text-field
           append-icon="search"
           :label="$t('search_input')"
@@ -30,6 +29,7 @@
         :items="items"
         :search="search"
         v-model="selected"
+        :loading="loading"
         select-all
         item-key="id"
         :no-results-text="$t('no_match_found')"
@@ -49,9 +49,12 @@
           <td>{{ props.item.city }}</td>
           <td>{{ props.item.street }}</td>
           <td>{{ props.item.number }}</td>
-          <td>{{ props.item.tour }}</td>
+          <td>{{ props.item.tour.title }}</td>
           <td>
-            <v-btn outline round :to="{name: 'employee', params: {id: props.item.id}}">{{ $t('details') }}</v-btn>
+            <v-btn icon class="mx-0"
+                   :to="{name: 'clientShow', params: { id: props.item.id }}">
+              <v-icon color="teal">edit</v-icon>
+            </v-btn>
           </td>
         </template>
         <template slot="no-data">
@@ -63,6 +66,20 @@
       <div class="table__buttons">
         <v-btn fab dark large color="cyan" :to="{ name: 'clientCreate' }">
           <v-icon dark>add</v-icon>
+        </v-btn>
+        <v-btn v-if="!isArchive"
+               fab dark large
+               color="light-blue darken-1"
+               title="Архив"
+               @click="loadItems(true)">
+          <fa icon="archive"/>
+        </v-btn>
+        <v-btn fab dark large
+               color="light-blue darken-1"
+               title="Клиенты"
+               @click="loadItems(false)"
+               v-else>
+          <fa icon="address-card"/>
         </v-btn>
         <transition enter-active-class="buttonEnter" leave-active-class="buttonLeave" mode="out-in">
           <v-btn v-show="selected.length > 0" class="delete-btn" fab large dark @click="deleteDialog(selected)">

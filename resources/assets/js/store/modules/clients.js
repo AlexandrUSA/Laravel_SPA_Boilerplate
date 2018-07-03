@@ -32,17 +32,22 @@ export const mutations = {
     const index = state.clients.findIndex(el => +el.id === +client.id)
     state.clients.splice(index, 1, client)
   },
-  [types.REMOVE] (state, clientId) {
-    const pos = state.clients.findIndex(el => el.id === clientId)
+  [types.REMOVE] (state, clientID) {
+    const pos = state.clients.findIndex(el => el.id === clientID)
     if (pos !== -1) state.clients.splice(pos, 1)
   },
   setError (state, error) {
     state.error = error
+  },
+  removeFromArchive (state, clientID) {
+    const pos = state.archive.findIndex(el => +el.id === +clientID)
+    if (pos !== -1) state.archive.splice(pos, 1)
   }
 }
 
 export const actions = {
   async [types.LOAD] ({ commit }) {
+    commit('setError', null)
     try {
       const { data } = await axios.get(url)
       commit('load', data)
@@ -51,7 +56,7 @@ export const actions = {
     }
   },
   async [types.LOAD_ONE] ({ commit }, clientID) {
-    console.log('current')
+    commit('setError', null)
     try {
       const { data } = await axios.get(url + '/' + clientID)
       commit('loadOne', data)
@@ -60,6 +65,7 @@ export const actions = {
     }
   },
   async [types.ADD] ({ commit }, client) {
+    commit('setError', null)
     try {
       const { data } = await axios.post(url, client)
       commit('add', data)
@@ -68,6 +74,7 @@ export const actions = {
     }
   },
   async [types.EDIT] ({ commit }, client) {
+    commit('setError', null)
     try {
       const { data } = await axios.put(url + '/' + client.id, client)
       commit('edit', data)
@@ -76,6 +83,7 @@ export const actions = {
     }
   },
   async [types.REMOVE] ({ commit }, clientID) {
+    commit('setError', null)
     try {
       await axios.delete(url + '/' + clientID)
       commit('remove', clientID)
@@ -85,6 +93,7 @@ export const actions = {
   },
 
   async getArchive ({ commit }) {
+    commit('setError', null)
     try {
       const { data } = await axios.get(url + '/archive')
       commit('load', data)
@@ -94,7 +103,7 @@ export const actions = {
   },
 
   async getArchiveOne ({ commit }, clientID) {
-    console.log('archive')
+    commit('setError', null)
     try {
       const { data } = await axios.get(url + '/archive/' + clientID)
       commit('loadOne', data)
@@ -104,6 +113,7 @@ export const actions = {
   },
 
   async removeFromArchive ({ commit }, clientID) {
+    commit('setError', null)
     try {
       await axios.delete(url + '/archive/' + clientID)
       commit('removeFromArchive', clientID)

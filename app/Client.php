@@ -3,9 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Client extends Model
 {
+  use SoftDeletes;
   /**
    * The attributes that are mass assignable.
    * @var array
@@ -20,7 +22,16 @@ class Client extends Model
     'number',
     'passport',
     'tour_id',
-    'phone_number'
+    'phone_number',
+    'sex',
+    'email',
+    'birthday'
+  ];
+
+  protected $dates = [
+    'created_at',
+    'updated_at',
+    'deleted_at',
   ];
 
   /**

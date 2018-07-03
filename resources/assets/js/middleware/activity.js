@@ -2,7 +2,6 @@ import store from '~/store'
 import axios from 'axios'
 
 export default (to, from, next) => {
-  console.log(2)
   const clients = store.getters['clients/clients'].length
   const tours = store.getters['tours/tours'].length
   const vouchers = store.getters['vouchers/vouchers'].length

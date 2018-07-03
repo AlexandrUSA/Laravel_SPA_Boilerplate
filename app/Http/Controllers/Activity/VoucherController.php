@@ -7,79 +7,91 @@ use Illuminate\Http\Request;
 
 class VoucherController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
+  /**
+   * Display a listing of the resource.
+   *
+   * @return \Illuminate\Http\Response
+   */
+  public function index()
+  {
+    return Voucher::all();
+  }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+  public function archive()
+  {
+    return Voucher::onlyTrashed()->get();
+  }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+  /**
+   * Получаем конкретного уволенного сотрудника
+   * @param Request $request
+   * @return mixed
+   */
+  public function archiveOne(Request $request)
+  {
+    return Voucher::onlyTrashed()
+      ->where('id', $request->route('id'))
+      ->first();
+  }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Voucher  $voucher
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Voucher $voucher)
-    {
-        //
-    }
+  /**
+   * Удаление сотрудников из архива.
+   * @param Request $request
+   * @return mixed
+   */
+  public function deleteFromArchive(Request $request)
+  {
+    $voucher =Voucher::onlyTrashed()
+      ->where('id', $request->route('id'))
+      ->first();
+    $voucher->forceDelete();
+    return response('', 204);
+  }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Voucher  $voucher
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Voucher $voucher)
-    {
-        //
-    }
+  /**
+   * Store a newly created resource in storage.
+   *
+   * @param  \Illuminate\Http\Request $request
+   * @return \Illuminate\Http\Response
+   */
+  public function store(Request $request)
+  {
+    Voucher::create($request->all());
+    return Voucher::all()->last();
+  }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Voucher  $voucher
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Voucher $voucher)
-    {
-        //
-    }
+  /**
+   * Display the specified resource.
+   *
+   * @param  \App\Voucher $voucher
+   * @return \Illuminate\Http\Response
+   */
+  public function show(Voucher $voucher)
+  {
+    return $voucher;
+  }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Voucher  $voucher
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Voucher $voucher)
-    {
-        //
-    }
+  /**
+   * Update the specified resource in storage.
+   *
+   * @param  \Illuminate\Http\Request $request
+   * @param  \App\Voucher $voucher
+   * @return \Illuminate\Http\Response
+   */
+  public function update(Request $request, Voucher $voucher)
+  {
+    $voucher->update($request->all());
+    return $voucher;
+  }
+
+  /**
+   * Remove the specified resource from storage.
+   *
+   * @param  \App\Voucher $voucher
+   * @return \Illuminate\Http\Response
+   */
+  public function destroy(Voucher $voucher)
+  {
+    $voucher->delete();
+  }
 }
