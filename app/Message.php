@@ -14,20 +14,17 @@ class Message extends Model
 
   public static function getList ()
   {
-    $data = [];
-    $messages = self::all();
-    $users = User::all();
-    foreach ($messages as $message) {
-      $user = $users->find($message->user_id);
-
-      $data['user'] = [
-        'name' => $user->name,
-        'last_name' => $user->last_name,
-        'email' => $user->email
-      ];
-      $data['message'] = $message;
-    }
-    return $data;
+      $data = [];
+      $messages = self::orderBy('id', 'desc')->take(5)->get();
+      $users = User::all('id', 'name', 'last_name', 'patronymic');
+      foreach ($messages as $message) {
+          $user = $users->find($message->user_id);
+          $data[] = [
+              'user' => $user,
+              'message' => $message
+          ];
+      }
+      return $data;
   }
 
   public function user ()

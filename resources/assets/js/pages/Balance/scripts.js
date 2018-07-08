@@ -1,4 +1,7 @@
 import { mapActions, mapGetters } from 'vuex'
+import Transfers from '~/components/balance/transfers.vue'
+import Charges from '~/components/balance/charges.vue'
+import Editor from '~/components/balance/editor.vue'
 
 export default {
   middleware: ['auth'],
@@ -6,8 +9,28 @@ export default {
     return { title: this.$t('nav-balance') }
   },
   data () {
-    return {}
+    return {
+      active: 0,
+      tabs: [
+        {
+          id: 0,
+          title: 'Поступления',
+          component: 'Charges'
+        },
+        {
+          id: 1,
+          title: 'Выплаты',
+          component: 'Transfers'
+        },
+        {
+          id: 2,
+          title: 'Операции перевода',
+          component: 'Editor'
+        }
+      ]
+    }
   },
+  components: {Transfers, Charges, Editor},
   computed: {
     ...mapGetters({
       account: 'balance/account',
@@ -21,13 +44,15 @@ export default {
       loadAccount: 'balance/loadAccount',
       loadBalance: 'balance/loadBalance',
       loadCharges: 'balance/loadCharges',
-      loadTransfers: 'balance/loadTransfers'
+      loadTransfers: 'balance/loadTransfers',
+      getAll: 'balance/getAll'
     })
   },
-  created () {
-    this.loadAccount()
-    this.loadBalance()
-    this.loadTransfers()
-    this.loadCharges()
+  async created () {
+    await this.getAll()
+    // await this.loadAccount()
+    // await this.loadBalance()
+    // await this.loadTransfers()
+    // await this.loadCharges()
   }
 }

@@ -10,8 +10,18 @@ namespace App\Http\Controllers\Finance;
 
 
 use App\Http\Controllers\Controller;
+use Cartalyst\Stripe\Laravel\Facades\Stripe;
 
-abstract class BaseController extends Controller
+class BaseController extends Controller
 {
+    public function getAll ()
+    {
+        $output = [];
+        $output['transfers'] = Stripe::transfers()->all();;
+        $output['charges'] = Stripe::charges()->all();
+        $output['account'] = Stripe::account()->details();
+        $output['balance'] = Stripe::balance()->current();
 
+        return response($output, 200);
+    }
 }

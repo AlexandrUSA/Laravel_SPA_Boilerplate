@@ -184,7 +184,8 @@ export default [
   {
     path: '/messages',
     name: 'messages',
-    component: AdminMessages
+    component: AdminMessages,
+    props: true
   },  {
     path: '/helpers',
     name: 'helpers',

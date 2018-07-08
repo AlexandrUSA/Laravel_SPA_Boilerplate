@@ -7,6 +7,7 @@ use App\Role;
 use App\Http\Requests\RoleRequest;
 use App\Organization;
 use App\User;
+use App\Events\PermissionChanged;
 
 class RoleController extends BaseController
 {
@@ -23,6 +24,9 @@ class RoleController extends BaseController
       $role['users'] = $role->users;
       $role->attachPermissions($request->get('permissionsList'));
       $role['permissionsList'] = $request->get('permissionsList');
+
+      event(new PermissionChanged());
+
       return $role;
     }
 
@@ -30,6 +34,7 @@ class RoleController extends BaseController
     {
       $role = Organization::createRole($request->all());
       $role['users'] = [];
+      $role['permissionsList'] = $role->permissions;
       return response($role, 201);
     }
 

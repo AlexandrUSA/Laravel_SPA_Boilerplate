@@ -1,10 +1,7 @@
 import store from '~/store'
 import axios from 'axios'
 
-console.log('org')
-
 export default (to, from, next) => {
-  console.log('org missing snth')
   const employees = store.getters['employees/employees'].length
   const departments = store.getters['departments/departments'].length
   const permissions = store.getters['permissions/permissions'].length

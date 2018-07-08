@@ -21,3 +21,17 @@ Broadcast::channel('chat-room', function ($user) {
     'name' => $user->name
   ];
 });
+
+Broadcast::channel('permission-chanel', function ($user) {
+    return [
+        'id' => $user->id,
+        'name' => $user->name
+    ];
+});
+
+Broadcast::channel('email-chanel', function ($user) {
+    return [
+        'id' => $user->id,
+        'name' => $user->name
+    ];
+});

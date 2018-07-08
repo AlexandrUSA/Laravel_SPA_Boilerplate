@@ -49,8 +49,8 @@ export default {
           value: 'number'
         },
         {
-          text: this.$t('tour'),
-          value: 'tour'
+          text: this.$t('phone_number'),
+          value: 'phone_number'
         },
         {
           text: this.$t('actions'),
@@ -73,6 +73,7 @@ export default {
           street: el.street,
           number: el.number,
           passport: el.passport,
+          phone_number: el.phone_number,
           tour: this.tours.find(tour => +tour.id === +el.tour_id) || {}
         })
       })

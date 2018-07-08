@@ -1,24 +1,30 @@
 <template>
-  <v-tabs slider-color="yellow">
-    <v-tab
-      v-for="tab in tabs"
-      :key="tab.id"
-      ripple
-    >
-      <fa :icon="tab.icon" />
-      {{ tab.name }}
-    </v-tab>
-    <v-tab-item
-      v-for="tab in tabs"
-      :key="tab.id"
-    >
-      <v-card flat>
-        <v-card-text>
-          <component :is="tab.component"></component>
-        </v-card-text>
-      </v-card>
-    </v-tab-item>
-  </v-tabs>
+  <v-container>
+    <v-layout wrap>
+      <v-flex xs12>
+        <v-tabs slider-color="yellow">
+          <v-tab
+                  v-for="tab in tabs"
+                  :key="tab.id"
+                  ripple
+          >
+            <fa :icon="tab.icon" />
+            {{ tab.name }}
+          </v-tab>
+          <v-tab-item
+                  v-for="tab in tabs"
+                  :key="tab.id"
+          >
+            <v-card flat>
+              <v-card-text>
+                <component :is="tab.component"></component>
+              </v-card-text>
+            </v-card>
+          </v-tab-item>
+        </v-tabs>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
@@ -29,7 +35,7 @@ import password from '~/components/settings/password';
 export default {
   middleware: 'auth',
   metaInfo () {
-    return { title: this.$t('nav-settings') }
+    return { title: this.$t('settings') }
   },
   components: {
     'settings-password': password,

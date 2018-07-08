@@ -28,4 +28,17 @@ class EmployeeRequest extends FormRequest
           'last_name'    => 'required|String|min:2|max:70'
         ];
     }
+    public function messages()
+    {
+        return [
+            'name.required' => 'Поле имени обязательно для заполнения',
+            'name.min' => 'Слишком короткое имя',
+            'name.max' => 'Слишком длинное имя',
+            'name.string' => 'Имя должно быть валидной строкой',
+            'last_name.required'  => 'Поле фамилии обязательно для заполнения',
+            'last_name.min' => 'Слишком короткая фамилия',
+            'last_name.max' => 'Слишком длинная фамилия',
+            'last_name.string' => 'Фамилия должна быть валидной строкой',
+        ];
+    }
 }

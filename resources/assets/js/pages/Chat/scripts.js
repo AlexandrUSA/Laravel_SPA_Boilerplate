@@ -18,6 +18,9 @@ export default {
   },
   computed: {},
   methods: {
+    goToEmail (user) {
+      this.$router.push({name: 'messages', params: {fromChat: user}})
+    },
     sendMessage () {
       if (this.message) {
         axios.post(`/api/chat/message`, { message: this.message })
@@ -33,7 +36,7 @@ export default {
     },
     async _getMessages () {
       const { data } = await axios.get(`/api/chat/message`)
-      console.log(data)
+      this.messages = data
     }
   },
   mounted () {

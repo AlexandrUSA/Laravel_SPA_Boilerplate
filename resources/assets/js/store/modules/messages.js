@@ -25,9 +25,9 @@ export const mutations = {
     const index = state.received.findIndex(el => +el.id === +message.id)
     state.received.splice(index, 1, message)
   },
-  remove (state, messageID) {
-    const pos = state.messages.findIndex(el => el.id === messageID)
-    if (pos !== -1) state.messages.splice(pos, 1)
+  remove (state, message) {
+    const pos = state[message.type].findIndex(el => +el.id === +message.id)
+    if (pos !== -1) state[message.type].splice(pos, 1)
   },
   setError (state, error) {
     state.error = error
@@ -79,13 +79,13 @@ export const actions = {
   /**
   * Удаление тура
   * @param commit
-  * @param messageID
+  * @param message
   * @returns {Promise.<void>}
   */
-  async remove ({ commit }, messageID) {
+  async remove ({ commit }, message) {
     try {
-      await axios.delete(url + '/' + messageID)
-      commit('remove', messageID)
+      await axios.delete(url + '/' + message.id)
+      commit('remove', message)
     } catch (e) {
       console.error('Не удалился тур', e)
     }

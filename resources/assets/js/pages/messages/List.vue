@@ -40,6 +40,11 @@
   import EmailReceived from '~/components/messages/received.vue'
 
   export default {
+    props: {
+      fromChat: {
+        default: null
+      }
+    },
     middleware: 'auth',
     metaInfo () {
       return {title: this.$t('nav-email')}
@@ -92,6 +97,10 @@
     created () {
       this.loadMessages()
       this.loadUsers()
+      if (this.fromChat) {
+        this.active = 2
+        this.toUser = this.fromChat
+      }
     }
   }
 

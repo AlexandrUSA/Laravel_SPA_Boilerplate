@@ -49,7 +49,7 @@
           <td>{{ props.item.city }}</td>
           <td>{{ props.item.street }}</td>
           <td>{{ props.item.number }}</td>
-          <td>{{ props.item.tour.title }}</td>
+          <td>{{ props.item.phone_number }}</td>
           <td>
             <v-btn icon class="mx-0"
                    :to="{name: 'clientShow', params: { id: props.item.id }}">

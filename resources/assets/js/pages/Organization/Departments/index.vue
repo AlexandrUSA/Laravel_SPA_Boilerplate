@@ -1,7 +1,7 @@
 <template>
   <div id="departments">
     <h2>Подразделения</h2>
-    <v-dialog v-model="deleteWindow" max-width="500px">
+    <v-dialog v-model="deleteWindow" max-width="700px">
       <v-card>
         <v-card-title>
           <span class="headline">{{ $t('attention') }}</span>

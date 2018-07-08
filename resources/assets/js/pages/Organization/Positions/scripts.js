@@ -29,7 +29,7 @@ export default {
         id: '',
         name: '',
         display_name: '',
-        description: 'Простой санитар',
+        description: '',
         department_id: 0,
         permissionsList: []
       },

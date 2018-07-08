@@ -17,7 +17,7 @@
                     <v-btn
                       color="green darken-1"
                       flat="flat"
-                      @click="showEmail = false"
+                      @click="deleteItem"
                     >
                         Удалить
                     </v-btn>
@@ -72,7 +72,7 @@
 
 <script>
 import Form from 'vform'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   props: {
@@ -112,6 +112,17 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      remove: 'messages/remove'
+    }),
+    deleteItem () {
+      this.showEmail = false
+      this.remove({
+        id: this.current.id,
+        type: 'sent'
+      })
+
+    },
     getName (user) {
       if (!user) return ''
       return user.last_name + ' ' + user.name[0] + '.'

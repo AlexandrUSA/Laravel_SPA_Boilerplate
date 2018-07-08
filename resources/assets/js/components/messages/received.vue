@@ -17,7 +17,7 @@
           <v-btn
             color="green darken-1"
             flat="flat"
-            @click="showEmail = false"
+            @click="deleteItem"
           >
             Удалить
           </v-btn>
@@ -113,8 +113,17 @@
     },
     methods: {
       ...mapActions({
-        edit: 'messages/edit'
+        edit: 'messages/edit',
+        remove: 'messages/remove'
       }),
+      deleteItem () {
+          this.showEmail = false
+          this.remove({
+            id: this.current.id,
+            type: 'received'
+          })
+
+      },
       getName (user) {
         if (!user) return ''
         return (user) ? user.last_name + ' ' + user.name[0] + '.' : 'Нет данных'

@@ -10,6 +10,8 @@
 <script>
 import Loading from './Loading';
 import { mapGetters, mapActions } from 'vuex';
+import Echo from 'laravel-echo'
+import Pusher from 'pusher-js'
 
 // Динамическая загрузка компонентов разметки.
 const requireContext = require.context('~/layouts', false, /.*\.vue$/)
@@ -47,6 +49,17 @@ export default {
   },
   mounted () {
     this.$loading = this.$refs.loading;
+
+    const echo = new Echo({
+      broadcaster: `pusher`,
+      key: `58095af5367d8a85356a`,
+      cluster: `eu`,
+      encrypted: true
+    })
+
+    echo.private(`permission-chanel`).listen(`PermissionChanged`, (e) => {
+      console.log(e)
+    })
   },
 
   methods: {

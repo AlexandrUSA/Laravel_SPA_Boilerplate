@@ -49,13 +49,31 @@
       </v-card-text>
       <v-card-actions>
         <v-btn large block
-               :loading="form.busy"
+               :loading="loading"
                type="submit"
                :disabled="!valid">
           Отправить
         </v-btn>
       </v-card-actions>
     </v-card>
+    <v-dialog
+            v-model="dialog"
+            max-width="400"
+    >
+      <v-card>
+        <v-card-title class="headline">Сообщение отправлено!</v-card-title>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+                  color="green darken-1"
+                  flat="flat"
+                  @click="dialog = false"
+          >
+            OK
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-form>
 </template>
 
@@ -67,7 +85,7 @@ export default {
   props: {
     toUser: {
       type: Object,
-      default: {}
+      default: null
     },
     oldMessage: {
       type: String,
@@ -75,6 +93,7 @@ export default {
     }
   },
   data: () => ({
+    dialog: false,
     date: null,
     menu: false,
     valid: false,
@@ -86,7 +105,10 @@ export default {
   }),
   watch: {
     toUser () {
-      if (this.toUser.id) this.form.recipients.push(this.toUser.id)
+      console.log(this.toUser)
+      if (this.toUser.id) {
+        this.form.recipients = [this.toUser.id]
+      }
     },
     oldMessage () {
       if (this.oldMessage) this.form.message = this.oldMessage
@@ -95,7 +117,8 @@ export default {
   computed: {
     ...mapGetters({
       user: 'auth/user',
-      employees: 'employees/employees'
+      employees: 'employees/employees',
+      loading: 'httpPending'
     })
   },
   methods: {
@@ -105,6 +128,14 @@ export default {
     async send () {
       this.form.from_id = this.user.id
       await this.add(this.form)
+      this._resetForm()
+      this.dialog = true
+    },
+    _resetForm ()
+    {
+        this.form.message = ''
+        this.form.from_id = ''
+        this.form.recipients = []
     }
   }
 }

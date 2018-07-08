@@ -28,7 +28,7 @@ class RoleRequest extends FormRequest
     return [
       'name' => 'required|String|min:2|max:50',
       'display_name' => 'required|String|min:2|max:50',
-      'description' => 'String|min:2|max:50',
+      'description' => 'max:50',
       'permissionsList' => 'array',
       'department_id' => 'required|integer'
     ];

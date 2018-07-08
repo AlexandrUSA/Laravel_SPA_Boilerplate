@@ -42,6 +42,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::resource('charges','ChargeController', ['except' => ['create', 'edit']]);
     Route::resource('customers','CustomerController', ['except' => ['create', 'edit']]);
     Route::resource('transfers','TransferController', ['except' => ['create', 'edit']]);
+    Route::get('/all', 'BaseController@getAll');
   });
 
   /**

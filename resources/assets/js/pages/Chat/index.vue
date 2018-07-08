@@ -12,6 +12,7 @@
                 <v-list-tile
                   :key="item.message.id"
                   ripple
+                  @click="goToEmail(item.user)"
                 >
                   <v-list-tile-content>
                     <v-list-tile-title>{{ item.user.name }}</v-list-tile-title>
