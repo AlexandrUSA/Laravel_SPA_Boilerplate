@@ -1,8 +1,11 @@
-import { mapActions } from 'vuex';
-import Organization from '~/mixins/Organization';
+import { mapActions } from 'vuex'
+import Organization from '~/mixins/Organization'
 export default {
   middleware: ['auth', 'organisation'],
   mixins: [ Organization ],
+  metaInfo () {
+    return { title: this.$t('departments') }
+  },
   data () {
     return {
       // Всплывашки

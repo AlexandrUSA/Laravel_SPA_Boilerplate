@@ -12,7 +12,7 @@
       ref="email"
       required
     ></v-text-field>
-    
+
     <has-error :form="form" field="password" />
     <v-text-field
       :label="$t('password')"
@@ -22,13 +22,13 @@
       type="password"
       required
     ></v-text-field>
-    
+
     <v-checkbox
       :label="$t('remember_me')"
       v-model="remember"
       name="remember"
     ></v-checkbox>
-    <v-btn block large type="submit" 
+    <v-btn block large type="submit"
            :loading="form.busy">
          {{ $t('login') }}
     </v-btn>

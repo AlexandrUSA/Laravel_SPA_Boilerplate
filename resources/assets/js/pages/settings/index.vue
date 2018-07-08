@@ -1,34 +1,36 @@
 <template>
-    <v-tabs
-      dark
-      slider-color="yellow"
+  <v-tabs slider-color="yellow">
+    <v-tab
+      v-for="tab in tabs"
+      :key="tab.id"
+      ripple
     >
-      <v-tab
-        v-for="tab in tabs"
-        :key="tab.id"
-        ripple
-      >
-        <fa :icon="tab.icon" />
-        {{ tab.name }}
-      </v-tab>
-      <v-tab-item
-        v-for="tab in tabs"
-        :key="tab.id"
-      >
-        <v-card flat>
-          <component :is="tab.component"></component> 
-        </v-card>
-      </v-tab-item>
-    </v-tabs>
+      <fa :icon="tab.icon" />
+      {{ tab.name }}
+    </v-tab>
+    <v-tab-item
+      v-for="tab in tabs"
+      :key="tab.id"
+    >
+      <v-card flat>
+        <v-card-text>
+          <component :is="tab.component"></component>
+        </v-card-text>
+      </v-card>
+    </v-tab-item>
+  </v-tabs>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import profile from '../../components/settings/profile';
-import password from '../../components/settings/password';
+import profile from '~/components/settings/profile';
+import password from '~/components/settings/password';
 
 export default {
   middleware: 'auth',
+  metaInfo () {
+    return { title: this.$t('nav-settings') }
+  },
   components: {
     'settings-password': password,
     'settings-profile': profile
@@ -54,15 +56,15 @@ export default {
         }
       ]
     },
-    image() {
+    image () {
       return (this.user) ? this.user.photo_url : false;
     }
   },
-  created() {
+  created () {
     this.dark = this.theme;
   },
   watch: {
-    dark() {
+    dark () {
       this.switchTheme(this.dark)
     }
   },

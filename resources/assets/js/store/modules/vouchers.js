@@ -18,8 +18,8 @@ export const mutations = {
   load (state, vouchers) {
     state.vouchers = vouchers
   },
-  add (state, vouchers) {
-    state.vouchers.push(vouchers)
+  add (state, voucher) {
+    state.vouchers.push(voucher)
   },
   edit (state, voucher) {
     const index = state.vouchers.findIndex(el => el.id === voucher.id)

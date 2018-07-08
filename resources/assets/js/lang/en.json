@@ -96,6 +96,7 @@
   "actions": "Actions",
 
   "nav-main": "Dashboard",
+  "nav-email": "Email",
   "nav-organization": "Organization",
   "nav-balance": "Balance",
   "nav-clients": "Clients",

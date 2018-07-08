@@ -83,6 +83,8 @@ Route::group(['middleware' => 'auth:api'], function () {
   Route::post('tasks/updateStatus','TaskController@setCompleteStatus');
   Route::post('tasks/updateExpiry','TaskController@setExpireStatus');
   Route::resource('tasks','TaskController');
+  Route::resource('chat/message','MessageController');
+  Route::resource('email','EmailController', ['except' => ['create', 'edit']]);
 
 });
 

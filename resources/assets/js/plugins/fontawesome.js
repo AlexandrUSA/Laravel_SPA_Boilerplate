@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {
   faUser, faUsers, faArchive, faLock, faSignOutAlt, faCog, faSignInAlt, faUserPlus, faCaretDown,
   faAddressBook, faBriefcase, faHome, faAngleDown, faAngleUp, faAngleLeft, faComments, faQuestionCircle,
-  faBuilding, faSitemap, faPlane, faAddressCard, faCalendar, faDollarSign
+  faBuilding, faSitemap, faPlane, faAddressCard, faCalendar, faDollarSign, faEnvelope
 } from '@fortawesome/fontawesome-free-solid/shakable.es'
 
 import {
@@ -17,5 +17,5 @@ Vue.component('fa', FontAwesomeIcon)
 fontawesome.library.add(
   faUser, faUsers, faArchive, faLock, faSignOutAlt, faCog, faGithub, faSignInAlt, faUserPlus, faCaretDown,
   faAddressBook, faBriefcase, faHome, faAngleDown, faAngleUp, faAngleLeft, faComments, faQuestionCircle,
-  faBuilding, faSitemap, faPlane, faAddressCard, faCalendar, faDollarSign
+  faBuilding, faSitemap, faPlane, faAddressCard, faCalendar, faDollarSign, faEnvelope
 )

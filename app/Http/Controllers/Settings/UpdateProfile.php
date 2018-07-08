@@ -21,7 +21,8 @@ class UpdateProfile extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email,'.$user->id,
         ]);
-
-        return tap($user)->update($request->only('name', 'email'));
+        $user = tap($user)->update($request->only('name', 'email'));
+        $user['permissions'] = $user->getAllPermissions();
+        return $user;
     }
 }

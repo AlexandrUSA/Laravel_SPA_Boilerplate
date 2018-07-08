@@ -7,6 +7,9 @@ const ENG = ['Ya', 'ya', 'Yu', 'yu', 'Ch', 'ch', 'Sh', 'sh', 'Sh', 'sh', 'Zh', '
 export default {
   middleware: ['auth', 'organisation'],
   mixins: [Organization],
+  metaInfo () {
+    return { title: this.$t('positions') }
+  },
   data () {
     return {
       // Диалог создания новой профессии

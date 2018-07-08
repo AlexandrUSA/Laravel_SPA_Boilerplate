@@ -17,99 +17,109 @@
     </v-dialog>
 
     <v-dialog v-model="tourCreate" max-width="800px">
-      <v-card>
-        <v-card-title>
-          <span class="headline">Новая путевка</span>
-        </v-card-title>
-        <v-card-text>
-          <v-container grid-list-md>
-            <v-layout wrap>
-              <v-flex xs12>
-                <v-select
-                  :label="$t('tour')"
-                  v-model="editedTour.tour_id"
-                  prepend-icon="card_travel"
-                  :items="tours"
-                  item-text="title"
-                  item-value="id"
-                  :rules="[v => !!v || 'Выберите тур']"
-                  required
-                ></v-select>
-              </v-flex>
-              <v-flex xs12>
-                <v-select
-                  :label="$t('client')"
-                  v-model="editedTour.client_id"
-                  prepend-icon="person"
-                  :items="clients"
-                  item-text="last_name"
-                  item-value="id"
-                  :rules="[v => !!v || 'Выберите клиента']"
-                  required
-                ></v-select>
-              </v-flex>
-              <v-flex xs12 sm6>
-                <v-menu
-                  ref="menu1"
-                  lazy
-                  :close-on-content-click="false"
-                  v-model="departDate"
-                  transition="scale-transition"
-                  offset-y
-                  full-width
-                  :nudge-right="40"
-                  min-width="290px"
-                  :return-value.sync="date1"
-                >
-                  <v-text-field
-                    slot="activator"
-                    :label="$t('departure_date')"
-                    v-model="editedTour.departure_date"
-                    prepend-icon="event"
-                    readonly
-                  ></v-text-field>
-                  <v-date-picker v-model="editedTour.departure_date" no-title scrollable>
-                    <v-spacer></v-spacer>
-                    <v-btn flat color="primary" @click="departDate = false">{{ $t('cancel') }}</v-btn>
-                    <v-btn flat color="primary" @click="$refs.menu1.save(date1)">{{ $t('ok') }}</v-btn>
-                  </v-date-picker>
-                </v-menu>
-              </v-flex>
-              <v-flex xs12 sm6>
-                <v-menu
-                  ref="menu2"
-                  lazy
-                  :close-on-content-click="false"
-                  v-model="arrivalDate"
-                  transition="scale-transition"
-                  offset-y
-                  full-width
-                  :nudge-right="40"
-                  min-width="290px"
-                  :return-value.sync="date2"
-                >
-                  <v-text-field
-                    slot="activator"
-                    :label="$t('arrival_date')"
-                    v-model="editedTour.arrival_date"
-                    prepend-icon="event"
-                    readonly
-                  ></v-text-field>
-                  <v-date-picker v-model="editedTour.arrival_date" no-title scrollable>
-                    <v-spacer></v-spacer>
-                    <v-btn flat color="primary" @click="departDate = false">{{ $t('cancel') }}</v-btn>
-                    <v-btn flat color="primary" @click="$refs.menu2.save(date2)">{{ $t('ok') }}</v-btn>
-                  </v-date-picker>
-                </v-menu>
-              </v-flex>
-            </v-layout>
-          </v-container>
-        </v-card-text>
-        <v-card-actions>
-          <v-btn outline color="info" @click.native="addConfirm">{{ $t('ok') }}</v-btn>
-          <v-btn outline color="error" @click.native="addCancel">{{ $t('cancel') }}</v-btn>
-        </v-card-actions>
-      </v-card>
+      <v-form ref="form" v-model="valid">
+        <v-card>
+          <v-card-title>
+            <span class="headline">Новая путевка</span>
+          </v-card-title>
+          <v-card-text>
+            <v-container grid-list-md>
+              <v-layout wrap>
+                <v-flex xs12>
+                  <v-select
+                    :label="$t('tour')"
+                    v-model="editedTour.tour_id"
+                    prepend-icon="card_travel"
+                    :items="tours"
+                    item-text="title"
+                    item-value="id"
+                    :rules="[v => !!v || 'Выберите тур']"
+                    required
+                    clearable
+                  ></v-select>
+                </v-flex>
+                <v-flex xs12>
+                  <v-select
+                    :label="$t('client')"
+                    v-model="editedTour.client_id"
+                    prepend-icon="person"
+                    :items="clients"
+                    item-text="last_name"
+                    item-value="id"
+                    :rules="[v => !!v || 'Выберите клиента']"
+                    required
+                    clearable
+                  ></v-select>
+                </v-flex>
+                <v-flex xs12 sm6>
+                  <v-menu
+                    ref="menu1"
+                    lazy
+                    :close-on-content-click="false"
+                    v-model="departDate"
+                    transition="scale-transition"
+                    offset-y
+                    full-width
+                    :nudge-right="40"
+                    min-width="290px"
+                    :return-value.sync="date1"
+                  >
+                    <v-text-field
+                      slot="activator"
+                      :label="$t('departure_date')"
+                      v-model="editedTour.departure_date"
+                      prepend-icon="event"
+                      readonly
+                      required
+                      clearable
+                    ></v-text-field>
+                    <v-date-picker v-model="editedTour.departure_date" no-title scrollable>
+                      <v-spacer></v-spacer>
+                      <v-btn flat color="primary" @click="departDate = false">{{ $t('cancel') }}</v-btn>
+                      <v-btn flat color="primary" @click="$refs.menu1.save(date1)">{{ $t('ok') }}</v-btn>
+                    </v-date-picker>
+                  </v-menu>
+                </v-flex>
+                <v-flex xs12 sm6>
+                  <v-menu
+                    ref="menu2"
+                    lazy
+                    :close-on-content-click="false"
+                    v-model="arrivalDate"
+                    transition="scale-transition"
+                    offset-y
+                    full-width
+                    :nudge-right="40"
+                    min-width="290px"
+                    :return-value.sync="date2"
+                  >
+                    <v-text-field
+                      slot="activator"
+                      :label="$t('arrival_date')"
+                      v-model="editedTour.arrival_date"
+                      prepend-icon="event"
+                      readonly
+                      required
+                      clearable
+                    ></v-text-field>
+                    <v-date-picker v-model="editedTour.arrival_date" no-title scrollable>
+                      <v-spacer></v-spacer>
+                      <v-btn flat color="primary" @click="arrivalDate = false">{{ $t('cancel') }}</v-btn>
+                      <v-btn flat color="primary" @click="$refs.menu2.save(date2)">{{ $t('ok') }}</v-btn>
+                    </v-date-picker>
+                  </v-menu>
+                </v-flex>
+              </v-layout>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-btn outline color="info"
+                   @click.native="addConfirm"
+                   :disabled="!valid">{{ $t('ok') }}</v-btn>
+            <v-btn outline color="error" @click.native="addCancel">{{ $t('cancel') }}</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-form>
     </v-dialog>
 
     <v-card>

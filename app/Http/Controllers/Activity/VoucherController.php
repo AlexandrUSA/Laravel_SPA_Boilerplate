@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Activity;
 
 use App\Voucher;
 use Illuminate\Http\Request;
+use App\Http\Requests\VoucherRequest;
 
 class VoucherController extends BaseController
 {
@@ -41,7 +42,7 @@ class VoucherController extends BaseController
    */
   public function deleteFromArchive(Request $request)
   {
-    $voucher =Voucher::onlyTrashed()
+    $voucher = Voucher::onlyTrashed()
       ->where('id', $request->route('id'))
       ->first();
     $voucher->forceDelete();
@@ -51,10 +52,10 @@ class VoucherController extends BaseController
   /**
    * Store a newly created resource in storage.
    *
-   * @param  \Illuminate\Http\Request $request
+   * @param  VoucherRequest $request
    * @return \Illuminate\Http\Response
    */
-  public function store(Request $request)
+  public function store(VoucherRequest $request)
   {
     Voucher::create($request->all());
     return Voucher::all()->last();

@@ -1,4 +1,5 @@
 import { mapActions, mapGetters } from 'vuex'
+import moment from '~/plugins/moment'
 
 export default {
   props: {
@@ -8,8 +9,12 @@ export default {
     }
   },
   middleware: ['auth', 'activity'],
+  metaInfo () {
+    return { title: this.$t('nav-vouchers') }
+  },
   data () {
     return {
+      valid: false,
       /* Подсказки о результате удаления */
       snackbarShow: false,
       snackbarTimeout: 10000,
@@ -41,6 +46,15 @@ export default {
         employee_id: '',
         departure_date: '',
         arrival_date: ''
+      }
+    }
+  },
+  watch: {
+    'editedTour.departure_date': function () {
+      if (this.editedTour.tour_id) {
+        const dep = this.editedTour.departure_date
+        const tour = this._getTour(this.editedTour.tour_id)
+        this.editedTour.arrival_date = moment(dep).add(tour.days, 'd').format('YYYY-MM-DD')
       }
     }
   },
@@ -80,7 +94,7 @@ export default {
         data.push({
           id: el.id,
           tour_id: el.tour_id,
-          tour: this._getTourName(el.tour_id),
+          tour: this._getTour(el.tour_id).title || 'Нет данных',
           client_id: el.client_id,
           client: this._getClientName(el.client_id),
           employee_id: el.employee_id,
@@ -112,12 +126,11 @@ export default {
       this.tourCreate = true
       this.creation = true
     },
-    _getTourName (tourID) {
-      const tour = this.tours.find(tour => tour.id === tourID)
-      return tour ? tour.title : 'Нет данных'
+    _getTour (tourID) {
+      return this.tours.find(tour => +tour.id === +tourID) || {}
     },
     _getClientName (clientID) {
-      const client = this.clients.find(client => client.id === clientID)
+      const client = this.clients.find(client => +client.id === +clientID)
       if (client) {
         return `${client.last_name} ${client.first_name[0]}. ${client.patronymic[0]}`
       } else {

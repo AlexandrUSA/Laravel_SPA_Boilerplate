@@ -2,6 +2,9 @@ import { mapActions, mapGetters } from 'vuex'
 
 export default {
   middleware: ['auth'],
+  metaInfo () {
+    return { title: this.$t('nav-balance') }
+  },
   data () {
     return {}
   },

@@ -19,7 +19,7 @@
           </v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
-      <v-list-tile :to="{name: 'settings'}">
+      <v-list-tile :to="{name: 'AppSettings'}">
         <v-list-tile-action>
           <fa icon="cog"/>
         </v-list-tile-action>
@@ -106,6 +106,7 @@
           {icon: 'briefcase', text: this.$t('nav-vouchers'), to: {name: 'vouchers'}, permissions: 'crud-tours'},
           {icon: 'calendar', text: this.$t('nav-calendar'), to: {name: 'calendar'}},
           {icon: 'comments', text: this.$t('nav-chat'), to: {name: 'chat'}},
+          {icon: 'envelope', text: this.$t('nav-email'), to: {name: 'messages'}},
           {icon: 'question-circle', text: this.$t('nav-help'), to: {name: 'help'}}
         ]
       },

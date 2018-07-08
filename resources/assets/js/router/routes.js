@@ -8,10 +8,11 @@ const PasswordReset = () => import('~/pages/auth/password/reset').then(m => m.de
 const PasswordRequest = () => import('~/pages/auth/password/email').then(m => m.default || m);
 
 const Settings = () => import('~/pages/settings/index').then(m => m.default || m);
+const AppSettings = () => import('~/pages/AppSettings/index').then(m => m.default || m);
 
-const AdminDashboard = () => import('~/pages/admin/Dashboard').then(m => m.default || m);
-const AdminMessages = () => import('~/pages/admin/messages/List').then(m => m.default || m);
-const AdminHelpers = () => import('~/pages/admin/helpers/List').then(m => m.default || m);
+const AdminDashboard = () => import('~/pages/Dashboard').then(m => m.default || m);
+const AdminMessages = () => import('~/pages/messages/List').then(m => m.default || m);
+const AdminHelpers = () => import('~/pages/helpers/List').then(m => m.default || m);
 
 const AdminBalance = () => import('~/pages/Balance').then(m => m.default || m);
 const AdminCalendar = () => import('~/pages/Calendar').then(m => m.default || m);
@@ -22,8 +23,6 @@ const AdminClients = () => import('~/pages/Clients/list').then(m => m.default ||
 const AdminClientEdit = () => import('~/pages/Clients/editor').then(m => m.default || m);
 
 const AdminVouchers = () => import('~/pages/Vouchers/list').then(m => m.default || m);
-const AdminVoucher = () => import('~/pages/Vouchers/list').then(m => m.default || m);
-const AdminVoucherEdit = () => import('~/pages/Vouchers/editor').then(m => m.default || m);
 
 const AdminTours = () => import('~/pages/Tours/list').then(m => m.default || m);
 const AdminToursEdit = () => import('~/pages/Tours/editor').then(m => m.default || m);
@@ -68,6 +67,11 @@ export default [
     path: '/settings',
     name: 'settings',
     component: Settings
+  },
+  {
+    path: '/app-settings',
+    name: 'AppSettings',
+    component: AppSettings
   },
   {
     path: '/dashboard',
@@ -139,17 +143,6 @@ export default [
     path: '/vouchers',
     name: 'vouchers',
     component: AdminVouchers,
-    props: true
-  },
-  {
-    path: '/vouchers/create',
-    name: 'voucherCreate',
-    component: AdminVoucherEdit
-  },
-  {
-    path: '/vouchers/:id',
-    name: 'voucherShow',
-    component: AdminVoucher,
     props: true
   },
   {

@@ -5,6 +5,9 @@ import swal from 'sweetalert2'
 export default {
   middleware: ['auth', 'organisation'],
   mixins: [ Organization ],
+  metaInfo () {
+    return { title: this.$t('employees') }
+  },
   data () {
     return {
       /* Подсказки о результате удаления */
@@ -17,7 +20,7 @@ export default {
   },
   computed: {
     cardTitle () {
-      return (this.isArchive) ? 'Архив сотрудников' : 'Список сотрудников';
+      return (this.isArchive) ? 'Архив сотрудников' : 'Список сотрудников'
     },
     // Заголовки таблицы
     headers () {

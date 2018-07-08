@@ -10,9 +10,11 @@
       </div>
       <div class="auth-form">
         <v-card height="500">
-          <transition  enter-active-class="AuthEnter" leave-active-class="AuthLeave" mode="out-in">
-            <component :is="authComponent"></component>
-          </transition>
+          <v-card-text>
+            <transition  enter-active-class="AuthEnter" leave-active-class="AuthLeave" mode="out-in">
+              <component :is="authComponent"></component>
+            </transition>
+          </v-card-text>
         </v-card>      
       </div>
     </div>

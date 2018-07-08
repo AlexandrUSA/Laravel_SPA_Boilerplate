@@ -3,8 +3,14 @@ import Form from 'vform'
 import axios from 'axios'
 
 export default {
+  middleware: ['auth'],
+  metaInfo () {
+    return { title: this.$t('nav-calendar') }
+  },
   data () {
     return {
+      valid: false,
+      dateSelectMenu: false,
       deleteDialog: false,
       createDialog: false,
       showIndex: -1,
@@ -16,31 +22,7 @@ export default {
         completed: 0,
         expired: 0
       }),
-      // newEvent: {
-      //   date: '',
-      //   title: '',
-      //   desc: '',
-      //   completed: false,
-      //   expired: false
-      // },
-      events: [
-        {
-          id: 0,
-          date: '2018/09/28',
-          title: 'Позвонить танечке',
-          completed: false,
-          expired: false
-        },
-        {
-          id: 1,
-          date: '2018/06/15',
-          title: 'Собеседование с Калигулой',
-          desc: 'Бог мне в помощь!',
-          customClass: 'disabled highlight', // Custom classes to an calendar cell
-          completed: false,
-          expired: false
-        }
-      ]
+      events: []
     }
   },
   computed: {
@@ -128,16 +110,20 @@ export default {
       this.selected = []
     },
     setEventStatus () {
+      for (let key of this.events) {
+        console.log(key)
+      }
       this.events.forEach(el => {
         const date = el.date.split('/').join('-')
-        if (moment().diff(moment(date)) > 0) {
+        if (moment().diff(moment(date)) > 0 && !el.completed) {
           el.expired = true
+          el.customClass = 'event-expired'
         }
+        el.date = el.date.split('-').join('/')
       })
     }
   },
   async created () {
-    console.log(this.$t('cancel'))
     const { data } = await axios({
       method: 'get',
       url: '/api/tasks'

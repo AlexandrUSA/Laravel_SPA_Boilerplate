@@ -2,6 +2,9 @@ import { mapActions, mapGetters } from 'vuex'
 
 export default {
   middleware: ['auth', 'activity'],
+  metaInfo () {
+    return { title: this.$t('nav-tours') }
+  },
   data () {
     return {
       /* Подсказки о результате удаления */
