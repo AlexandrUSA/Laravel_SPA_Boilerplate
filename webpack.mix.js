@@ -33,9 +33,14 @@ mix.webpackConfig({
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
   ],
   resolve: {
+  	extensions: ['.js', '.json', '.vue'],
     alias: {
       '~': path.join(__dirname, './resources/assets/js')
     }
+  },
+  output: {
+    chunkFilename: 'js/[name].[chunkhash].js',
+    publicPath: mix.config.hmr ? '//localhost:8080' : '/'
   }
 });
 

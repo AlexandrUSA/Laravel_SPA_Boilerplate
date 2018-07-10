@@ -1,18 +1,16 @@
 import store from '~/store'
 
-const Home = () => import('~/pages/home').then(m => m.default || m);
+const Home = () => import('~/pages/Home').then(m => m.default || m);
 // const Welcome = () => import('~/pages/welcome').then(m => m.default || m)
 
-const Login = () => import('~/pages/auth/login').then(m => m.default || m);
-const PasswordReset = () => import('~/pages/auth/password/reset').then(m => m.default || m);
-const PasswordRequest = () => import('~/pages/auth/password/email').then(m => m.default || m);
+const Login = () => import('~/pages/Auth/login').then(m => m.default || m);
+const PasswordReset = () => import('~/pages/Auth/password/reset').then(m => m.default || m);
+const PasswordRequest = () => import('~/pages/Auth/password/email').then(m => m.default || m);
 
-const Settings = () => import('~/pages/settings/index').then(m => m.default || m);
+const Settings = () => import('~/pages/Settings/index').then(m => m.default || m);
 const AppSettings = () => import('~/pages/AppSettings/index').then(m => m.default || m);
 
-const AdminDashboard = () => import('~/pages/Dashboard').then(m => m.default || m);
-const AdminMessages = () => import('~/pages/messages/List').then(m => m.default || m);
-const AdminHelpers = () => import('~/pages/helpers/List').then(m => m.default || m);
+const AdminMessages = () => import('~/pages/Messages/List').then(m => m.default || m);
 
 const AdminBalance = () => import('~/pages/Balance').then(m => m.default || m);
 const AdminCalendar = () => import('~/pages/Calendar').then(m => m.default || m);
@@ -26,9 +24,6 @@ const AdminVouchers = () => import('~/pages/Vouchers/list').then(m => m.default 
 
 const AdminTours = () => import('~/pages/Tours/list').then(m => m.default || m);
 const AdminToursEdit = () => import('~/pages/Tours/editor').then(m => m.default || m);
-
-// const AdminProviders = () => import('~/pages/Clients/list').then(m => m.default || m);
-// const AdminProvidersEdit = () => import('~/pages/Clients/editor').then(m => m.default || m);
 
 const AdminEmployees = () => import('~/pages/Organization/Employees/list').then(m => m.default || m);
 const AdminEmployee = () => import('~/pages/Organization/employees/show').then(m => m.default || m);
@@ -74,12 +69,6 @@ export default [
     component: AppSettings
   },
   {
-    path: '/dashboard',
-    name: 'dashboard',
-    component: AdminDashboard,
-    children: []
-  },
-  {
     path: '/balance',
     name: 'balance',
     component: AdminBalance
@@ -111,14 +100,20 @@ export default [
     component: AdminEmployeeEditor
   },
   {
-    path: '/employees/:id',
-    name: 'employee',
+    path: '/employees/archive/:id',
+    name: 'employeeArchive',
     component: AdminEmployee,
     props: true
   },
   {
-    path: '/employees/archive/:id',
-    name: 'employeeArchive',
+    path: '/employees/:id/edit',
+    name: 'employeeEdit',
+    component: AdminEmployeeEditor,
+    props: true
+  },
+  {
+    path: '/employees/:id',
+    name: 'employee',
     component: AdminEmployee,
     props: true
   },
@@ -186,13 +181,9 @@ export default [
     name: 'messages',
     component: AdminMessages,
     props: true
-  },  {
-    path: '/helpers',
-    name: 'helpers',
-    component: AdminHelpers
   },
   {
     path: '*',
-    component: require('~/pages/errors/404.vue')
+    component: require('~/pages/Errors/404.vue')
   }
 ]

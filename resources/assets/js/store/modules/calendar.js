@@ -1,7 +1,11 @@
 import axios from 'axios'
 import * as types from '../mutation-types'
 
-const url = '/api/tasks'
+/**
+ * URI для работы с ресурсом
+ * @type {string}
+ */
+const URL = '/api/tasks'
 
 export const state = {
   tasks: [],
@@ -36,40 +40,40 @@ export const mutations = {
 export const actions = {
   async [types.LOAD] ({ commit }) {
     try {
-      const { data } = await axios.get(url)
-      commit('load', data)
+      const { data } = await axios.get(URL)
+      commit(types.LOAD, data)
     } catch (e) {
-      console.error('Не загрузились отделы', e)
+      console.error('Не загрузились задание', e)
     }
   },
   async [types.LOAD_ONE] ({ commit }, payload) {
     try {
-      const { data } = await axios.get(url + '/' + payload)
-      commit('loadOne', data)
+      const { data } = await axios.get(URL + '/' + payload)
+      commit(types.LOAD_ONE, data)
     } catch (e) {
-      console.error('Не загрузился отдел', e)
+      console.error('Не загрузился задание', e)
     }
   },
   async [types.ADD] ({ commit }, payload) {
     try {
-      const { data } = await axios.post(url, payload)
-      commit('add', data)
+      const { data } = await axios.post(URL, payload)
+      commit(types.ADD, data)
     } catch (e) {
-      console.error('Не создался отдел', e)
+      console.error('Не создался задание', e)
     }
   },
   async [types.EDIT] ({ commit }, task) {
     try {
-      const { data } = await axios.put(url + '/' + task.id, task)
-      commit('edit', data)
+      const { data } = await axios.put(URL + '/' + task.id, task)
+      commit(types.EDIT, data)
     } catch (e) {
-      console.error('Не изменился отдел', e)
+      console.error('Не изменился задание', e)
     }
   },
   async [types.REMOVE] ({ commit }, taskID) {
     try {
-      await axios.delete(url + '/' + taskID)
-      commit('remove', taskID)
+      await axios.delete(URL + '/' + taskID)
+      commit(types.REMOVE, taskID)
     } catch (e) {
       console.error('Не удалилось задание', e)
     }

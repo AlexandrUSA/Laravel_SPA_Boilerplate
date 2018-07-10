@@ -1,6 +1,11 @@
 import axios from 'axios'
+import * as types from '../mutation-types'
 
-const url = '/api/email'
+/**
+ * URI для работы с ресурсом
+ * @type {string}
+ */
+const URL = '/api/email'
 
 export const state = {
   received: [],
@@ -17,77 +22,77 @@ export const getters = {
 }
 
 export const mutations = {
-  load (state, messages) {
+  [types.LOAD] (state, messages) {
     state.received = messages.received
     state.sent = messages.sent
   },
-  edit (state, message) {
+  [types.EDIT] (state, message) {
     const index = state.received.findIndex(el => +el.id === +message.id)
     state.received.splice(index, 1, message)
   },
-  remove (state, message) {
+  [types.REMOVE] (state, message) {
     const pos = state[message.type].findIndex(el => +el.id === +message.id)
     if (pos !== -1) state[message.type].splice(pos, 1)
   },
-  setError (state, error) {
+  [types.SET_ERROR] (state, error) {
     state.error = error
   }
 }
 
 export const actions = {
   /**
-  * Загрузка всех туров
+  * Загрузка всех сообщений
   * @param commit
   * @returns {Promise.<void>}
   */
-  async load ({ commit }) {
+  async [types.LOAD] ({ commit }) {
     try {
-      const { data } = await axios.get(url)
-      commit('load', data)
+      const { data } = await axios.get(URL)
+      commit(types.LOAD, data)
     } catch (e) {
-      console.error('Не загрузились туры', e)
+      console.error('Не загрузились сообщения', e)
     }
   },
   /**
-  * Добавление нового тура
+  * Добавление сообщения
   * @param commit
   * @param message
   * @returns {Promise.<void>}
   */
-  async add ({ commit }, message) {
+  async [types.ADD] ({ commit }, message) {
     try {
-      const { data } = await axios.post(url, message)
-      commit('load', data)
+      const { data } = await axios.post(URL, message)
+      commit(types.LOAD, data)
     } catch (e) {
-      console.error('Не создался туры', e)
+      console.error('Не создался сообщение', e)
     }
   },
   /**
-  * Изменение тура
+  * Изменение сообщения
   * @param commit
   * @param message
   * @returns {Promise.<void>}
   */
-  async edit ({ commit }, message) {
+  async [types.EDIT] ({ commit }, message) {
     try {
-      const { data } = await axios.put(url + '/' + message.id, message)
-      commit('edit', data)
+      const { data } = await axios.put(URL + '/' + message.id, message)
+      commit(types.EDIT, data)
     } catch (e) {
-      console.error('Не изменился тур', e)
+      console.error('Не изменился сообщение', e)
     }
   },
   /**
-  * Удаление тура
+  * Удаление сообщения
   * @param commit
   * @param message
   * @returns {Promise.<void>}
   */
-  async remove ({ commit }, message) {
+  async [types.REMOVE] ({ commit }, message) {
     try {
-      await axios.delete(url + '/' + message.id)
-      commit('remove', message)
+      await axios.delete(URL + '/' + message.id)
+      commit(types.REMOVE, message)
     } catch (e) {
-      console.error('Не удалился тур', e)
+      console.error('Не удалился сообщение', e)
     }
   }
 }

@@ -1,31 +1,59 @@
 // state
 export const state = {
   dark: true,
-  drawer: false,
+  right: false,
+  miniVariant: false,
+  clipped: false,
+  fixed: true
 }
 
 // getters
 export const getters = {
   dark: state => state.dark,
-  drawer: state => state.drawer
+  right: state => state.right,
+  miniVariant: state => state.miniVariant,
+  clipped: state => state.clipped,
+  fixed: state => state.fixed
 }
 
 // mutations
 export const mutations = {
- 	switchTheme (state, payload) {
-    state.dark = payload
+  switchTheme (state) {
+    state.dark = !state.dark
   },
-  switchDrawer (state, payload) {
-  	state.drawer = !state.drawer
+
+  switchRight (state) {
+    state.right = !state.right
+  },
+
+  switchMiniVariant (state) {
+    state.miniVariant = !state.miniVariant
+  },
+
+  switchClipped (state) {
+    state.clipped = !state.clipped
+  },
+
+  switchFixed (state) {
+    state.fixed = !state.fixed
   }
 }
 
 // actions
 export const actions = {
-  switchTheme ({ commit }, payload) {
-    commit('switchTheme', payload)
+  switchTheme ({ commit }) {
+    commit('switchTheme')
   },
-  switchDrawer ({ commit }) {
-    commit('switchDrawer')
+  switchRight ({ commit }) {
+    commit('switchRight')
+  },
+  switchMiniVariant ({ commit }) {
+    commit('switchMiniVariant')
+  },
+  switchClipped ({ commit }) {
+    commit('switchClipped')
+  },
+  switchFixed ({ commit }) {
+    commit('switchFixed')
   }
 }

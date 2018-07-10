@@ -15,6 +15,7 @@ use App\Department;
 use App\Employee;
 use App\Permission;
 use App\Role;
+use App\Events\PermissionChanged;
 
 class BaseController extends Controller
 {
@@ -28,6 +29,7 @@ class BaseController extends Controller
       $output['departments'] = Department::all();
 //    });
 
+    event(new PermissionChanged());
     return response($output, 200);
   }
 }

@@ -1,7 +1,11 @@
 import axios from 'axios'
 import * as types from '../mutation-types'
 
-const url = '/api/organisation/permissions'
+/**
+ * URI для работы с ресурсом
+ * @type {string}
+ */
+const URL = '/api/organisation/permissions'
 
 export const state = {
   permissions: [],
@@ -36,24 +40,24 @@ export const mutations = {
 export const actions = {
   async [types.LOAD] ({ commit }) {
     try {
-      const { data } = await axios.get(url)
-      commit('load', data)
+      const { data } = await axios.get(URL)
+      commit(types.LOAD, data)
     } catch (e) {
       console.error('Не загрузились разрешения', e)
     }
   },
   async [types.ADD] ({ commit }, payload) {
     try {
-      const { data } = await axios.post(url, payload)
-      commit('add', data)
+      const { data } = await axios.post(URL, payload)
+      commit(types.ADD, data)
     } catch (e) {
       console.error('Не создался отдел', e)
     }
   },
   async [types.REMOVE] ({ commit }, permissionID) {
     try {
-      await axios.delete(url + '/' + permissionID)
-      commit('remove', permissionID)
+      await axios.delete(URL + '/' + permissionID)
+      commit(types.REMOVE, permissionID)
     } catch (e) {
       console.error('Не удалился отдел', e)
     }

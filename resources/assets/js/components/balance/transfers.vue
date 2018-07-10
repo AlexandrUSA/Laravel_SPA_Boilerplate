@@ -56,9 +56,11 @@
       items () {
         const data = []
         this.transfers.forEach(el => {
+          const date = el.created * 99999
+          console.log(date, 34)
           data.push({
             id: el.id,
-            date: moment(el.created),
+            date: moment(date),
             amount: el.amount + ' ' + el.currency,
             dest: el.source.brand,
             status: el.status

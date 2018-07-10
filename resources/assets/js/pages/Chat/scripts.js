@@ -1,6 +1,7 @@
 import Echo from 'laravel-echo'
 import Pusher from 'pusher-js'
 import axios from 'axios'
+import { mapGetters } from 'vuex'
 
 export default {
   middleware: [`auth`],
@@ -13,36 +14,43 @@ export default {
       snackbarMessage: ``,
       snackbarTimeout: 10000,
       message: ``,
-      messages: []
+      messages: [],
+      loading: false
     }
   },
-  computed: {},
+  computed: mapGetters({
+    user: 'auth/user',
+    token: 'auth/token'
+  }),
   methods: {
-    goToEmail (user) {
-      this.$router.push({name: 'messages', params: {fromChat: user}})
+    insertName (user) {
+      if (+user.id === +this.user.id) return
+      this.message = `${user.last_name} ${user.name[0]}., `
+      this.$refs.text.focus()
     },
     sendMessage () {
       if (this.message) {
+        this.loading = true
         axios.post(`/api/chat/message`, { message: this.message })
+        this.message = ``
       }
     },
     _showInfo (message) {
       this.snackbar = true
       this.snackbarMessage = message
     },
-    _addNewMessage (user, message) {
-      this.messages.push({ user, message })
-      this.message = ``
-    },
     async _getMessages () {
       const { data } = await axios.get(`/api/chat/message`)
-      this.messages = data
+      this.messages = data.reverse()
     }
   },
   mounted () {
     this._getMessages()
     const echo = new Echo({
       broadcaster: `pusher`,
+      auth: {
+        headers: { 'Authorization': 'Bearer ' + this.token }
+      },
       key: `58095af5367d8a85356a`,
       cluster: `eu`,
       encrypted: true
@@ -60,9 +68,10 @@ export default {
     .leaving(member => {
       this._showInfo(`Пользователь ${member.name} покинул в чат!`)
     })
-
+    // Прослушка события поступления нового сообщения
     echo.private(`chat-room`).listen(`ChatMessage`, (e) => {
-      this._addNewMessage(e.user, e.message)
+      this.loading = false
+      this.messages.push({ user: e.user, message: e.message })
     })
   }
 }

@@ -9,12 +9,12 @@ class TaskController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Task::all();
+      return $request->user()->tasks;
     }
 
     /**
@@ -45,7 +45,7 @@ class TaskController extends Controller
     public function setCompleteStatus (Request $request) {
       $items = $request->get('id');
       Task::whereId($items)->update(['completed' => 1]);
-      return response('OK', 200);
+      return response('', 204);
     }
 
     /**

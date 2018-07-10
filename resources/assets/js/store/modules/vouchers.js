@@ -1,6 +1,11 @@
 import axios from 'axios'
+import * as types from '../mutation-types'
 
-const url = '/api/activity/vouchers'
+/**
+ * URI для работы с ресурсом
+ * @type {string}
+ */
+const URL = '/api/activity/vouchers'
 
 export const state = {
   vouchers: [],
@@ -15,113 +20,140 @@ export const getters = {
 }
 
 export const mutations = {
-  load (state, vouchers) {
+  [types.LOAD] (state, vouchers) {
     state.vouchers = vouchers
   },
-  add (state, voucher) {
+  [types.ADD] (state, voucher) {
     state.vouchers.push(voucher)
   },
-  edit (state, voucher) {
+  [types.EDIT] (state, voucher) {
     const index = state.vouchers.findIndex(el => el.id === voucher.id)
     state.vouchers.splice(index, 1, voucher)
   },
-  remove (state, voucherID) {
+  [types.REMOVE] (state, voucherID) {
     const pos = state.vouchers.findIndex(el => el.id === voucherID)
     if (pos !== -1) state.vouchers.splice(pos, 1)
   },
-  setError (state, error) {
+  [types.SET_ERROR] (state, error) {
     state.error = error
   },
-  removeFromArchive (state, tourID) {
+  [types.REMOVE_FROM_ARCHIVE] (state, tourID) {
     const pos = state.archive.findIndex(el => +el.id === +tourID)
     if (pos !== -1) state.archive.splice(pos, 1)
   }
 }
 
 export const actions = {
+
   /**
-  * Загрузка всех туров
+  * Загрузка всех записей
   * @param commit
   * @returns {Promise.<void>}
   */
-  async load ({ commit }) {
+  async [types.LOAD] ({ commit }) {
     try {
-      const { data } = await axios.get(url)
-      commit('load', data)
+      const { data } = await axios.get(URL)
+      commit(types.LOAD, data)
     } catch (e) {
-      console.error('Не загрузились туры', e)
+      console.error('Не загрузились путевки', e)
     }
   },
+
   /**
-  * Добавление нового тура
-  * @param commit
-  * @param voucher
-  * @returns {Promise.<void>}
-  */
-  async add ({ commit }, voucher) {
-    try {
-      const { data } = await axios.post(url, voucher)
-      commit('add', data)
-    } catch (e) {
-      console.error('Не создался туры', e)
-    }
-  },
-  /**
-  * Изменение тура
+  * Добавление новой записи
   * @param commit
   * @param voucher
   * @returns {Promise.<void>}
   */
-  async edit ({ commit }, voucher) {
+  async [types.ADD] ({ commit }, voucher) {
+    commit(types.SET_ERROR, null)
     try {
-      const { data } = await axios.put(url + '/' + voucher.id, voucher)
-      commit('edit', data)
+      const { data } = await axios.post(URL, voucher)
+      commit(types.ADD, data)
     } catch (e) {
-      console.error('Не изменился тур', e)
+      commit(types.SET_ERROR, e.response.data)
+      console.error('Не создался путевки', e)
     }
   },
+
   /**
-  * Удаление тура
+  * Изменение записи
+  * @param commit
+  * @param voucher
+  * @returns {Promise.<void>}
+  */
+  async [types.EDIT] ({ commit }, voucher) {
+    commit(types.SET_ERROR, null)
+    try {
+      const { data } = await axios.put(URL + '/' + voucher.id, voucher)
+      commit(types.EDIT, data)
+    } catch (e) {
+      commit(types.SET_ERROR, e.response.data)
+      console.error('Не изменился путевка', e)
+    }
+  },
+
+  /**
+  * Удаление записи
   * @param commit
   * @param voucherID
   * @returns {Promise.<void>}
   */
-  async remove ({ commit }, voucherID) {
+  async [types.REMOVE] ({ commit }, voucherID) {
+    commit(types.SET_ERROR, null)
     try {
-      await axios.delete(url + '/' + voucherID)
-      commit('remove', voucherID)
+      await axios.delete(URL + '/' + voucherID)
+      commit(types.REMOVE, voucherID)
     } catch (e) {
-      console.error('Не удалился тур', e)
+      commit(types.SET_ERROR, e.response.data)
+      console.error('Не удалился путевка', e)
     }
   },
 
-  async getArchive ({ commit }) {
-    commit('setError', null)
+  /**
+   * Получить записи архива
+   * @param commit
+   * @returns {Promise.<void>}
+   */
+  async [types.GET_ARCHIVE] ({ commit }) {
+    commit(types.SET_ERROR, null)
     try {
-      const { data } = await axios.get(url + '/archive')
-      commit('load', data)
+      const { data } = await axios.get(URL + '/archive')
+      commit(types.LOAD, data)
     } catch (e) {
-      commit('setError', e.response.data)
+      commit(types.SET_ERROR, e.response.data)
     }
   },
 
-  async getArchiveOne ({ commit }, voucherID) {
-    commit('setError', null)
+  /**
+   * Получить запись с архива
+   * @param commit
+   * @param voucherID
+   * @returns {Promise.<void>}
+   */
+  async [types.GET_ARCHIVE_ONE] ({ commit }, voucherID) {
+    commit(types.SET_ERROR, null)
     try {
-      const { data } = await axios.get(url + '/archive/' + voucherID)
-      commit('loadOne', data)
+      const { data } = await axios.get(URL + '/archive/' + voucherID)
+      commit(types.LOAD_ONE, data)
     } catch (e) {
-      commit('setError', e.response.data)
+      commit(types.SET_ERROR, e.response.data)
     }
   },
 
-  async removeFromArchive ({ commit }, voucherID) {
-    commit('setError', null)
+  /**
+   * Удаление записи из архива
+   * @param commit
+   * @param voucherID
+   * @returns {Promise.<void>}
+   */
+  async [types.REMOVE_FROM_ARCHIVE] ({ commit }, voucherID) {
+    commit(types.SET_ERROR, null)
     try {
-      await axios.delete(url + '/archive/' + voucherID)
-      commit('removeFromArchive', voucherID)
+      await axios.delete(URL + '/archive/' + voucherID)
+      commit(types.REMOVE_FROM_ARCHIVE, voucherID)
     } catch (e) {
-      commit('setError', e.response.data)
+      commit(types.SET_ERROR, e.response.data)
     }
   }
 }

@@ -83,29 +83,41 @@ class Organization extends Model
 //    Mail::to($data['email'], $data);
 //  }
 
+  private static function getPassword(array $data)
+  {
+    if (array_key_exists('password', $data)) {
+      return $data['password'];
+    } else {
+      return Utils::generatePassword(8);
+    }
+  }
+
+  private static function checkOrganizationStatus (array $data)
+  {
+    if (count(User::all()) === 1) {
+      Setup::CreateEnvironment();
+      $role = 'director';
+    } else {
+      $role = array_key_exists('role_id', $data) ? $data['role_id'] : 'manager';
+    }
+
+    return $role;
+  }
+
   /**
    * @param array $data - Массив параметров для создания
    * @return User - созданный пользователь с присвоенной должностью
    */
   public static function addMember(array $data)
   {
-    if (array_key_exists('password', $data)) {
-      $password = $data['password'];
-      $data['password'] = bcrypt($data['password']);
-    } else {
-      $password = Utils::generatePassword(8);
-    };
+    $password = self::getPassword($data);
+
     $data['password'] = bcrypt($password);
+    $data['avatar'] = self::setAvatar($data);
 
     $user = User::create($data);
 
-    if (count(User::all()) === 1) {
-      Setup::CreateEnvironment();
-      $user->attachRole('director');
-    } else {
-      $role = array_key_exists('role_id', $data) ? $data['role_id'] : 'manager';
-      $user->attachRole($role);
-    }
+    $user->attachRole(self::checkOrganizationStatus($data));
 
     Mail::to($user)->send(new Registration([
       'name' => $data['name'],
@@ -116,5 +128,24 @@ class Organization extends Model
     ]));
 
     return $user;
+  }
+
+  public static function setAvatar (array $data)
+  {
+    if(array_key_exists('image_file', $data))
+    {
+      if (array_key_exists('avatar', $data)) self::deleteAvatar($data['avatar']);
+      $image = $data['image_file'];
+      $name = time().'.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
+      \Image::make($image)->save(public_path('img/').$name);
+      return $name;
+    }
+    return (array_key_exists('avatar', $data)) ? $data['avatar'] : '';
+  }
+
+  private static function deleteAvatar (string $name)
+  {
+    $image = \Image::make(public_path('img/').$name);
+    if ($image) $image->destroy();
   }
 }

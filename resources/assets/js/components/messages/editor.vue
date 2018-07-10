@@ -49,7 +49,6 @@
       </v-card-text>
       <v-card-actions>
         <v-btn large block
-               :loading="loading"
                type="submit"
                :disabled="!valid">
           Отправить

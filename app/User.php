@@ -32,7 +32,9 @@ class User extends Authenticatable implements JWTSubject
       'role_id',
       'phone_number',
       'address',
-      'details'
+      'details',
+      'salary',
+      'avatar'
     ];
 
     /**
@@ -81,8 +83,18 @@ class User extends Authenticatable implements JWTSubject
     return array_unique($permissions);
   }
 
+  public function tasks ()
+  {
+    return $this->hasMany(Task::class);
+  }
+
   public function messages ()
   {
-      return $this->hasMany(Message::class);
+    return $this->hasMany(Message::class);
+  }
+
+  public function avatar ()
+  {
+    return $this->hasOne(File::class);
   }
 }

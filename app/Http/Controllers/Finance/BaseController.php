@@ -21,6 +21,7 @@ class BaseController extends Controller
         $output['charges'] = Stripe::charges()->all();
         $output['account'] = Stripe::account()->details();
         $output['balance'] = Stripe::balance()->current();
+//        $output['customers'] = Stripe::customers()->all();
 
         return response($output, 200);
     }

@@ -26,7 +26,9 @@ class CustomerController extends BaseController
      */
     public function store(Request $request)
     {
-        //
+      $customer = Stripe::customers()->create([
+        'email' => 'john@doe.com',
+      ]);
     }
 
     /**

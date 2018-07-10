@@ -26,40 +26,14 @@ class TransferController extends BaseController
      */
     public function store(Request $request)
     {
-        //
-    }
+      $transfer = Stripe::transfers()->create([
+        'amount'    => $request->get('amount'),
+        'currency'  => $request->get('currency'),
+        'recipient' => $request->get('recipient'),
+        'description' => $request->get('description'),
+        'metadata' => $request->get('metadata')
+      ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Transfer  $transfer
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Transfer $transfer)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Transfer  $transfer
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Transfer $transfer)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Transfer  $transfer
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Transfer $transfer)
-    {
-        //
+      return response($transfer, 201);
     }
 }

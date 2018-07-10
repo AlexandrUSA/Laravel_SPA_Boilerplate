@@ -1,5 +1,5 @@
 <template>
-  <v-app :dark="theme">
+  <v-app :dark="dark">
 
     <!-- Шапка -->
     <navbar @switchDrawer="drawer = !drawer"/>
@@ -7,10 +7,12 @@
     <!-- Сайдбар -->
     <v-navigation-drawer
       v-if="user"
-      clipped
-      fixed
+      :clipped="clipped"
+      :fixed="fixed"
+      :miniVariant="miniVariant"
       v-model="drawer"
       app
+      :right="right"
     >
     <sidebar :user="user"/>
     </v-navigation-drawer>
@@ -34,15 +36,16 @@ export default {
   name: 'MainLayout',
   data() {
     return {
-      miniVariant: false,
-      clipped: false,
-      fixed: true,
       drawer: true
     }
   },
   computed: {
     ...mapGetters({
-      'theme': 'theme/dark',
+      dark: 'theme/dark',
+      right: 'theme/right',
+      miniVariant: 'theme/miniVariant',
+      clipped: 'theme/clipped',
+      fixed: 'theme/fixed',
       user: 'auth/user'
     })
   },

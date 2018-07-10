@@ -1,6 +1,6 @@
 <template>
   <div id="employees">
-    <h2>{{ $t('employees') }}</h2>
+    <h2>{{ cardTitle }}</h2>
     <v-dialog v-model="deleteWindow" max-width="500px">
       <v-card>
         <v-card-title>
@@ -17,8 +17,6 @@
     </v-dialog>
     <v-card>
       <v-card-title>
-        <h3>{{ cardTitle }}</h3>
-        <v-spacer></v-spacer>
         <v-text-field
           append-icon="search"
           :label="$t('search_input')"
@@ -49,7 +47,7 @@
           </td>
           <td>{{ props.item.name }}</td>
           <td>{{ props.item.last_name }}</td>
-          <td>{{ props.item.position_title }}</td>
+          <td>{{ props.item.role_title }}</td>
           <td>{{ props.item.department_title }}</td>
           <td>
             <v-btn outline round :to="{name: (isArchive) ? 'employeeArchive' : 'employee', params: {id: props.item.id}}">{{ $t('details') }}</v-btn>

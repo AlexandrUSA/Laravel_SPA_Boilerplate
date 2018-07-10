@@ -14,6 +14,8 @@ class PermissionChanged
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public $test;
+
     /**
      * Create a new event instance.
      *
@@ -21,7 +23,7 @@ class PermissionChanged
      */
     public function __construct()
     {
-        //
+        $this->test = 23;
     }
 
     /**

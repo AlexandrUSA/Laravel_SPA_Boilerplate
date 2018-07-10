@@ -76,7 +76,7 @@
         this.charges.forEach(el => {
           data.push({
             id: el.id,
-            date: new Date(el.created).toLocaleString(),
+            date: new Date(el.created * 1000).toLocaleString(),
             amount: el.amount / 100 + ' ' + el.currency.toUpperCase(),
             dest: el.source.brand,
             status: el.status

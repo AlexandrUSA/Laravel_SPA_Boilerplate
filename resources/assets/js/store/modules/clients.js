@@ -1,7 +1,11 @@
 import axios from 'axios'
 import * as types from '../mutation-types'
 
-const url = '/api/activity/clients'
+/**
+ * URI для работы с ресурсом
+ * @type {string}
+ */
+const URL = '/api/activity/clients'
 
 export const state = {
   clients: [],
@@ -36,10 +40,10 @@ export const mutations = {
     const pos = state.clients.findIndex(el => el.id === clientID)
     if (pos !== -1) state.clients.splice(pos, 1)
   },
-  setError (state, error) {
+  [types.SET_ERROR] (state, error) {
     state.error = error
   },
-  removeFromArchive (state, clientID) {
+  [types.REMOVE_FROM_ARCHIVE] (state, clientID) {
     const pos = state.archive.findIndex(el => +el.id === +clientID)
     if (pos !== -1) state.archive.splice(pos, 1)
   }
@@ -47,78 +51,78 @@ export const mutations = {
 
 export const actions = {
   async [types.LOAD] ({ commit }) {
-    commit('setError', null)
+    commit(types.SET_ERROR, null)
     try {
-      const { data } = await axios.get(url)
-      commit('load', data)
+      const { data } = await axios.get(URL)
+      commit(types.LOAD, data)
     } catch (e) {
       console.error('Не загрузились сотрудники', e)
     }
   },
   async [types.LOAD_ONE] ({ commit }, clientID) {
-    commit('setError', null)
+    commit(types.SET_ERROR, null)
     try {
-      const { data } = await axios.get(url + '/' + clientID)
-      commit('loadOne', data)
+      const { data } = await axios.get(URL + '/' + clientID)
+      commit(types.LOAD_ONE, data)
     } catch (e) {
-      commit('setError', e.response.data)
+      commit(types.SET_ERROR, e.response.data)
     }
   },
   async [types.ADD] ({ commit }, client) {
-    commit('setError', null)
+    commit(types.SET_ERROR, null)
     try {
-      const { data } = await axios.post(url, client)
-      commit('add', data)
+      const { data } = await axios.post(URL, client)
+      commit(types.ADD, data)
     } catch (e) {
-      commit('setError', e.response.data)
+      commit(types.SET_ERROR, e.response.data)
     }
   },
   async [types.EDIT] ({ commit }, client) {
-    commit('setError', null)
+    commit(types.SET_ERROR, null)
     try {
-      const { data } = await axios.put(url + '/' + client.id, client)
-      commit('edit', data)
+      const { data } = await axios.put(URL + '/' + client.id, client)
+      commit(types.EDIT, data)
     } catch (e) {
-      commit('setError', e.response.data)
+      commit(types.SET_ERROR, e.response.data)
     }
   },
   async [types.REMOVE] ({ commit }, clientID) {
-    commit('setError', null)
+    commit(types.SET_ERROR, null)
     try {
-      await axios.delete(url + '/' + clientID)
-      commit('remove', clientID)
+      await axios.delete(URL + '/' + clientID)
+      commit(types.REMOVE, clientID)
     } catch (e) {
-      commit('setError', e.response.data)
+      commit(types.SET_ERROR, e.response.data)
     }
   },
 
-  async getArchive ({ commit }) {
-    commit('setError', null)
+  async [types.GET_ARCHIVE] ({ commit }) {
+    commit(types.SET_ERROR, null)
     try {
-      const { data } = await axios.get(url + '/archive')
-      commit('load', data)
+      const { data } = await axios.get(URL + '/archive')
+      commit(types.LOAD, data)
     } catch (e) {
-      commit('setError', e.response.data)
+      commit(types.SET_ERROR, e.response.data)
     }
   },
 
-  async getArchiveOne ({ commit }, clientID) {
-    commit('setError', null)
+  async [types.GET_ARCHIVE_ONE] ({ commit }, clientID) {
+    commit(types.SET_ERROR, null)
     try {
-      const { data } = await axios.get(url + '/archive/' + clientID)
-      commit('loadOne', data)
+      const { data } = await axios.get(URL + '/archive/' + clientID)
+      commit(types.LOAD_ONE, data)
     } catch (e) {
-      commit('setError', e.response.data)
+      commit(types.SET_ERROR, e.response.data)
     }
   },
 
-  async removeFromArchive ({ commit }, clientID) {
-    commit('setError', null)
+  async [types.REMOVE_FROM_ARCHIVE] ({ commit }, clientID) {
+    commit(types.SET_ERROR, null)
     try {
-      await axios.delete(url + '/archive/' + clientID)
-      commit('removeFromArchive', clientID)
+      await axios.delete(URL + '/archive/' + clientID)
+      commit(types.REMOVE_FROM_ARCHIVE, clientID)
     } catch (e) {
-      commit('setError', e.response.data)
+      commit(types.SET_ERROR, e.response.data)
     }
   }
 }

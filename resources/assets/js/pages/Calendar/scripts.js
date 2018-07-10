@@ -1,6 +1,7 @@
 import moment from '~/plugins/moment'
 import Form from 'vform'
 import axios from 'axios'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   middleware: ['auth'],
@@ -16,6 +17,7 @@ export default {
       showIndex: -1,
       selected: [],
       newEvent: new Form({
+        user_id: '',
         date: '',
         title: '',
         desc: '',
@@ -26,23 +28,10 @@ export default {
     }
   },
   computed: {
-    headers () {
-      return [
-        {
-          text: this.$t('task'),
-          value: 'title'
-        },
-        {
-          text: this.$t('expiry'),
-          value: 'date'
-        },
-        {
-          text: this.$t('actions'),
-          align: 'left',
-          sortable: false
-        }
-      ]
-    }
+    ...mapGetters({
+      user: 'auth/user',
+      tasks: 'calendar/tasks'
+    })
   },
   watch: {
     events () {
@@ -50,6 +39,12 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      load: 'calendar/load',
+      add: 'calendar/add',
+      edit: 'calendar/edit',
+      remove: 'calendar/remove'
+    }),
     findIndex (itemID) {
       return this.selected.findIndex(el => el === itemID)
     },
@@ -71,17 +66,16 @@ export default {
       this.newEvent.date = date.join('-')
     },
     async requestNewTask () {
+      this.newEvent.user_id = this.user.id
       const { data } = await this.newEvent.post('/api/tasks')
       this.events.push(data)
     },
     newTask () {
       this.createDialog = false
       const newDate = this.newEvent.date.split('/').join('-')
-      console.log(newDate)
       if (moment().diff(moment(newDate)) < 0) {
         this.requestNewTask()
         this.resetNewTask()
-      } else {
       }
     },
     resetNewTask () {
@@ -110,9 +104,6 @@ export default {
       this.selected = []
     },
     setEventStatus () {
-      for (let key of this.events) {
-        console.log(key)
-      }
       this.events.forEach(el => {
         const date = el.date.split('/').join('-')
         if (moment().diff(moment(date)) > 0 && !el.completed) {
@@ -124,11 +115,7 @@ export default {
     }
   },
   async created () {
-    const { data } = await axios({
-      method: 'get',
-      url: '/api/tasks'
-    })
-    this.events = data
+    this.events = this.tasks
     this.setEventStatus()
   }
 }

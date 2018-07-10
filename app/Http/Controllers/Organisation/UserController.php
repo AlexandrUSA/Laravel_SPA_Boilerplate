@@ -68,6 +68,16 @@ class UserController extends BaseController
     return Employee::getOne($user);
   }
 
+  public function addImage(Request $request, $id)
+  {
+    if ($request->has('image')) {
+      $avatar = Employee::setAvatar($request->get('image'), $id);
+      return response($avatar, 200);
+    } else {
+      return 23;
+    }
+  }
+
   /**
    * Display the specified resource.
    *
@@ -76,7 +86,8 @@ class UserController extends BaseController
    */
   public function show($id)
   {
-    return User::find($id);
+    $user = User::find($id);
+    return Employee::getOne($user);
   }
 
   /**
@@ -89,8 +100,10 @@ class UserController extends BaseController
   public function update(EmployeeRequest $request, $id)
   {
     $user = User::find($id);
+    $user->detachRoles($user->roles()->get());
     $user->update($request->all());
-    return response($user);
+    $user->roles()->attach([$request->get('role_id')]);
+    return response(Employee::getOne($user));
   }
 
   /**

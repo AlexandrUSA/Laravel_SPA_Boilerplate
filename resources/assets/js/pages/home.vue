@@ -43,72 +43,52 @@
           </v-card-actions>
         </v-card>
       </v-flex>
-
-      <!--<v-flex xs12 sm10 md6>-->
-        <!--<v-card dark color="secondary">-->
-          <!--<v-card-text class="px-0">6</v-card-text>-->
-        <!--</v-card>-->
-      <!--</v-flex>-->
-
-      <!--<v-flex xs12 sm10 md6>-->
-        <!--<v-card dark color="secondary">-->
-          <!--<v-card-text class="px-0">6</v-card-text>-->
-        <!--</v-card>-->
-      <!--</v-flex>-->
-
-      <!--<v-flex v-for="i in 3" :key="`4${i}`" xs4>-->
-        <!--<v-card dark color="primary">-->
-          <!--<v-card-text class="px-0">4</v-card-text>-->
-        <!--</v-card>-->
-      <!--</v-flex>-->
-      <!--<v-flex v-for="i in 4" :key="`3${i}`" xs3>-->
-        <!--<v-card dark color="secondary">-->
-          <!--<v-card-text class="px-0">3</v-card-text>-->
-        <!--</v-card>-->
-      <!--</v-flex>-->
-      <!--<v-flex v-for="i in 6" :key="`2${i}`" xs2>-->
-        <!--<v-card dark color="primary">-->
-          <!--<v-card-text class="px-0">2</v-card-text>-->
-        <!--</v-card>-->
-      <!--</v-flex>-->
-      <!--<v-flex v-for="i in 12" :key="`1${i}`" xs1>-->
-        <!--<v-card dark color="secondary">-->
-          <!--<v-card-text class="px-0">1</v-card-text>-->
-        <!--</v-card>-->
-      <!--</v-flex>-->
     </v-layout>
   </v-container>
 </template>
 
 <script>
-export default {
-  middleware: 'auth',
-  data() {
-  	return {
-  		e2: 3
-  	}
-  },
-  computed: {
+  import { mapGetters, mapActions } from 'vuex'
+  export default {
+    middleware: 'auth',
+    metaInfo () {
+      return {title: this.$t('home')}
+    },
+    data () {
+      return {
+        e2: 3
+      }
+    },
+    computed: {
       color () {
         switch (this.e2) {
-          case 0: return 'blue-grey'
-          case 1: return 'teal'
-          case 2: return 'brown'
-          case 3: return 'indigo'
-      }
+          case 0:
+            return 'blue-grey'
+          case 1:
+            return 'teal'
+          case 2:
+            return 'brown'
+          case 3:
+            return 'indigo'
+        }
+      },
+      ...mapGetters({
+        user: 'auth/user',
+        tasks: 'calendar/tasks',
+        vouchers: 'vouchers/vouchers',
+      })
+    },
+    methods: mapActions({
+      loadTasks: 'calendar/load',
+      loadVouchers: 'vouchers/load'
+    }),
+    created () {
+      if (!this.tasks) this.loadTasks()
     }
-  },
-  metaInfo () {
-    return { title: this.$t('home') }
   }
-}
 </script>
 
 <style lang="scss">
-  /*.row {*/
-    /*justify-content: center;*/
-  /*}*/
-
   .px-0 {
     font-size: 26px;
   }

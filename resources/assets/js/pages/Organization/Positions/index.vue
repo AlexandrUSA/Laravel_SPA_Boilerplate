@@ -68,7 +68,6 @@
 
     <v-card>
       <v-card-title class="t-head">
-        <v-spacer></v-spacer>
         <v-text-field
           append-icon="search"
           :label="$t('search_input')"
@@ -83,7 +82,6 @@
         :loading="loading"
         :no-results-text="$t('no_match_found')"
         :rows-per-page-text="$t('strings')"
-        hide-actions
         class="elevation-1"
       >
         <template slot="items" slot-scope="props">

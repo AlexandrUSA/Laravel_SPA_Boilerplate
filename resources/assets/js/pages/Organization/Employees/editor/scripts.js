@@ -1,5 +1,5 @@
 import {mapActions, mapGetters} from 'vuex'
-import  axios from 'axios';
+import axios from 'axios'
 
 export default {
   middleware: ['auth', 'organisation'],
@@ -23,7 +23,8 @@ export default {
         salary: '88',
         phone_number: '999999999',
         address: '11',
-        details: '12'
+        details: '12',
+        image_file: ''
       },
       date: null,
       menu: false,
@@ -47,6 +48,9 @@ export default {
       positions: 'positions/positions',
       creationError: 'employees/error'
     }),
+    itemAvatar () {
+      return (this.item.avatar) ? '/img/' + this.item.avatar : '/storage/avatars/no-avatar.jpg'
+    },
     errors () {
       return (this.creationError) ? this.creationError.errors : {}
     },
@@ -57,22 +61,27 @@ export default {
       return (this.id) ? 'person' : 'person_add'
     }
   },
-  beforeRouteEnter (to, from, next) {
-    next(vm => {
-      if (vm.id) {
-        vm.$store.dispatch('employees/loadOne', vm.id)
-        vm.item = vm.employee
-      }
-    })
-  },
   methods: {
     ...mapActions({
       loadItem: 'employees/loadOne',
-      addItem: 'employees/add'
+      addItem: 'employees/add',
+      editItem: 'employees/edit'
     }),
+    async updatePhoto (file) {
+      const { data } = await axios.post('/api/organisation/employees/' + this.id + '/avatar', {
+        image: file
+      })
+      this.item.avatar = data
+      console.log(data)
+      // this.item.image_file = file
+    },
     async save () {
       this.pending = true
-      await this.addItem(this.item)
+      if (this.id) {
+        await this.editItem(this.item)
+      } else {
+        await this.addItem(this.item)
+      }
       if (!this.creationError) {
         this.$router.replace({ name: 'employees' })
       } else {
@@ -86,7 +95,9 @@ export default {
     }
   },
   async created () {
-    const { data } = await axios.get('/api/organisation/employees/1')
-    console.log(data)
+    if (this.id) {
+      const { data } = await axios.get('/api/organisation/employees/' + this.id)
+      this.item = data
+    }
   }
 }

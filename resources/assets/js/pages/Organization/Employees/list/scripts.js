@@ -2,6 +2,9 @@ import { mapActions, mapGetters } from 'vuex'
 import Organization from '~/mixins/Organization'
 import swal from 'sweetalert2'
 
+import Echo from 'laravel-echo'
+import Pusher from 'pusher-js'
+
 export default {
   middleware: ['auth', 'organisation'],
   mixins: [ Organization ],
@@ -20,7 +23,7 @@ export default {
   },
   computed: {
     cardTitle () {
-      return (this.isArchive) ? 'Архив сотрудников' : 'Список сотрудников'
+      return (this.isArchive) ? this.$t('employees_archive') : this.$t('employees')
     },
     // Заголовки таблицы
     headers () {
@@ -119,6 +122,18 @@ export default {
       removeFromArchive: 'employees/removeFromArchive',
       getArchive: 'employees/getArchive',
       getEmployees: 'employees/load'
+    })
+  },
+  created () {
+    const echo = new Echo({
+      broadcaster: `pusher`,
+      key: `58095af5367d8a85356a`,
+      cluster: `eu`,
+      encrypted: true
+    })
+    echo.join(`permission-chanel`)
+    echo.private(`permission-chanel`).listen(`PermissionChanged`, (e) => {
+      console.log(21)
     })
   },
   beforeDestroy () {

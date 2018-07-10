@@ -80,7 +80,7 @@
               >
                 <v-text-field
                   slot="activator"
-                  :label="$t('birthday')"
+                  :label="$t('expiry')"
                   v-model="newEvent.date"
                   prepend-icon="event"
                   readonly

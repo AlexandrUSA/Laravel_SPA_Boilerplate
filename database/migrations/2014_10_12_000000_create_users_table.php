@@ -24,9 +24,11 @@ class CreateUsersTable extends Migration
       $table->char('passport', 25)->nullable();
       $table->date('birthday')->nullable();
       $table->integer('role_id')->nullable();
+      $table->integer('salary')->nullable();
       $table->char('phone_number', 100)->nullable();
       $table->char('address', 255)->nullable();
       $table->string('details')->nullable();
+      $table->string('avatar')->nullable();
       $table->rememberToken();
       $table->timestamps();
       $table->softDeletes();

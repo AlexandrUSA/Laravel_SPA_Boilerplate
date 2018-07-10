@@ -1870,119 +1870,6 @@ div.input-group__error {
           flex: none;
 }
 
-.employee__avatar,
-.employee__descr {
-  width: 100%;
-}
-
-@media screen and (min-width: 768px) {
-  .employee__avatar {
-    width: 30%;
-    min-width: 30%;
-  }
-}
-
-.employee__descr {
-  font-size: 12px;
-  padding: 5px 20px;
-}
-
-@media screen and (min-width: 576px) {
-  .employee__descr {
-    font-size: 14px;
-  }
-}
-
-@media screen and (min-width: 768px) {
-  .employee__descr {
-    width: 70%;
-    padding: 10px 45px;
-    font-size: 16px;
-  }
-}
-
-.employee__avatar-container {
-  position: relative;
-  width: 100%;
-  max-width: 256px;
-  margin: 0 auto;
-  -webkit-box-shadow: 0 0 13px rgba(0, 0, 0, 0.5);
-          box-shadow: 0 0 13px rgba(0, 0, 0, 0.5);
-  border-radius: 3px;
-  overflow: hidden;
-}
-
-@media screen and (min-width: 768px) {
-  .employee__avatar-container {
-    max-width: 316px;
-  }
-}
-
-.employee {
-  -ms-flex-wrap: wrap;
-  -o-flex-wrap: wrap;
-  flex-wrap: wrap;
-  width: 95%;
-  margin: 30px auto;
-  padding: 0;
-  -webkit-box-shadow: 0 0 13px rgba(0, 0, 0, 0.5);
-          box-shadow: 0 0 13px rgba(0, 0, 0, 0.5);
-}
-
-@media screen and (min-width: 768px) {
-  .employee {
-    width: 90%;
-    padding: 15px;
-    border-radius: 5px;
-  }
-}
-
-.employee::before,
-.employee::after {
-  content: "";
-  display: block;
-  clear: both;
-}
-
-.avatar__overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  background-color: rgba(0, 0, 0, 0.3);
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  -webkit-transition: opacity .3s;
-  transition: opacity .3s;
-}
-
-.employee__avatar:hover .avatar__overlay {
-  opacity: 1;
-}
-
-.employee__avatar img {
-  display: block;
-  width: 100%;
-  margin: 0 auto;
-}
-
-.employee__create {
-  max-width: 980px;
-  margin: 15px auto;
-}
-
-.employee__create .card {
-  padding: 15px;
-  text-align: center;
-}
-
 .list__tile,
 .list__group__header {
   border-right: 3px solid transparent;
@@ -2000,5 +1887,9 @@ div.input-group__error {
 
 .list__group__header > div > .list__tile:hover {
   border: none;
+}
+
+.messages .v-list__tile--link {
+  height: 55px !important;
 }
 

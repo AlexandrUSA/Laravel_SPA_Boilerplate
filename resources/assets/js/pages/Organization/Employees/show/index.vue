@@ -1,114 +1,88 @@
 <template>
   <div class="employee">
-  	<h2>{{ $t('employee') }}</h2>
-  		<div class="employee__avatar">
-  			<div class="employee__avatar-container">
-  				<div class="avatar__overlay">
-  					<upload-button :title="$t('change_image')" :selectedCallback="uploadPhoto"></upload-button>
-  				</div>
-  				<img :src="avatar" :alt="item.first_name">
-  			</div>	
-			</div>
-	  	<div class="employee__descr">
-	  		<v-form v-model="valid"
-	  		        ref="form"
-	  		        lazy-validation
-	  		        >
-					<v-text-field
-						v-if="item.deleted_at"
-						label="Дата увольнения"
-						v-model="item.deleted_at"
-						disabled>
-					</v-text-field>
-	  			<v-text-field
-					      :label="$t('name')"
-					      v-model="item.first_name"
-					      :counter="70"
-					      required
-					      :disabled="disabled"
-					></v-text-field>
-						    <v-text-field
-						      :label="$t('last_name')"
-						      v-model="item.last_name"
-						      :rules="nameRules"
-						      :counter="70"
-						      required
-						      :disabled="disabled"
-					></v-text-field>
-					<v-text-field
-						      :label="$t('patronymic')"
-						      v-model="item.patronymic"
-						      :rules="nameRules"
-						      :counter="70"
-						      :disabled="disabled"
-					></v-text-field>
-					<v-select
-						      :label="$t('position')"
-						      v-model="item.position_id"
-						      prepend-icon="card_travel"
-						      :items="positions"
-						      item-text="title"
-	          			item-value="id"
-						      :rules="[v => !!v || 'Выберите должность']"
-						      required
-						      :disabled="disabled"
-					></v-select>
-		  		<v-text-field
-						      :label="$t('phone_number')"
-						      v-model="item.phone_number"
-						      prepend-icon="phone_iphone"
-						      required
-						      :disabled="disabled"
-					></v-text-field>
-					<v-text-field
-						      :label="$t('salary')"
-						      v-model="item.salary"
-						      prepend-icon="attach_money"
-						      required
-						      :disabled="disabled"
-					></v-text-field>
-					<v-text-field
-						      :label="$t('address')"
-						      v-model="item.address"
-						      prepend-icon="home"
-						      required
-						      :disabled="disabled"
-					></v-text-field>
-					<v-layout row wrap>
-						<v-flex xs12>
-							<v-menu
-							  ref="menu"
-							  lazy
-							  :close-on-content-click="false"
-							  v-model="menu"
-							  transition="scale-transition"
-							  offset-y
-							  full-width
-							  :nudge-right="40"
-							  min-width="290px"
-							  :return-value.sync="date"
-							>
-							</v-menu>
-						</v-flex>
-					</v-layout>
-					<div class="buttons">
-						<v-btn large
-									 v-if="!item.deleted_at"
-									 @click="buttonAction()"
-									 :disabled="!valid">
-						{{ buttonText }}
-						</v-btn>
-						<v-btn large
-									 v-else
-									 @click="removeFromHistory">
-							Стереть данные
-						</v-btn>
-						<v-btn large @click="back">
-						Назад
-						</v-btn>
+		<v-container grid-list-md>
+			<v-layout row wrap>
+				<v-flex xs12>
+					<h2>{{ $t('employee') }}</h2>
+					<div class="employee__avatar">
+						<div class="employee__avatar-container">
+							<img :src="avatar" :alt="item.name">
+						</div>
 					</div>
-	  		</v-form>	  		
-	  </div>
+					<div class="employee__descr">
+						<v-form v-model="valid"
+										ref="form"
+										lazy-validation
+						>
+							<v-text-field
+								v-if="item.deleted_at"
+								label="Дата увольнения"
+								v-model="item.deleted_at"
+								disabled>
+							</v-text-field>
+							<v-text-field
+								:label="$t('name')"
+								v-model="item.name"
+								disabled
+							></v-text-field>
+							<v-text-field
+								:label="$t('last_name')"
+								v-model="item.last_name"
+								disabled
+							></v-text-field>
+							<v-text-field
+								:label="$t('patronymic')"
+								v-model="item.patronymic"
+								disabled
+							></v-text-field>
+							<v-select
+								:label="$t('position')"
+								v-model="item.role_id"
+								prepend-icon="card_travel"
+								:items="positions"
+								item-text="display_name"
+								item-value="id"
+								disabled
+							></v-select>
+							<v-text-field
+								:label="$t('phone_number')"
+								v-model="item.phone_number"
+								prepend-icon="phone_iphone"
+								disabled
+							></v-text-field>
+							<v-text-field
+								:label="$t('salary')"
+								v-model="item.salary"
+								prepend-icon="attach_money"
+								disabled
+							></v-text-field>
+							<v-text-field
+								:label="$t('address')"
+								v-model="item.address"
+								prepend-icon="home"
+								disabled
+							></v-text-field>
+							<div class="buttons">
+								<v-btn large
+											 v-if="!item.deleted_at"
+											 :to="{ name: 'employeeEdit' }"
+											 :disabled="!valid">
+									Изменить даные
+								</v-btn>
+								<v-btn large
+											 v-else
+											 @click="removeFromHistory">
+									Стереть данные
+								</v-btn>
+								<v-btn large @click="back">
+									Назад
+								</v-btn>
+							</div>
+						</v-form>
+					</div>
+				</v-flex>
+			</v-layout>
+		</v-container>
   </div>		
 </template>
 
@@ -153,7 +127,7 @@
 				return !this.disabled ? "Обновить" : "Изменить данные";
 			},
 			avatar() {
-				return (this.item.avatar) ? this.item.avatar : "/storage/avatars/no-avatar.jpg"
+				return (this.item.avatar) ? '/img/' + this.item.avatar : "/storage/avatars/no-avatar.jpg"
 			}
 		},
 		methods: {
@@ -190,23 +164,6 @@
 				}
 				this.disabled = !this.disabled;						
 			},
-			async uploadPhoto(e) {
-				const imagefile = document.getElementById('avatar-file').files[0];
-				if (!imagefile) return;
-		    try {
-		    	let formData = new FormData();    				    	
-					formData.append("image", imagefile);
-					const { data } = await axios.post('/api/employees/' + this.id + '/avatar', formData, {
-					     headers: {
-					       'Content-Type': 'multipart/form-data'
-					     }
-					 });
-					this.item.avatar = data;
-					this.$store.commit('employees/edit', this.item)
-    		} catch (e) {
-      		console.error('Не загрузился аватар', e)
-    		}	
-			}
 		},
 		created () {
 		  if (this.$route.name === 'employeeArchive') {

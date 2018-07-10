@@ -85,7 +85,8 @@
     data: () => ({
       showEmail: false,
       icon: 'mail',
-      current: {}
+      current: {},
+      interval: null
     }),
     computed: {
       items () {
@@ -108,11 +109,15 @@
     },
     filters: {
      short (item) {
-       return item.slice(0, 80) + '...'
+       if (item.length > 80) {
+         return item.slice(0, 80) + '...'
+       }
+       return item
      }
     },
     methods: {
       ...mapActions({
+        load: 'messages/load',
         edit: 'messages/edit',
         remove: 'messages/remove'
       }),
@@ -141,7 +146,12 @@
         }
       }
     },
-    created () {}
+    created () {
+      this.interval = setInterval(this.load, 5000)
+    },
+    beforeDestroy () {
+      clearInterval(this.interval)
+    }
   }
 </script>
 

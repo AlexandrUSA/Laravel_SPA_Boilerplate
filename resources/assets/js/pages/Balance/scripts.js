@@ -1,6 +1,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import Transfers from '~/components/balance/transfers.vue'
 import Charges from '~/components/balance/charges.vue'
+import Customers from '~/components/balance/customers'
 import Editor from '~/components/balance/editor.vue'
 
 export default {
@@ -24,19 +25,25 @@ export default {
         },
         {
           id: 2,
+          title: 'Потребители',
+          component: 'Customers'
+        },
+        {
+          id: 3,
           title: 'Операции перевода',
           component: 'Editor'
         }
       ]
     }
   },
-  components: {Transfers, Charges, Editor},
+  components: { Transfers, Charges, Editor, Customers },
   computed: {
     ...mapGetters({
       account: 'balance/account',
       balance: 'balance/balance',
       charges: 'balance/charges',
-      transfers: 'balance/transfers'
+      transfers: 'balance/transfers',
+      recipients: 'balance/recipients',
     })
   },
   methods: {
@@ -45,14 +52,11 @@ export default {
       loadBalance: 'balance/loadBalance',
       loadCharges: 'balance/loadCharges',
       loadTransfers: 'balance/loadTransfers',
+      loadRecipients: 'balance/loadRecipients',
       getAll: 'balance/getAll'
     })
   },
   async created () {
     await this.getAll()
-    // await this.loadAccount()
-    // await this.loadBalance()
-    // await this.loadTransfers()
-    // await this.loadCharges()
   }
 }

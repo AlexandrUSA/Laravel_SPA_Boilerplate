@@ -18,7 +18,7 @@ export default {
       // Заголовки таблицы
       headers: [
         {text: 'Номер', align: 'right', sortable: false, value: 'id'},
-        {text: 'Наименование', align: 'right', value: 'title'},
+        {text: 'Наименование', align: 'right', value: 'display_name'},
         {text: 'Подразделение', align: 'right', value: 'department'},
         {text: 'Сотрудников', align: 'right', value: 'employees'},
         {text: 'Действия', align: 'right', value: 'title', sortable: false}
@@ -50,8 +50,7 @@ export default {
       this.positions.forEach(el => {
         data.push({
           ...el,
-          department: this.getDepartment(el.department_id),
-          employees: (el.users) ? el.users.length : 0
+          department: this.getDepartment(el.department_id)
         })
       })
       return data
@@ -96,7 +95,7 @@ export default {
     },
     deleteItem (item) {
       this.deleteWindow = true
-      if (item.employees > 0) {
+      if (item.users.length) {
         this.deleteDenied = true
       } else {
         this.deleteDenied = false

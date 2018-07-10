@@ -2,9 +2,9 @@
   <div class="btn btn-primary jbtn-file"> {{ title }}
     <input id="avatar-file"
            name="img"
-           type="file" 
-           enctype="multipart/form-data" 
-           v-on:change="fileSelected">
+           type="file"
+           enctype="multipart/form-data"
+           @change="OnChange">
   </div>
 </template>
 
@@ -15,14 +15,24 @@
       selectedCallback: Function,
       title: String
     },
+    data: () => ({
+      image: ''
+    }),
     methods: {
-      fileSelected(e) {
-        if (this.selectedCallback) {
-          if (e.target.files[0]) {
-            this.selectedCallback(e.target.files[0]);
-          } else {
-            this.selectedCallback(null);
-          }
+      OnChange (e) {
+        let files = e.target.files || e.dataTransfer.files;
+        if (!files.length) return;
+        this.createImage(files[0]);
+      },
+      createImage (file) {
+        if (file) {
+          const reader = new FileReader();
+          const vm = this;
+          reader.onload = (e) => {
+            vm.image = e.target.result;
+            this.$emit('fileUpload',vm.image)
+          };
+          reader.readAsDataURL(file)
         }
       }
     }
@@ -36,6 +46,7 @@
     overflow: hidden;
     padding: 0 30px;
   }
+
   .jbtn-file input[type=file] {
     position: absolute;
     top: 0;
