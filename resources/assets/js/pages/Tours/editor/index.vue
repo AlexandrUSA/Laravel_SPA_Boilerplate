@@ -71,40 +71,9 @@
           </v-container>
 
           <!-- Диалог для вывода ошибок -->
-          <v-dialog
-            v-model="hasErrors"
-            max-width="800"
-          >
-            <v-card>
-              <v-card-title class="headline">Ошибка валидации данных!</v-card-title>
-
-              <v-card-text>
-                <h3>Во время валидации данных были обнаружены следубщие ошибки:</h3>
-              </v-card-text>
-              <v-divider></v-divider>
-              <v-card-text>
-                <ul>
-                  <li v-for="(error, name) in errors"
-                      :key="name">
-                    {{ error[0] }}
-                  </li>
-                </ul>
-              </v-card-text>
-
-              <v-card-actions>
-                <v-spacer></v-spacer>
-
-                <v-btn
-                  color="red darken-1"
-                  flat="flat"
-                  @click="hasErrors = false"
-                >
-                  OK
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-
+          <errors-list :hasErrors="hasErrors"
+                       :errors="errors"
+                       @CloseErrors="hasErrors = false"/>
 
           <v-btn outline color="info"
                  @click.native="save"

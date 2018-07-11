@@ -23,6 +23,10 @@ export default {
     token: 'auth/token'
   }),
   methods: {
+    getAvatar (filename) {
+      if (filename) return '/img/' + filename
+      return '/storage/avatars/no-avatar.jpg'
+    },
     insertName (user) {
       if (+user.id === +this.user.id) return
       this.message = `${user.last_name} ${user.name[0]}., `

@@ -9,9 +9,6 @@ export default {
     }
   },
   middleware: ['auth', 'activity'],
-  metaInfo () {
-    return { title: this.$t('nav-vouchers') }
-  },
   data () {
     return {
       dialog: false,
@@ -28,10 +25,10 @@ export default {
       editedIndex: null,
       edited: {
         id: '',
-        name: 'Гриневич Александр Владимирович',
-        card: '4111111111111111',
-        email: 'AlexandrUSA@yandex.ru',
-        description: 'Директор фирмы'
+        card: '',
+        name: '',
+        email: '',
+        description: ''
       },
       initial: {
         id: '',
@@ -60,6 +57,11 @@ export default {
         {
           text: 'Номер карты',
           value: 'card'
+        },
+        {
+          text: this.$t('actions'),
+          align: 'left',
+          sortable: false
         }
       ]
     },
@@ -68,7 +70,7 @@ export default {
         : this.$t('delete_items_confirm')
     },
     ...mapGetters({
-      recipients: 'balance/recipients',
+      customers: 'balance/customers',
       loading: 'httpPending'
     })
   },
@@ -76,20 +78,24 @@ export default {
     editItem (item) {
       this.dialog = true
       this.creation = false
-      this.editedTour = Object.assign({}, item)
+      this.edited = Object.assign({}, item)
+      this.edited.name = item.metadata.fio
+      this.edited.card = item.metadata.card
     },
     createItem () {
+      this.edited = Object.assign({}, this.initial)
       this.dialog = true
       this.creation = true
     },
     editorConfirm () {
+      this.addItem(this.edited)
       if (this.creation) {
         console.log('add')
         this.addItem(this.edited)
         this.edited = Object.assign({}, this.initial)
       } else {
-        console.log('adit')
-        this.edit(this.editedTour)
+        console.log('edit')
+        // this.edit(this.edited)
       }
       this.dialog = false
     },
@@ -119,9 +125,9 @@ export default {
       this.deleteWindow = false
     },
     ...mapActions({
-      addItem: 'balance/addRecipient',
-      deleteItem: 'vouchers/remove',
-      edit: 'vouchers/edit'
+      addItem: 'balance/addCustomer',
+      deleteItem: 'vouchers/remove'
+      // edit: 'vouchers/edit'
     })
   }
 }

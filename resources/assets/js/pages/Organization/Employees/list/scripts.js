@@ -38,7 +38,7 @@ export default {
         },
         {
           text: this.$t('position'),
-          value: 'position_title'
+          value: 'role_title'
         },
         {
           text: this.$t('department'),

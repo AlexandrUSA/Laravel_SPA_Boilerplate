@@ -29,7 +29,7 @@ class MessageController extends Controller
       $user = $request->user();
       $message = Message::create([
         'user_id' => $user->id,
-        'message' => $request->message
+        'message' => $request->get('message')
       ]);
       event(new ChatMessage($user, $message));
       return response('', 204);

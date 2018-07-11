@@ -16,7 +16,7 @@ class Message extends Model
   {
       $data = [];
       $messages = self::orderBy('id', 'desc')->take(5)->get();
-      $users = User::all('id', 'name', 'last_name', 'patronymic');
+      $users = User::all('id', 'name', 'last_name', 'patronymic', 'avatar');
       foreach ($messages as $message) {
           $user = $users->find($message->user_id);
           $data[] = [

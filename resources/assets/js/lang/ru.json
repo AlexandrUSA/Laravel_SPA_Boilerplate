@@ -27,6 +27,9 @@
 
   "task": "Задания",
   "expiry": "Выполнить к",
+  "current": "Всего задач",
+  "expired": "Просреченные",
+  "today": "На сегодня",
 
   "toggle_navigation": "Язык",
   "home": "Главная",
@@ -115,5 +118,7 @@
   "clients-archive": "Архив клиентов",
   "tour": "Тур",
   "departure_date": "Дата отправления",
-  "arrival_date": "Дата прибытия"
+  "arrival_date": "Дата прибытия",
+
+  "last_vouchers": "Последние путевки"
 }

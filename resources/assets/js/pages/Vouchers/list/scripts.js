@@ -59,6 +59,9 @@ export default {
     }
   },
   computed: {
+    formCompiled () {
+      return this.valid && this.editedTour.departure_date && this.editedTour.arrival_date
+    },
     cardTitle () {
       return (this.isArchive) ? 'Архив путевок' : 'Список путевок'
     },
@@ -102,6 +105,11 @@ export default {
           arrival_date: el.arrival_date
         })
       })
+      return data
+    },
+    clientsItems () {
+      const data = this.clients
+      data.forEach(el => { el.fio = `${el.last_name} ${el.first_name}` })
       return data
     },
     deleteMsg () {

@@ -39,7 +39,7 @@ Route::group(['middleware' => 'auth:api'], function () {
   {
     Route::get('account','BalanceController@getAccount');
     Route::get('balance','BalanceController@index');
-    Route::resource('charges','ChargeController', ['except' => ['create', 'edit']]);
+    Route::resource('charges','ChargeController', ['only' => ['index', 'store']]);
     Route::resource('customers','CustomerController', ['except' => ['create', 'edit']]);
     Route::resource('transfers','TransferController', ['only' => ['index', 'store']]);
     Route::resource('recipients','RecipientController', ['except' => ['create', 'edit']]);

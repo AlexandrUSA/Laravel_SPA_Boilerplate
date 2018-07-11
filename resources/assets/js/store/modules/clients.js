@@ -29,7 +29,6 @@ export const mutations = {
     state.client = client
   },
   [types.ADD] (state, client) {
-    console.log(client)
     state.clients.push(client)
   },
   [types.EDIT] (state, client) {
@@ -56,7 +55,7 @@ export const actions = {
       const { data } = await axios.get(URL)
       commit(types.LOAD, data)
     } catch (e) {
-      console.error('Не загрузились сотрудники', e)
+      commit(types.SET_ERROR, e.response.data)
     }
   },
   async [types.LOAD_ONE] ({ commit }, clientID) {

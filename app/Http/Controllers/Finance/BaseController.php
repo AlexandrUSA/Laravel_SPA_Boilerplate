@@ -17,11 +17,11 @@ class BaseController extends Controller
     public function getAll ()
     {
         $output = [];
-        $output['transfers'] = Stripe::transfers()->all();;
+//        $output['transfers'] = Stripe::transfers()->all();
         $output['charges'] = Stripe::charges()->all();
-        $output['account'] = Stripe::account()->details();
+//        $output['account'] = Stripe::account()->details();
         $output['balance'] = Stripe::balance()->current();
-//        $output['customers'] = Stripe::customers()->all();
+        $output['customers'] = Stripe::customers()->all();
 
         return response($output, 200);
     }

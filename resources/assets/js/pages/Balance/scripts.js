@@ -1,5 +1,4 @@
 import { mapActions, mapGetters } from 'vuex'
-import Transfers from '~/components/balance/transfers.vue'
 import Charges from '~/components/balance/charges.vue'
 import Customers from '~/components/balance/customers'
 import Editor from '~/components/balance/editor.vue'
@@ -15,17 +14,12 @@ export default {
       tabs: [
         {
           id: 0,
-          title: 'Поступления',
+          title: 'Выплаты',
           component: 'Charges'
         },
         {
-          id: 1,
-          title: 'Выплаты',
-          component: 'Transfers'
-        },
-        {
           id: 2,
-          title: 'Потребители',
+          title: 'Получатели',
           component: 'Customers'
         },
         {
@@ -36,23 +30,17 @@ export default {
       ]
     }
   },
-  components: { Transfers, Charges, Editor, Customers },
+  components: { Charges, Editor, Customers },
   computed: {
     ...mapGetters({
-      account: 'balance/account',
       balance: 'balance/balance',
       charges: 'balance/charges',
-      transfers: 'balance/transfers',
-      recipients: 'balance/recipients',
     })
   },
   methods: {
     ...mapActions({
-      loadAccount: 'balance/loadAccount',
       loadBalance: 'balance/loadBalance',
       loadCharges: 'balance/loadCharges',
-      loadTransfers: 'balance/loadTransfers',
-      loadRecipients: 'balance/loadRecipients',
       getAll: 'balance/getAll'
     })
   },

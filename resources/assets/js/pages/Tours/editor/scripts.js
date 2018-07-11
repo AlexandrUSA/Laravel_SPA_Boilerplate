@@ -9,7 +9,7 @@ export default {
   data () {
     return {
       item: {
-        title: 'Турецкая жемчужина',
+        title: 'Т',
         service: 'Автобусный тур',
         country: 'Турция',
         transport: 'Автобус',
@@ -39,7 +39,7 @@ export default {
     ...mapGetters({
       tours: 'tours/tours',
       tour: 'tours/tour',
-      creationError: 'clients/error',
+      creationError: 'tours/error',
       user: 'auth/user'
     }),
     errors () {

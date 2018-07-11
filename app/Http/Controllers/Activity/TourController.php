@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Activity;
 
+use App\Http\Requests\TourRequest;
 use App\Tour;
 use Illuminate\Http\Request;
 
@@ -51,10 +52,10 @@ class TourController extends BaseController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\TourRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TourRequest $request)
     {
         Tour::create($request->all());
         return Tour::all()->last();
@@ -74,11 +75,11 @@ class TourController extends BaseController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\TourRequest $request
      * @param  \App\Tour  $tour
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Tour $tour)
+    public function update(TourRequest $request, Tour $tour)
     {
         $tour->update(request()->all());
         return $tour;

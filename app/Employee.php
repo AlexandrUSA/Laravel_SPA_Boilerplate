@@ -23,10 +23,14 @@ class Employee extends Model
     'first_name', 'last_name', 'patronymic', 'salary', 'user_id', 'position_id', 'address', 'avatar', 'phone_number'
   ];
 
-  public static function getList()
+  public static function getList(string $listType = 'current')
   {
     $employees = [];
-    $users = User::all();
+    if ($listType === 'archive') {
+      $users = User::onlyTrashed()->get();
+    } else {
+      $users = User::all();
+    }
     foreach ($users as $user) {
       $employees[] = self::getOne($user);
     }

@@ -8,30 +8,6 @@
             <v-card-text>
               <vue-event-calendar :events="events"
                                   @day-changed="handleDayChanged">
-                <!--<template slot-scope="props">-->
-                  <!--<v-list-tile-->
-                    <!--v-for="item in events"-->
-                    <!--:key="item.title"-->
-                    <!--avatar-->
-                    <!--@click=""-->
-                    <!--class="event-item"-->
-                  <!--&gt;-->
-                    <!--<v-list-tile-avatar>-->
-                      <!--<v-icon :class="[item.customClass]">{{ item.icon }}</v-icon>-->
-                    <!--</v-list-tile-avatar>-->
-
-                    <!--<v-list-tile-content>-->
-                      <!--<v-list-tile-title>{{ item.title }}</v-list-tile-title>-->
-                      <!--<v-list-tile-sub-title>{{ item.date }}</v-list-tile-sub-title>-->
-                    <!--</v-list-tile-content>-->
-
-                    <!--<v-list-tile-action>-->
-                      <!--<v-btn icon ripple>-->
-                        <!--<v-icon color="grey lighten-1">info</v-icon>-->
-                      <!--</v-btn>-->
-                    <!--</v-list-tile-action>-->
-                  <!--</v-list-tile>-->
-                <!--</template>-->
               </vue-event-calendar>
             </v-card-text>
             <v-card-actions>
@@ -47,9 +23,6 @@
 
       <!--  Диалог создания нового задания  -->
       <v-dialog v-model="createDialog" max-width="500px">
-        <form @submit.prevent="requestNewTask"
-              @keydown="newEvent.onKeydown($event)"
-              v-model="valid">
           <v-card>
             <v-card-title>
               <h2>Добавить задачу</h2>
@@ -104,10 +77,10 @@
               <v-btn color="primary" flat
                      @click.stop="createDialog = false">{{ $t('cancel') }}</v-btn>
               <v-btn color="blue darken-1" flat
-                     @click.stop="newTask">{{ $t('ok') }}</v-btn>
+                     @click.stop="newTask"
+                     :disabled="!valid">{{ $t('ok') }}</v-btn>
             </v-card-actions>
           </v-card>
-        </form>
       </v-dialog>
     </v-container>
   </div>
@@ -117,9 +90,9 @@
 
 <style lang="scss">
   .__vev_calendar-wrapper .events-wrapper .date {
-    -webkit-border-radius: 5px !important;
-    -moz-border-radius: 5px !important;
-    border-radius: 5px !important;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
   }
 
   .__vev_calendar-wrapper .cal-wrapper .cal-header {

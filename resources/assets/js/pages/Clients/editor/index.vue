@@ -5,7 +5,7 @@
             <h2>{{title}}</h2>
           </v-card-title>
           <v-card-text>
-            <v-form v-model="valid" ref="form" lazyValidation>
+            <v-form v-model="valid" ref="form">
 							<v-container grid-list-md>
 								<v-layout row wrap>
 									<v-flex xs12>
@@ -135,77 +135,10 @@
 							</v-container>
 
 							<!-- Диалог для вывода ошибок -->
-							<v-dialog
-								v-model="hasErrors"
-								max-width="800"
-							>
-								<v-card>
-									<v-card-title class="headline">Ошибка валидации данных!</v-card-title>
+							<errors-list :hasErrors="hasErrors"
+													 :errors="errors"
+													 @CloseErrors="hasErrors = false"/>
 
-									<v-card-text>
-										<h3>Во время валидации данных были обнаружены следубщие ошибки:</h3>
-									</v-card-text>
-									<v-divider></v-divider>
-									<v-card-text>
-										<ul>
-											<li v-for="(error, name) in errors"
-													:key="name">
-												{{ error[0] }}
-											</li>
-										</ul>
-
-									</v-card-text>
-
-									<v-card-actions>
-										<v-spacer></v-spacer>
-
-										<v-btn
-											color="red darken-1"
-											flat="flat"
-											@click="hasErrors = false"
-										>
-											OK
-										</v-btn>
-									</v-card-actions>
-								</v-card>
-							</v-dialog>
-
-
-							<!--<v-layout row wrap>-->
-						    <!--<v-flex xs12>-->
-						      <!--<v-menu-->
-						        <!--ref="menu"-->
-						        <!--lazy-->
-						        <!--:close-on-content-click="false"-->
-						        <!--v-model="menu"-->
-						        <!--transition="scale-transition"-->
-						        <!--offset-y-->
-						        <!--full-width-->
-						        <!--:nudge-right="40"-->
-						        <!--min-width="290px"-->
-						        <!--:return-value.sync="date"-->
-						      <!--&gt;-->
-						        <!--<v-text-field-->
-						          <!--slot="activator"-->
-						          <!--:label="$t('birthday')"-->
-						          <!--v-model="item.birthday"-->
-						          <!--prepend-icon="event"-->
-						          <!--readonly-->
-						        <!--&gt;</v-text-field>-->
-						        <!--<v-date-picker v-model="item.birthday" no-title scrollable>-->
-						          <!--<v-spacer></v-spacer>-->
-						          <!--<v-btn flat color="primary" @click="menu = false">{{ $t('cancel') }}</v-btn>-->
-						          <!--<v-btn flat color="primary" @click="$refs.menu.save(date)">{{ $t('ok') }}</v-btn>-->
-						        <!--</v-date-picker>-->
-						      <!--</v-menu>-->
-						    <!--</v-flex>-->
-						  <!--</v-layout>-->
-					    <!--<v-text-field-->
-					      <!--:label="$t('phone_number')"-->
-					      <!--v-model="item.phone_number"-->
-					      <!--prepend-icon="phone_iphone"-->
-					      <!--required-->
-					    <!--&gt;</v-text-field>-->
 					    <v-btn outline color="info"
 										 @click.native="save"
 										 :disabled="!valid"

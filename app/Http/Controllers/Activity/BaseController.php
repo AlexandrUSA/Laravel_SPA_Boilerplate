@@ -16,7 +16,6 @@ class BaseController extends Controller
     $data['clients'] = Client::all();
     $data['tours'] = Tour::all();
     $data['vouchers'] = Voucher::all();
-    $data['services'] = Service::all();
     return $data;
   }
 }

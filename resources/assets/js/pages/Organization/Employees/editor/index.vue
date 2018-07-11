@@ -10,13 +10,13 @@
               </h2>
             </v-card-title>
             <v-card-text>
-              <v-form v-model="valid" ref="form" lazyValidation>
+              <v-form v-model="valid" ref="form">
                 <v-container grid-list-md>
                   <v-layout row wrap>
                     <v-flex xs4>
                       <v-card class="employee__avatar-container">
                         <v-card-media :src="itemAvatar" height="200px"></v-card-media>
-                        <div class="avatar__overlay">
+                        <div class="avatar__overlay" v-if="item.id">
                           <upload-button :title="$t('change_image')" @fileUpload="updatePhoto"></upload-button>
                         </div>
                       </v-card>
@@ -109,6 +109,7 @@
                         item-value="id"
                         :rules="[v => !!v || 'Выберите должность']"
                         clearable
+                        required
                       ></v-select>
                     </v-flex>
                     <v-flex xs12 sm6>
@@ -146,63 +147,32 @@
                         clearable
                       ></v-textarea>
                     </v-flex>
+                    <v-flex xs12 class="form-btns">
+                      <v-btn large
+                             color="info"
+                             @click.native="save"
+                             :disabled="!valid"
+                             :loading="pending">
+                        {{ $t('ok') }}
+                      </v-btn>
+                      <v-btn large
+                             color="error"
+                             @click.native="close">
+                        {{ $t('cancel') }}
+                      </v-btn>
+                    </v-flex>
                   </v-layout>
                 </v-container>
-
-
-                <!-- Сообщение с ошибками валидации на сервере -->
-                <v-dialog
-                  v-model="hasErrors"
-                  max-width="800"
-                >
-                  <v-card>
-                    <v-card-title class="headline">Ошибка валидации данных!</v-card-title>
-
-                    <v-card-text>
-                      <h3>Во время валидации данных были обнаружены следубщие ошибки:</h3>
-                    </v-card-text>
-                    <v-divider></v-divider>
-                    <v-card-text>
-                      <ul>
-                        <li v-for="(error, name) in errors"
-                            :key="name">
-                          {{ error[0] }}
-                        </li>
-                      </ul>
-
-                    </v-card-text>
-
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-
-                      <v-btn
-                        color="red darken-1"
-                        flat="flat"
-                        @click="hasErrors = false"
-                      >
-                        OK
-                      </v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
-
-                <v-btn large
-                       color="info"
-                       @click.native="save"
-                       :disabled="!valid"
-                       :loading="pending">
-                  {{ $t('ok') }}
-                </v-btn>
-                <v-btn large
-                       color="error"
-                       @click.native="close">
-                  {{ $t('cancel') }}
-                </v-btn>
               </v-form>
             </v-card-text>
           </v-card>
         </v-flex>
       </v-layout>
+
+      <!-- Сообщение с ошибками валидации на сервере -->
+      <errors-list :hasErrors="hasErrors"
+                   :errors="errors"
+                   @CloseErrors="hasErrors = false"/>
     </v-container>
   </div>
 </template>

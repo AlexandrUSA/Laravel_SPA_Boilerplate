@@ -8,17 +8,25 @@
         <v-text-field
                 label="Сумма перевода"
                 v-model="form.amount"
-                :counter="70"
                 required
                 clearable
+                prepend-icon="attach_money"
         ></v-text-field>
-        <v-text-field
-                label="Сумма перевода"
-                v-model="form.amount"
-                :counter="70"
-                required
-                clearable
-        ></v-text-field>
+        <v-select
+          :items="customers"
+          item-text="metadata.fio"
+          item-value="id"
+          v-model="form.customer"
+          auto
+          label="Выбрать потребителя"
+          prepend-icon="person"
+          single-line
+          required
+        ></v-select>
+        <v-textarea label="Доп. информация"
+                    v-model="form.description"
+                    prepend-icon="info">
+        </v-textarea>
       </v-card-text>
       <v-card-actions>
         <v-btn large block
@@ -62,8 +70,9 @@ export default {
     valid: false,
     form: {
       amount: '',
-      from_id: '',
-      recipients: [],
+      customer: '',
+      description: '',
+      currency: 'USD'
     }
   }),
   watch: {
@@ -80,25 +89,24 @@ export default {
   computed: {
     ...mapGetters({
       user: 'auth/user',
-      employees: 'employees/employees',
+      customers: 'balance/customers',
       loading: 'httpPending'
     })
   },
   methods: {
     ...mapActions({
-      add: 'messages/add'
+      add: 'balance/makeCharge'
     }),
     async send () {
-      this.form.from_id = this.user.id
       await this.add(this.form)
       this._resetForm()
       this.dialog = true
     },
     _resetForm ()
     {
-        this.form.message = ''
-        this.form.from_id = ''
-        this.form.recipients = []
+        this.form.card = ''
+        this.form.description = ''
+        this.form.amount = ''
     }
   }
 }

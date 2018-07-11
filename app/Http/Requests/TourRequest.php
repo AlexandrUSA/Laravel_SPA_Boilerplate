@@ -25,8 +25,14 @@ class TourRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            //
-        ];
+      return [
+        'title'         => 'required|String|min:2|max:70',
+        'service'       => 'required|String|min:2|max:70',
+        'country'       => 'required|String|min:2|max:70',
+        'visa_service'  => 'required|boolean',
+        'accommodation' => 'required|boolean',
+        'days'          => 'required|integer',
+        'price'         => 'required|integer',
+      ];
     }
 }

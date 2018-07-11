@@ -11,19 +11,19 @@ export default {
   data () {
     return {
       item: {
-        name: '1',
-        last_name: '2',
-        email: '3',
-        password: '4',
-        patronymic: '5',
-        sex: 'Женский',
-        passport: '3',
+        name: '',
+        last_name: '',
+        email: '',
+        password: '',
+        patronymic: '',
+        sex: '',
+        passport: '',
         birthday: null,
-        role_id: 1,
-        salary: '88',
-        phone_number: '999999999',
-        address: '11',
-        details: '12',
+        role_id: null,
+        salary: '',
+        phone_number: '',
+        address: '',
+        details: '',
         image_file: ''
       },
       date: null,
@@ -72,22 +72,21 @@ export default {
         image: file
       })
       this.item.avatar = data
-      console.log(data)
-      // this.item.image_file = file
     },
     async save () {
-      this.pending = true
-      if (this.id) {
-        await this.editItem(this.item)
-      } else {
-        await this.addItem(this.item)
-      }
-      if (!this.creationError) {
-        this.$router.replace({ name: 'employees' })
-      } else {
-        this.pending = false
-        this.hasErrors = true
-        console.log(this.creationError.errors)
+      if (this.valid) {
+        this.pending = true
+        if (this.id) {
+          await this.editItem(this.item)
+        } else {
+          await this.addItem(this.item)
+        }
+        if (!this.creationError) {
+          this.$router.replace({ name: 'employees' })
+        } else {
+          this.pending = false
+          this.hasErrors = true
+        }
       }
     },
     close () {

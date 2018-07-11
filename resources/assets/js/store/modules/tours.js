@@ -53,10 +53,12 @@ export const actions = {
   * @returns {Promise.<void>}
   */
   async [types.LOAD] ({ commit }) {
+    commit(types.SET_ERROR, null)
     try {
       const { data } = await axios.get(URL)
       commit(types.LOAD, data)
     } catch (e) {
+      commit(types.SET_ERROR, e.response.data)
       console.error('Не загрузились туры', e)
     }
   },
@@ -84,10 +86,12 @@ export const actions = {
   * @returns {Promise.<void>}
   */
   async [types.ADD] ({ commit }, payload) {
+    commit(types.SET_ERROR, null)
     try {
       const { data } = await axios.post(URL, payload)
       commit(types.ADD, data)
     } catch (e) {
+      commit(types.SET_ERROR, e.response.data)
       console.error('Не создался туры', e)
     }
   },
@@ -99,10 +103,12 @@ export const actions = {
   * @returns {Promise.<void>}
   */
   async [types.EDIT] ({ commit }, tour) {
+    commit(types.SET_ERROR, null)
     try {
       const { data } = await axios.put(URL + '/' + tour.id, tour)
       commit(types.EDIT, data)
     } catch (e) {
+      commit(types.SET_ERROR, e.response.data)
       console.error('Не изменился тур', e)
     }
   },
@@ -114,10 +120,12 @@ export const actions = {
   * @returns {Promise.<void>}
   */
   async [types.REMOVE] ({ commit }, tourID) {
+    commit(types.SET_ERROR, null)
     try {
       await axios.delete(URL + '/' + tourID)
       commit(types.REMOVE, tourID)
     } catch (e) {
+      commit(types.SET_ERROR, e.response.data)
       console.error('Не удалился тур', e)
     }
   },

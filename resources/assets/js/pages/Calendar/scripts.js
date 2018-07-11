@@ -10,20 +10,19 @@ export default {
   },
   data () {
     return {
-      valid: false,
       dateSelectMenu: false,
       deleteDialog: false,
       createDialog: false,
       showIndex: -1,
       selected: [],
-      newEvent: new Form({
+      newEvent: {
         user_id: '',
         date: '',
         title: '',
         desc: '',
         completed: 0,
         expired: 0
-      }),
+      },
       events: []
     }
   },
@@ -31,7 +30,10 @@ export default {
     ...mapGetters({
       user: 'auth/user',
       tasks: 'calendar/tasks'
-    })
+    }),
+    valid () {
+      return this.newEvent.title && this.newEvent.date
+    }
   },
   watch: {
     events () {
@@ -65,18 +67,12 @@ export default {
       })
       this.newEvent.date = date.join('-')
     },
-    async requestNewTask () {
-      this.newEvent.user_id = this.user.id
-      const { data } = await this.newEvent.post('/api/tasks')
-      this.events.push(data)
-    },
     newTask () {
       this.createDialog = false
-      const newDate = this.newEvent.date.split('/').join('-')
-      if (moment().diff(moment(newDate)) < 0) {
-        this.requestNewTask()
-        this.resetNewTask()
-      }
+      this.newEvent.user_id = this.user.id
+      this.add({ ...this.newEvent })
+      this.resetNewTask()
+      this.events = this.tasks
     },
     resetNewTask () {
       this.newEvent.date = ''
@@ -108,6 +104,9 @@ export default {
         const date = el.date.split('/').join('-')
         if (moment().diff(moment(date)) > 0 && !el.completed) {
           el.expired = true
+          if (el.title.indexOf('(Просрочено)') === -1) {
+            el.title += ' (Просрочено)'
+          }
           el.customClass = 'event-expired'
         }
         el.date = el.date.split('-').join('/')
@@ -115,6 +114,7 @@ export default {
     }
   },
   async created () {
+    if (!this.tasks.length) await this.load()
     this.events = this.tasks
     this.setEventStatus()
   }

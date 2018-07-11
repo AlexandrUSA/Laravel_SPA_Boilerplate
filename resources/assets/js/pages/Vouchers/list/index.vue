@@ -43,8 +43,8 @@
                     :label="$t('client')"
                     v-model="editedTour.client_id"
                     prepend-icon="person"
-                    :items="clients"
-                    item-text="last_name"
+                    :items="clientsItems"
+                    item-text="fio"
                     item-value="id"
                     :rules="[v => !!v || 'Выберите клиента']"
                     required
@@ -115,7 +115,7 @@
           <v-card-actions>
             <v-btn outline color="info"
                    @click.native="addConfirm"
-                   :disabled="!valid">{{ $t('ok') }}</v-btn>
+                   :disabled="!formCompiled">{{ $t('ok') }}</v-btn>
             <v-btn outline color="error" @click.native="addCancel">{{ $t('cancel') }}</v-btn>
           </v-card-actions>
         </v-card>
@@ -177,13 +177,13 @@
         <v-btn v-if="!isArchive"
                fab dark large
                color="light-blue darken-1"
-               title="Архив"
+               title="Архив путевок"
                @click="loadItems(true)">
           <fa icon="archive"/>
         </v-btn>
         <v-btn fab dark large
                color="light-blue darken-1"
-               title="Сотрудники"
+               title="Список путевок"
                @click="loadItems(false)"
                v-else>
           <fa icon="address-card"/>

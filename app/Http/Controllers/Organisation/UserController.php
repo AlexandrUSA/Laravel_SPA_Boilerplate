@@ -27,7 +27,7 @@ class UserController extends BaseController
    */
   public function archive()
   {
-    return User::onlyTrashed()->get();
+    return response(Employee::getList('archive'));
   }
 
   /**

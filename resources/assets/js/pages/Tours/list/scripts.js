@@ -55,7 +55,6 @@ export default {
           id: tour.id,
           title: tour.title,
           country: tour.country,
-          service: this.services.find(el => +el.id === tour.service_id) || {},
           transport: tour.transport,
           visaService: tour.visa_service,
           accommodation: tour.accommodation,
@@ -75,7 +74,6 @@ export default {
     },
     ...mapGetters({
       'tours': 'tours/tours',
-      'services': 'services/services',
       'vouchers': 'vouchers/vouchers',
       'loading': 'httpPending'
     })

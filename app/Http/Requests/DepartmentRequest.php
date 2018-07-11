@@ -23,8 +23,18 @@ class DepartmentRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-          'title' => 'required|String|min:5|max:70'
-        ];
+      return [
+        'title' => 'required|String|min:5|max:70'
+      ];
+    }
+
+      public function messages()
+    {
+      return [
+        'name.required' => 'Поле названия обязательно для заполнения',
+        'name.min' => 'Слишком короткое поле названия',
+        'name.max' => 'Слишком длинное поле названия',
+        'name.string' => 'Поле названия должно быть валидной строкой'
+      ];
     }
 }

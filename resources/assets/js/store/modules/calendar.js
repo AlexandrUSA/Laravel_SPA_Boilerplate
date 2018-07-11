@@ -32,8 +32,8 @@ export const mutations = {
     state.tasks.splice(index, 1, task)
   },
   [types.REMOVE] (state, taskId) {
-    const pos = state.tasks.findIndex(el => el.id === taskId)
-    if (pos !== -1) state.tasks.splice(pos, 1)
+    const index = state.tasks.findIndex(el => el.id === taskId)
+    if (index !== -1) state.tasks.splice(index, 1)
   }
 }
 

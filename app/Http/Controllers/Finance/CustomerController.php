@@ -27,19 +27,15 @@ class CustomerController extends BaseController
     public function store(Request $request)
     {
       $customer = Stripe::customers()->create([
-        'email' => 'john@doe.com',
+        'description' => $request->get('description'),
+        'email' => $request->get('email'),
+        'metadata' => [
+          'card' => $request->get('card'),
+          'fio' => $request->get('name')
+        ]
       ]);
-    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Customer  $customer
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Customer $customer)
-    {
-        //
+      return response($customer, 201);
     }
 
     /**

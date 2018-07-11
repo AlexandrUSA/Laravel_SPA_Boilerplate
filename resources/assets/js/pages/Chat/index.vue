@@ -14,6 +14,9 @@
                   ripple
                   @click="insertName(item.user)"
                 >
+                  <v-list-tile-avatar>
+                    <img :src="getAvatar(item.user.avatar)">
+                  </v-list-tile-avatar>
                   <v-list-tile-content>
                     <v-list-tile-title>{{ `${item.user.last_name} ${item.user.name[0]}.` }}</v-list-tile-title>
                     <v-list-tile-sub-title>{{ item.message.message }}</v-list-tile-sub-title>

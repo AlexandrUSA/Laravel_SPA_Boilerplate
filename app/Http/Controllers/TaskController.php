@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Task;
 use Illuminate\Http\Request;
+use App\Http\Requests\TaskRequest;
 
 class TaskController extends Controller
 {
@@ -20,10 +21,10 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\TaskRequest $request;
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TaskRequest $request)
     {
         Task::create($request->all());
         return response(Task::all()->last(), 201);

@@ -1,5 +1,4 @@
-import {mapActions, mapGetters} from 'vuex'
-import  axios from 'axios';
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   middleware: ['auth', 'organisation'],
@@ -11,19 +10,19 @@ export default {
   data () {
     return {
       item: {
-        first_name: 'Михаил',
-        last_name: 'Гриневич',
-        email: '1',
-        patronymic: 'Владимирович',
-        sex: 'Мужской',
-        passport: '342343',
+        first_name: '',
+        last_name: '',
+        email: '',
+        patronymic: '',
+        sex: '',
+        passport: '',
         birthday: '',
-        phone_number: '+39999999999',
-        country: 'Россия',
-        city: 'Москва',
-        street: 'Тверская',
-        number: '12',
-        tour_id: '1'
+        phone_number: '',
+        country: '',
+        city: '',
+        street: '',
+        number: '',
+        tour_id: ''
       },
       pending: false,
       hasErrors: false,

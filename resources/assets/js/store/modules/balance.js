@@ -42,14 +42,22 @@ export const mutations = {
   },
   [types.LOAD + 'Recipients'] (state, recipients) {
     state.recipients = recipients.data
+  },
+  [types.ADD + 'Charge'] (state, charge) {
+    state.charges.push(charge)
+  },
+  [types.ADD + 'Customer'] (state, customer) {
+    console.log('Customer', customer)
+    state.customers.push(customer)
   }
 }
 
 export const actions = {
-  async [types.ADD + 'Recipient'] ({ commit }, recipient) {
+  async [types.ADD + 'Customer'] ({ commit }, customer) {
     try {
-      const { data } = await axios.post(URL + 'recipients', recipient)
-      commit(types.ADD + 'Recipients', data)
+      const { data } = await axios.post(URL + 'customers', customer)
+      commit(types.ADD + 'Customer', data)
+      console.log(data)
     } catch (e) {
       console.error('Не загрузились потребители', e.response)
     }
@@ -106,15 +114,23 @@ export const actions = {
     }
   },
 
-  async getAll ({commit}) {
+  async getAll ({ commit }) {
     try {
       const { data } = await axios.get(URL + 'all')
-      commit(types.LOAD + 'Transfers', data.transfers)
+      commit(types.LOAD + 'Customers', data.customers)
       commit(types.LOAD + 'Balance', data.balance)
-      commit(types.LOAD + 'Account', data.account)
       commit(types.LOAD + 'Charges', data.charges)
     } catch (e) {
       console.error('Не загрузились платежы', e.response)
+    }
+  },
+
+  async makeCharge ({ commit }, charge) {
+    try {
+      const { data } = await axios.post(URL + 'charges', charge)
+      commit(types.ADD + 'Charge', data)
+    } catch (e) {
+      console.log(e.response)
     }
   }
 }

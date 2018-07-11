@@ -25,7 +25,9 @@ class EmployeeRequest extends FormRequest
     {
         return [
           'name'   => 'required|String|min:2|max:70',
-          'last_name'    => 'required|String|min:2|max:70'
+          'last_name'    => 'required|String|min:2|max:70',
+//          'email' => 'unique:users',
+//          'passport' => 'unique:users'
         ];
     }
     public function messages()
@@ -39,6 +41,8 @@ class EmployeeRequest extends FormRequest
             'last_name.min' => 'Слишком короткая фамилия',
             'last_name.max' => 'Слишком длинная фамилия',
             'last_name.string' => 'Фамилия должна быть валидной строкой',
+//            'email.unique' => 'Сотрудник с таким Email уже зарегестрирован',
+//            'passport.unique' => 'Сотрудник с такими паспортными данными уже зарегестрирован'
         ];
     }
 }

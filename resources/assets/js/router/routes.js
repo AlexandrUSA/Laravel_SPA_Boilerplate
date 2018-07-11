@@ -1,7 +1,4 @@
-import store from '~/store'
-
 const Home = () => import('~/pages/Home').then(m => m.default || m);
-// const Welcome = () => import('~/pages/welcome').then(m => m.default || m)
 
 const Login = () => import('~/pages/Auth/login').then(m => m.default || m);
 const PasswordReset = () => import('~/pages/Auth/password/reset').then(m => m.default || m);

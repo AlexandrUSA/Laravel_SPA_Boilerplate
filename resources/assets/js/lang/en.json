@@ -40,6 +40,9 @@
 
   "task": "Tasks",
   "expiry": "Expiry",
+  "current": "Current",
+  "expired": "Expired",
+  "today": "Today",
 
   "employees": "Employees",
   "employees_archive": "Employees archive",
@@ -112,5 +115,7 @@
   "clients-archive": "Clients archive",
   "tour": "Tour",
   "departure_date": "Departure date",
-  "arrival_date": "Arrival date"
+  "arrival_date": "Arrival date",
+
+  "last_vouchers": "Last vouchers"
 }

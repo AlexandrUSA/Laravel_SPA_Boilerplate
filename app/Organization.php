@@ -136,9 +136,12 @@ class Organization extends Model
     {
       if (array_key_exists('avatar', $data)) self::deleteAvatar($data['avatar']);
       $image = $data['image_file'];
-      $name = time().'.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
-      \Image::make($image)->save(public_path('img/').$name);
-      return $name;
+      if ($image) {
+        $name = time().'.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
+        \Image::make($image)->save(public_path('img/').$name);
+        return $name;
+      }
+      return '';
     }
     return (array_key_exists('avatar', $data)) ? $data['avatar'] : '';
   }

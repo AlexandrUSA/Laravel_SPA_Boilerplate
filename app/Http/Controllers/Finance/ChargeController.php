@@ -26,40 +26,14 @@ class ChargeController extends BaseController
      */
     public function store(Request $request)
     {
-        //
-    }
+      $charge = Stripe::charges()->create([
+        'amount'    => $request->get('amount'),
+        'currency'  => $request->get('currency'),
+        'customer' => $request->get('customer'),
+        'description' => $request->get('description'),
+        'metadata' => $request->get('metadata'),
+      ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Charge  $charge
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Charge $charge)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Charge  $charge
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Charge $charge)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Charge  $charge
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Charge $charge)
-    {
-        //
+      return response($charge, 201);
     }
 }

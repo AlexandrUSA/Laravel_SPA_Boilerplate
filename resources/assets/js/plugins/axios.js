@@ -8,7 +8,9 @@ import i18n from '~/plugins/i18n'
  *  Глобальный перехватчик AJAX запроса на сервер для его обработки
  */
 axios.interceptors.request.use(request => {
-  store.state['httpPending'] = true
+  if (request.url !== '/api/user') {
+    store.state['httpPending'] = true
+  }
   // Получаем токен из хранилища
   const token = store.getters['auth/token']
   // Если токе получен(юзер авторизован) - записываем в заголовки
@@ -39,13 +41,23 @@ axios.interceptors.response.use(response => {
   const {status} = error.response
 
   if (status >= 500) {  // Если внутренняя ошибка сервера - оповещаем пользователя
+    // swal({
+    //   type: 'error',
+    //   title: i18n.t('error_alert_title'),
+    //   text: i18n.t('error_alert_text'),
+    //   reverseButtons: true,
+    //   confirmButtonText: i18n.t('ok'),
+    //   cancelButtonText: i18n.t('cancel')
+    // })
+    console.log('unknown error')
+  }
+
+  if (status === 403) {
     swal({
       type: 'error',
       title: i18n.t('error_alert_title'),
-      text: i18n.t('error_alert_text'),
-      reverseButtons: true,
+      text: 'У вас нет прав для данной операции!',
       confirmButtonText: i18n.t('ok'),
-      cancelButtonText: i18n.t('cancel')
     })
   }
 

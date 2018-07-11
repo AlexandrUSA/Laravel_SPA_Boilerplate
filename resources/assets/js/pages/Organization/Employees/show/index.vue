@@ -1,14 +1,15 @@
 <template>
-  <div class="employee">
-		<v-container grid-list-md>
+		<v-container grid-list-md class="employee">
 			<v-layout row wrap>
 				<v-flex xs12>
 					<h2>{{ $t('employee') }}</h2>
-					<div class="employee__avatar">
-						<div class="employee__avatar-container">
-							<img :src="avatar" :alt="item.name">
-						</div>
-					</div>
+				</v-flex>
+				<v-flex xs3>
+					<v-card class="employee__avatar-container">
+						<v-card-media :src="item.avatar" height="250px"></v-card-media>
+					</v-card>
+				</v-flex>
+				<v-flex xs9>
 					<div class="employee__descr">
 						<v-form v-model="valid"
 										ref="form"
@@ -35,15 +36,12 @@
 								v-model="item.patronymic"
 								disabled
 							></v-text-field>
-							<v-select
+							<v-text-field
 								:label="$t('position')"
-								v-model="item.role_id"
-								prepend-icon="card_travel"
-								:items="positions"
-								item-text="display_name"
-								item-value="id"
+								v-model="item.position.display_name"
+								prepend-icon="work"
 								disabled
-							></v-select>
+							></v-text-field>
 							<v-text-field
 								:label="$t('phone_number')"
 								v-model="item.phone_number"
@@ -64,7 +62,7 @@
 							></v-text-field>
 							<div class="buttons">
 								<v-btn large
-											 v-if="!item.deleted_at"
+											 v-if="this.$route.name === 'employee'"
 											 :to="{ name: 'employeeEdit' }"
 											 :disabled="!valid">
 									Изменить даные
@@ -83,7 +81,6 @@
 				</v-flex>
 			</v-layout>
 		</v-container>
-  </div>		
 </template>
 
 <script>
@@ -118,16 +115,26 @@
 		},
 		computed: {
 			...mapGetters({
-				item: 'employees/employee',
+				employee: 'employees/employee',
 				items: 'employees/employees',
 				positions: 'positions/positions',
 				user: 'auth/user'
 			}),
+      item () {
+				const data = {};
+				for (let key in this.employee) {
+				  data[key] = this.employee[key] || 'Нет данных'
+				}
+				data.position = this.positions.find(el => +el.id === +this.employee.role_id) || {}
+				if (this.employee.avatar) {
+          data.avatar = '/img/' + this.employee.avatar
+				} else {
+          data.avatar = '/storage/avatars/no-avatar.jpg'
+        }
+				return data
+      },
 			buttonText() {
 				return !this.disabled ? "Обновить" : "Изменить данные";
-			},
-			avatar() {
-				return (this.item.avatar) ? '/img/' + this.item.avatar : "/storage/avatars/no-avatar.jpg"
 			}
 		},
 		methods: {

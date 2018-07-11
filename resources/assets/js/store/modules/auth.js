@@ -6,14 +6,14 @@ import * as types from '../mutation-types'
 export const state = {
   user: null,
   token: Cookies.get('token')
-};
+}
 
 // getters
 export const getters = {
   user: state => state.user,
   token: state => state.token,
   check: state => state.user !== null
-};
+}
 
 // mutations
 export const mutations = {
@@ -27,33 +27,31 @@ export const mutations = {
   },
 
   [types.FETCH_USER_FAILURE] (state) {
-    state.token = null;
+    state.token = null
     Cookies.remove('token')
   },
 
   [types.LOGOUT] (state) {
-    state.user = null;
-    state.token = null;
+    state.user = null
+    state.token = null
 
     Cookies.remove('token')
   },
 
   [types.UPDATE_USER] (state, user) {
-
     state.user = user
   }
-};
+}
 
 // actions
 export const actions = {
-  saveToken ({ commit, dispatch }, payload) {
+  saveToken ({ commit }, payload) {
     commit(types.SAVE_TOKEN, payload)
   },
 
   async fetchUser ({ commit }) {
     try {
-      const { data } = await axios.get('/api/user');
-
+      const { data } = await axios.get('/api/user')
       commit(types.FETCH_USER_SUCCESS, { user: data })
     } catch (e) {
       commit(types.FETCH_USER_FAILURE)
@@ -72,7 +70,7 @@ export const actions = {
   },
 
   async fetchOauthUrl (ctx, { provider }) {
-    const { data } = await axios.post(`/api/oauth/${provider}`);
+    const { data } = await axios.post(`/api/oauth/${provider}`)
     return data.url
   }
 }

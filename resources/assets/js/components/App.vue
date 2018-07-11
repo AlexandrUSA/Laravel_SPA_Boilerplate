@@ -32,7 +32,8 @@ export default {
 
   data: () => ({
     layout: null,
-    defaultLayout: 'default'
+    defaultLayout: 'default',
+    checking: null
   }),
   computed: mapGetters({
     logged: 'auth/token'
@@ -46,7 +47,8 @@ export default {
     }
   },
   mounted () {
-    this.$loading = this.$refs.loading;
+    this.$loading = this.$refs.loading
+//    this.checking = setInterval(() => { this.fetchUser() }, 5000)
   },
 
   methods: {
@@ -60,11 +62,11 @@ export default {
       this.layout = layouts[layout]
     },
     ...mapActions({
-      loadTasks: 'calendar/load',
-    }),
+      fetchUser: 'auth/fetchUser'
+    })
   },
-  created () {
-    this.loadTasks()
+  beforeDestroy () {
+//    clearInterval(this.checking)
   }
 }
 </script>

@@ -85,6 +85,9 @@
       }
     },
     computed: {
+      avatar () {
+        return (this.user.avatar) ? '/img/' + this.user.avatar : '/storage/avatars/no-avatar.jpg'
+      },
       initialItems () {
         return [
           {icon: 'home', text: this.$t('nav-main'), to: {name: 'home'}, permissions: false},
@@ -106,8 +109,8 @@
           {icon: 'briefcase', text: this.$t('nav-vouchers'), to: {name: 'vouchers'}, permissions: 'crud-tours'},
           {icon: 'calendar', text: this.$t('nav-calendar'), to: {name: 'calendar'}},
           {icon: 'comments', text: this.$t('nav-chat'), to: {name: 'chat'}},
-          {icon: 'envelope', text: this.$t('nav-email'), to: {name: 'messages'}},
-          {icon: 'question-circle', text: this.$t('nav-help'), to: {name: 'help'}}
+          {icon: 'envelope', text: this.$t('nav-email'), to: {name: 'messages'}}
+//          {icon: 'question-circle', text: this.$t('nav-help'), to: {name: 'help'}}
         ]
       },
       items () {
@@ -117,9 +120,6 @@
           }
           return true
         })
-      },
-      avatar() {
-        return (this.user.avatar) ? this.user.avatar : "/storage/avatars/no-avatar.jpg"
       }
     }
   }

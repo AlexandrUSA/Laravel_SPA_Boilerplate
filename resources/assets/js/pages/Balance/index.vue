@@ -2,9 +2,10 @@
 <v-container>
   <v-layout wrap>
     <v-flex xs12>
-      <h2 v-if="balance.amount">
-        Текущий баланс: {{ balance.amount / 100 + ' ' + balance.currency.toUpperCase() }}
-      </h2>
+      <h2>{{ $t('nav-balance') }}</h2>
+      <!--<h2 v-if="balance.amount">-->
+        <!--Текущий баланс: {{ balance.amount / 100 + ' ' + balance.currency.toUpperCase() }}-->
+      <!--</h2>-->
         <v-tabs
                 v-model="active"
                 dark

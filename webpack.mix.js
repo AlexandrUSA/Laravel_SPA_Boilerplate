@@ -23,7 +23,6 @@ if (mix.inProduction()) {
     'js-cookie',
     'vue-router',
     'vuetify',
-    'vee-validate',
     'vuex-router-sync'
   ])
 }
