@@ -2,8 +2,6 @@
 
 > A Laravel-Vue SPA starter project template with Vuetify frontend. 
 
-Forked from https://github.com/cretueusebiu/laravel-vue-spa
-
 ## Features
 
 - Laravel 5.6 + Vue + Vue Router + Vuex
